@@ -1,0 +1,152 @@
+name: Build & Publish Android Release
+
+on:
+  push:
+    branches:
+      - main
+      - staging
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  create-release:
+    name: Compile and Release Android App
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # ---------- Free disk so the NDK build has room ----------
+      - name: Free Disk Space
+        run: |
+          echo "Before:"
+          df -h /
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android/sdk/ndk \
+                      /opt/ghc /usr/local/share/boost /usr/share/swift \
+                      /opt/hostedtoolcache/CodeQL 2>/dev/null || true
+          sudo apt-get clean
+          docker image prune -af || true
+          echo "After:"
+          df -h /
+
+      - name: Setup Node.js Runtime
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Setup Java JDK Environment
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Gradle Cache
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: false
+
+      - name: Install Project Dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Create .env file
+        run: |
+          cat > .env <<'EOF'
+          API_URL=${{ secrets.API_URL }}
+          FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}
+          EOF
+
+      - name: Compile Production Release APK
+        working-directory: android
+        env:
+          JAVA_OPTS: "-Xmx1536m"
+          GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx1536m -Dorg.gradle.workers.max=1 -Dorg.gradle.parallel=false"
+        run: |
+          chmod +x ./gradlew
+          ./gradlew clean --no-daemon
+          ./gradlew assembleRelease \
+            -PreactNativeArchitectures=armeabi-v7a,arm64-v8a \
+            --no-daemon \
+            --no-parallel \
+            --max-workers=1 \
+            --stacktrace
+
+      - name: Verify APK was produced
+        run: |
+          ls -lh android/app/build/outputs/apk/release/
+          test -f android/app/build/outputs/apk/release/app-release.apk \
+            || { echo "APK not found!"; exit 1; }
+
+      - name: Determine Release Tag
+        id: version_tag
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            TAG_NAME="${{ github.ref_name }}"
+          else
+            TAG_NAME=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.0.0")
+          fi
+          echo "TAG=$TAG_NAME" >> "$GITHUB_OUTPUT"
+          echo "DATE=$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release and Upload APK
+        id: create_release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.version_tag.outputs.TAG }}
+          name: Release ${{ steps.version_tag.outputs.TAG }}
+          body: |
+            ### Automated Project Build
+            - **Compiled on:** ${{ steps.version_tag.outputs.DATE }}
+            - **Branch:** `${{ github.ref_name }}`
+            - **Commit SHA:** `${{ github.sha }}`
+            - **Architectures:** `armeabi-v7a`, `arm64-v8a`
+            - **Build flags:** memory-capped, single-worker, R8+shrinkResources
+
+            ---
+            *Download `app-release.apk` below to test the newest changes.*
+          artifacts: "android/app/build/outputs/apk/release/app-release.apk"
+          allowUpdates: true
+          generateReleaseNotes: true
+          draft: false
+          prerelease: ${{ github.ref_name == 'staging' }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # ---------- Discord notification ----------
+      - name: Send Discord Notification
+        if: success()
+        uses: Ilshidur/action-discord@master
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        with:
+          args: |
+            **@here New Android release is ready** 🚀
+            **App**: `${{ github.repository }}`
+            **Release**: `${{ steps.version_tag.outputs.TAG }}`
+            **Branch**: `${{ github.ref_name }}`
+            **Commit**: `${{ github.sha }}`
+            **Author**: `${{ github.event.head_commit.author.name }}`
+            **Message**: `${{ github.event.head_commit.message }}`
+
+            📦 **Download APK**: ${{ steps.create_release.outputs.html_url }}
+
+            [View workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+      - name: Notify Discord on failure
+        if: failure()
+        uses: Ilshidur/action-discord@master
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        with:
+          args: |
+            **@here Android build FAILED** ❌
+            **App**: `${{ github.repository }}`
+            **Branch**: `${{ github.ref_name }}`
+            **Commit**: `${{ github.sha }}`
+
+            🔗 [Check logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
