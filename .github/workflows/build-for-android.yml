@@ -117,36 +117,34 @@ jobs:
           prerelease: ${{ github.ref_name == 'staging' }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      # ---------- Discord notification ----------
+      # ---------- Discord: success notification ----------
       - name: Send Discord Notification
         if: success()
-        uses: Ilshidur/action-discord@master
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        with:
-          args: |
-            **@here New Android release is ready** 🚀
-            **App**: `${{ github.repository }}`
-            **Release**: `${{ steps.version_tag.outputs.TAG }}`
-            **Branch**: `${{ github.ref_name }}`
-            **Commit**: `${{ github.sha }}`
-            **Author**: `${{ github.event.head_commit.author.name }}`
-            **Message**: `${{ github.event.head_commit.message }}`
+        run: |
+          curl -fsS -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n \
+              --arg url "${{ steps.create_release.outputs.html_url }}" \
+              --arg tag "${{ steps.version_tag.outputs.TAG }}" \
+              --arg branch "${{ github.ref_name }}" \
+              --arg sha "${{ github.sha }}" \
+              --arg author "${{ github.event.head_commit.author.name }}" \
+              --arg msg "${{ github.event.head_commit.message }}" \
+              --arg run "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+              '{content: ("**@here New Android release is ready** 🚀\n**Release**: `" + $tag + "`\n**Branch**: `" + $branch + "`\n**Commit**: `" + $sha + "`\n**Author**: `" + $author + "`\n**Message**: `" + $msg + "`\n\n📦 **Download APK**: " + $url + "\n\n[View workflow run](" + $run + ")")}')"
 
-            📦 **Download APK**: ${{ steps.create_release.outputs.html_url }}
-
-            [View workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
-
+      # ---------- Discord: failure notification ----------
       - name: Notify Discord on failure
         if: failure()
-        uses: Ilshidur/action-discord@master
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        with:
-          args: |
-            **@here Android build FAILED** ❌
-            **App**: `${{ github.repository }}`
-            **Branch**: `${{ github.ref_name }}`
-            **Commit**: `${{ github.sha }}`
-
-            🔗 [Check logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+        run: |
+          curl -fsS -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n \
+              --arg branch "${{ github.ref_name }}" \
+              --arg sha "${{ github.sha }}" \
+              --arg run "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+              '{content: ("**@here Android build FAILED** ❌\n**Branch**: `" + $branch + "`\n**Commit**: `" + $sha + "`\n\n🔗 [Check logs](" + $run + ")")}')"
