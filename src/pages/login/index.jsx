@@ -77,7 +77,7 @@ export default function Login({ navigation }) {
 
             <TouchableOpacity
               style={styles.button}
-              onPress={() => navigation.navigate('Dashboard')}
+              onPress={() => navigation.navigate('Student-Dashboard')}
             >
               <Text style={styles.buttonText}>SIGN IN →</Text>
             </TouchableOpacity>
