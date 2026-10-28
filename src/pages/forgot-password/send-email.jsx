@@ -53,9 +53,9 @@ export default function SendEmail({ navigation }) {
             Remembered it?{' '}
             <Text
               style={styles.registerLink}
-              onPress={() => navigation.navigate('Login')}
+              onPress={() => navigation.goBack()}
             >
-              Sign in
+              go back
             </Text>
           </Text>
 

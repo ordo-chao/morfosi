@@ -1,6 +1,7 @@
 // BottomNav.jsx
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
+import { useNavigation, useNavigationState } from '@react-navigation/native';
 import { makeStyles } from './css.js';
 import { useTheme } from '../../theme/themeContext.jsx';
 
@@ -8,11 +9,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
 
+/* Route names below MUST match the names used in Stack.Screen. */
 const DEFAULT_TABS = [
-  { key: 'Home',    label: 'HOME',    icon: 'home-outline',      activeIcon: 'home',        lib: 'ion' },
-  { key: 'Classes', label: 'CLASSES', icon: 'book-outline',      activeIcon: 'book',        lib: 'ion' },
-  { key: 'Tasks',   label: 'TASKS',   icon: 'checkbox-outline',  activeIcon: 'checkbox',    lib: 'ion' },
-  { key: 'Profile', label: 'PROFILE', icon: 'person-outline',    activeIcon: 'person',      lib: 'ion' },
+  { key: 'Student-Dashboard', label: 'HOME',    icon: 'home-outline',     activeIcon: 'home',     lib: 'ion' },
+  { key: 'Student-Classes',   label: 'CLASSES', icon: 'book-outline',     activeIcon: 'book',     lib: 'ion' },
+  { key: 'Student-Tasks',     label: 'TASKS',   icon: 'checkbox-outline', activeIcon: 'checkbox', lib: 'ion' },
+  { key: 'Student-Profile',   label: 'PROFILE', icon: 'person-outline',   activeIcon: 'person',   lib: 'ion' },
 ];
 
 function TabIcon({ tab, isActive, color, size }) {
@@ -26,25 +28,41 @@ function TabIcon({ tab, isActive, color, size }) {
   return <Ionicons name={name} size={size} color={color} />;
 }
 
-export default function BottomNav({
-  activeRoute = 'Home',
-  onTabPress,
-  tabs = DEFAULT_TABS,
-}) {
+/* Resolve the deepest focused route name in the stack. */
+function useCurrentRouteName() {
+  return useNavigationState((state) => {
+    if (!state) return null;
+    let route = state.routes[state.index];
+    while (route.state) {
+      route = route.state.routes[route.state.index];
+    }
+    return route.name;
+  });
+}
+
+export default function BottomNav({ tabs = DEFAULT_TABS }) {
+  const navigation = useNavigation();
+  const currentRouteName = useCurrentRouteName();
+
   const { colors } = useTheme();
   const styles = makeStyles(colors);
+
+  const handlePress = (tabKey) => {
+    if (tabKey === currentRouteName) return; // already here
+    navigation.navigate(tabKey);
+  };
 
   return (
     <View style={styles.container}>
       {tabs.map((tab) => {
-        const isActive = tab.key === activeRoute;
+        const isActive = tab.key === currentRouteName;
         const tint = isActive ? colors.accent : colors.fgMuted;
 
         return (
           <TouchableOpacity
             key={tab.key}
             style={styles.tab}
-            onPress={() => onTabPress?.(tab.key)}
+            onPress={() => handlePress(tab.key)}
             accessibilityRole="tab"
             accessibilityState={{ selected: isActive }}
             accessibilityLabel={tab.label}

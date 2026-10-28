@@ -2,7 +2,9 @@
 import { StyleSheet } from 'react-native';
 
 export const makeStyles = (c) => StyleSheet.create({
-  /* ===== PAGE ===== */
+  /* =========================================================
+   * PAGE
+   * ======================================================= */
   page: {
     flex: 1,
     backgroundColor: c.bg,
@@ -14,7 +16,54 @@ export const makeStyles = (c) => StyleSheet.create({
     gap: 24,
   },
 
-  /* ===== NEXT CLASS CARD ===== */
+  /* =========================================================
+   * SECTION HEADERS
+   * ======================================================= */
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 4,
+  },
+  sectionHeaderLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  sectionTitle: {
+    fontFamily: 'monospace',
+    fontSize: 11,
+    letterSpacing: 1.5,
+    color: c.fgMuted,
+    fontWeight: '700',
+  },
+  sectionAction: {
+    fontFamily: 'monospace',
+    fontSize: 10,
+    letterSpacing: 1.2,
+    color: c.accent,
+    fontWeight: '900',
+  },
+  sectionBadge: {
+    minWidth: 18,
+    height: 18,
+    paddingHorizontal: 5,
+    borderRadius: 9,
+    backgroundColor: c.accent,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  sectionBadgeText: {
+    fontFamily: 'monospace',
+    fontSize: 9,
+    fontWeight: '900',
+    color: c.accentContrast,
+    lineHeight: 12,
+  },
+
+  /* =========================================================
+   * NEXT CLASS CARD
+   * ======================================================= */
   nextCard: {
     borderWidth: 1,
     borderColor: c.border,
@@ -56,7 +105,9 @@ export const makeStyles = (c) => StyleSheet.create({
     color: c.fg,
   },
 
-  /* ===== STATS ===== */
+  /* =========================================================
+   * STATS
+   * ======================================================= */
   statsRow: {
     flexDirection: 'row',
     gap: 10,
@@ -90,29 +141,9 @@ export const makeStyles = (c) => StyleSheet.create({
     textTransform: 'uppercase',
   },
 
-  /* ===== SECTION HEADERS ===== */
-  sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: 4,
-  },
-  sectionTitle: {
-    fontFamily: 'monospace',
-    fontSize: 11,
-    letterSpacing: 1.5,
-    color: c.fgMuted,
-    fontWeight: '700',
-  },
-  sectionAction: {
-    fontFamily: 'monospace',
-    fontSize: 10,
-    letterSpacing: 1.2,
-    color: c.accent,
-    fontWeight: '900',
-  },
-
-  /* ===== TOGGLE ===== */
+  /* =========================================================
+   * TOGGLE (Day / Week)
+   * ======================================================= */
   toggleRow: {
     flexDirection: 'row',
     alignSelf: 'flex-end',
@@ -141,7 +172,9 @@ export const makeStyles = (c) => StyleSheet.create({
     fontWeight: 'bold',
   },
 
-  /* ===== SCHEDULE ===== */
+  /* =========================================================
+   * SCHEDULE LIST
+   * ======================================================= */
   scheduleList: {
     borderWidth: 1,
     borderColor: c.border,
@@ -158,22 +191,6 @@ export const makeStyles = (c) => StyleSheet.create({
   },
   scheduleRowCurrent: {
     backgroundColor: c.surfaceHi,
-  },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-  },
-  dotPast: {
-    backgroundColor: c.fgFaint,
-  },
-  dotUpcoming: {
-    backgroundColor: 'transparent',
-    borderWidth: 1,
-    borderColor: c.fgMuted,
-  },
-  dotCurrent: {
-    backgroundColor: c.accent,
   },
   scheduleTime: {
     fontFamily: 'monospace',
@@ -193,7 +210,27 @@ export const makeStyles = (c) => StyleSheet.create({
     color: c.fgFaint,
   },
 
-  /* ===== LIST BLOCKS (assignments + announcements) ===== */
+  /* Status dots (schedule) */
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
+  dotPast: {
+    backgroundColor: c.fgFaint,
+  },
+  dotUpcoming: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: c.fgMuted,
+  },
+  dotCurrent: {
+    backgroundColor: c.accent,
+  },
+
+  /* =========================================================
+   * SIMPLE LIST BLOCK (Announcements)
+   * ======================================================= */
   listBlock: {
     borderWidth: 1,
     borderColor: c.border,
@@ -219,20 +256,103 @@ export const makeStyles = (c) => StyleSheet.create({
     fontSize: 13,
     color: c.fg,
   },
-  listMeta: {
+
+  /* =========================================================
+   * TASKS DUE TODAY WIDGET
+   * ======================================================= */
+  dueWidget: {
+    borderWidth: 1,
+    borderColor: c.border,
+    backgroundColor: c.surface,
+  },
+  dueHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: c.border,
+    backgroundColor: c.surfaceHi,
+  },
+  dueHeaderTitle: {
     fontFamily: 'monospace',
     fontSize: 10,
+    letterSpacing: 1.5,
+    fontWeight: '900',
     color: c.fgMuted,
   },
-  urgencyDot: {
+  dueCountPill: {
+    minWidth: 22,
+    height: 20,
+    paddingHorizontal: 6,
+    borderRadius: 10,
+    backgroundColor: c.accent,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dueCountText: {
+    fontFamily: 'monospace',
+    fontSize: 10,
+    fontWeight: '900',
+    color: c.accentContrast,
+  },
+  dueRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: c.border,
+  },
+  dueDot: {
     width: 8,
     height: 8,
     borderRadius: 4,
   },
-  urgencyHigh: {
-    backgroundColor: c.accent,
+  dueTitle: {
+    flex: 1,
+    fontSize: 13,
+    fontWeight: '700',
+    color: c.fg,
   },
-  urgencyNormal: {
-    backgroundColor: c.fgFaint,
+  dueMeta: {
+    fontFamily: 'monospace',
+    fontSize: 10,
+    color: c.fgMuted,
+  },
+  dueSeeAll: {
+    paddingVertical: 12,
+    alignItems: 'center',
+  },
+  dueSeeAllText: {
+    fontFamily: 'monospace',
+    fontSize: 10,
+    letterSpacing: 1.2,
+    fontWeight: '900',
+    color: c.accent,
+  },
+
+  /* Empty state */
+  dueEmpty: {
+    alignItems: 'center',
+    paddingVertical: 28,
+    gap: 4,
+  },
+  dueEmptyEmoji: {
+    fontSize: 28,
+    marginBottom: 4,
+  },
+  dueEmptyTitle: {
+    fontSize: 13,
+    fontWeight: '900',
+    color: c.fg,
+  },
+  dueEmptySub: {
+    fontFamily: 'monospace',
+    fontSize: 10,
+    color: c.fgMuted,
+    letterSpacing: 0.5,
   },
 });
