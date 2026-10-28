@@ -15,6 +15,7 @@ import EnterOtp from './src/pages/forgotpassword/EnterOtp.jsx';
 import ChangePassword from './src/pages/forgotpassword/ChangePassword.jsx';
 import Language from './src/pages/language/index.jsx';
 import Theme from './src/pages/theme/index.jsx';
+import Help from './src/pages/help/index.jsx';
 // Student
 import StudentDashboard from './src/pages/students/dashboard/index.jsx';
 import StudentClasses from './src/pages/students/classes/index.jsx'; 
@@ -50,6 +51,7 @@ function Navigator() {
           <Stack.Screen name="ChangePassword" component={ChangePassword} options={{ headerShown: false }} />
           <Stack.Screen name="Language"       component={Language}       options={{ headerShown: false }} />
           <Stack.Screen name="Theme"          component={Theme}          options={{ headerShown: false }} />
+          <Stack.Screen name="Help & Support"           component={Help}           options={{ headerShown: false }} />
 
           {/* Student */}
           <Stack.Screen name="Student-Dashboard"      component={StudentDashboard}      options={{ headerShown: false }} />

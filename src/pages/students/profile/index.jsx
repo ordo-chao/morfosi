@@ -170,7 +170,7 @@ export default function Profile({ navigation }) {
       case 'notifications': return navigation?.navigate('Student-Notifications');
       case 'language':      return navigation?.navigate('Language');
       case 'theme':         return navigation?.navigate('Theme');
-      case 'help':          return navigation?.navigate('Help');
+      case 'help':          return navigation?.navigate('Help & Support');
       case 'privacy':       return navigation?.navigate('Privacy');
       case 'about':         return navigation?.navigate('About');
       case 'data':          return Alert.alert('Download my data', 'A copy will be emailed to you.');
