@@ -16,6 +16,8 @@ import ChangePassword from './src/pages/forgotpassword/ChangePassword.jsx';
 
 // Student
 import Dashboard from './src/pages/students/dashboard/index.jsx';
+import Classes from './src/pages/students/classes/index.jsx'; 
+import Materials from './src/pages/students/materials/index.jsx';
 
 const Stack = createStackNavigator();
 
@@ -27,7 +29,7 @@ function Navigator() {
       <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} />
       <NavigationContainer theme={isDark ? DarkTheme : DefaultTheme}>
         <Stack.Navigator
-          initialRouteName="Student-Dashboard"
+          initialRouteName="Login"
           screenOptions={{
             headerShown: true,
             headerStyle: { backgroundColor: colors.bg },
@@ -42,6 +44,8 @@ function Navigator() {
 
           {/* Student */}
           <Stack.Screen name="Student-Dashboard"      component={Dashboard}      options={{ headerShown: false }} />
+          <Stack.Screen name="Student-Classes"       component={Classes}       options={{ headerShown: false }} />
+          <Stack.Screen name="Student-Materials"     component={Materials}     options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
