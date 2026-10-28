@@ -18,6 +18,7 @@ import ChangePassword from './src/pages/forgotpassword/ChangePassword.jsx';
 import Dashboard from './src/pages/students/dashboard/index.jsx';
 import Classes from './src/pages/students/classes/index.jsx'; 
 import Materials from './src/pages/students/materials/index.jsx';
+import Grades from './src/pages/students/grades/index.jsx';
 
 const Stack = createStackNavigator();
 
@@ -46,6 +47,7 @@ function Navigator() {
           <Stack.Screen name="Student-Dashboard"      component={Dashboard}      options={{ headerShown: false }} />
           <Stack.Screen name="Student-Classes"       component={Classes}       options={{ headerShown: false }} />
           <Stack.Screen name="Student-Materials"     component={Materials}     options={{ headerShown: false }} />
+          <Stack.Screen name="Student-Grades"        component={Grades}        options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

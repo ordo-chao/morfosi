@@ -295,6 +295,12 @@ function SubjectDetail({ visible, subject, period, onClose, navigation }) {
     navigation?.navigate('Student-Materials', { subject });
   };
 
+  const goToPastGrades = () => {
+    if (!subject) return;
+    onClose(); // dismiss the modal before navigating
+    navigation?.navigate('Student-Grades', { subject });
+  }
+
   return (
     <Modal
       visible={visible}
@@ -320,10 +326,7 @@ function SubjectDetail({ visible, subject, period, onClose, navigation }) {
 
               <TouchableOpacity
                 style={styles.modalAction}
-                onPress={() => {
-                  onClose();
-                  navigation?.navigate('Student-Grades', { subject });
-                }}
+                onPress={goToPastGrades}
               >
                 <Ionicons name="stats-chart-outline" size={16} color={colors.fg} />
                 <Text style={styles.modalActionText}>PAST GRADES</Text>
