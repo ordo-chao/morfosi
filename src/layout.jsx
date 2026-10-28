@@ -1,0 +1,87 @@
+import React from 'react';
+import { View, StatusBar, StyleSheet } from 'react-native';
+import { useNavigationState } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import Header from './components/header/index.jsx';
+import Navigation from './Components/Navigation/index.jsx';
+import { useTheme } from './theme/themeContext.jsx';
+
+const NO_NAV_ROUTES = [
+  'TicketDetail', 'CreateSubscriber', 'CreateStaff', 'NewTickets',
+  'UserNewTickets', 'StaffDetails', 'UserDetails', 'ChatDetail',
+  'NewChat', 'Monitoring',
+];
+
+const NO_HEADER_ROUTES = ['ChatDetail', 'NewChat'];
+
+export default function Layout({ children }) {
+  const { colors, isDark } = useTheme();
+  const insets = useSafeAreaInsets();
+
+  const currentRouteName = useNavigationState((state) => {
+    if (!state) return null;
+    let route = state.routes[state.index];
+    while (route.state) {
+      route = route.state.routes[route.state.index];
+    }
+    return route.name;
+  });
+
+  const shouldHideNavigation = NO_NAV_ROUTES.includes(currentRouteName);
+  const shouldHideHeader = NO_HEADER_ROUTES.includes(currentRouteName);
+
+  return (
+    <View style={[styles.container, { backgroundColor: colors.bg }]}>
+      {/* Status bar blends with page background */}
+      <StatusBar
+        barStyle={isDark ? 'light-content' : 'dark-content'}
+        backgroundColor={colors.bg}
+        translucent={false}
+      />
+
+      {/* Top safe-area spacer so header sits below the status bar */}
+      <View style={{ height: insets.top, backgroundColor: colors.bg }} />
+
+      {!shouldHideHeader && <Header />}
+
+      <View style={styles.contentWrapper}>
+        {children}
+      </View>
+
+      {!shouldHideNavigation && (
+        <View
+          style={[
+            styles.navigationOverlay,
+            { paddingBottom: insets.bottom, backgroundColor: colors.bg },
+          ]}
+        >
+          <Navigation />
+        </View>
+      )}
+
+      {/* Bottom safe-area spacer when nav is hidden */}
+      {shouldHideNavigation && (
+        <View style={{ height: insets.bottom, backgroundColor: colors.bg }} />
+      )}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  contentWrapper: {
+    flex: 1,
+    paddingBottom: 70, // space for the absolutely-positioned nav
+  },
+  navigationOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 70,
+    borderTopWidth: 1,
+  },
+});

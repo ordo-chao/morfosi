@@ -14,6 +14,9 @@ import SendEmail from './src/pages/forgotpassword/SendEmail.jsx';
 import EnterOtp from './src/pages/forgotpassword/EnterOtp.jsx';
 import ChangePassword from './src/pages/forgotpassword/ChangePassword.jsx';
 
+// Student
+import Dashboard from './src/pages/students/dashboard/index.jsx';
+
 const Stack = createStackNavigator();
 
 function Navigator() {
@@ -24,7 +27,7 @@ function Navigator() {
       <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} />
       <NavigationContainer theme={isDark ? DarkTheme : DefaultTheme}>
         <Stack.Navigator
-          initialRouteName="Login"
+          initialRouteName="Student-Dashboard"
           screenOptions={{
             headerShown: true,
             headerStyle: { backgroundColor: colors.bg },
@@ -36,6 +39,9 @@ function Navigator() {
           <Stack.Screen name="SendEmail"      component={SendEmail}      options={{ headerShown: false }} />
           <Stack.Screen name="EnterOtp"       component={EnterOtp}       options={{ headerShown: false }} />
           <Stack.Screen name="ChangePassword" component={ChangePassword} options={{ headerShown: false }} />
+
+          {/* Student */}
+          <Stack.Screen name="Student-Dashboard"      component={Dashboard}      options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
