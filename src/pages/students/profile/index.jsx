@@ -167,7 +167,7 @@ export default function Profile({ navigation }) {
   const onAccountPress = (key) => {
     switch (key) {
       case 'password':      return navigation?.navigate('SendEmail');
-      case 'notifications': return navigation?.navigate('Notifications');
+      case 'notifications': return navigation?.navigate('Student-Notifications');
       case 'language':      return navigation?.navigate('Language');
       case 'theme':         return navigation?.navigate('Theme');
       case 'help':          return navigation?.navigate('Help');
