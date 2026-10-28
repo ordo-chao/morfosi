@@ -7,7 +7,7 @@ import Header from './components/header/index.jsx';
 import Navigation from './Components/Navigation/index.jsx';
 import { useTheme } from './theme/themeContext.jsx';
 
-const NO_NAV_ROUTES = ['Student-Materials' , 'Student-Grades' , 'Student-Tasks-Detail'];
+const NO_NAV_ROUTES = ['Student-Materials' , 'Student-Grades' , 'Student-Tasks-Detail' , 'Student-Profile-Edit'];
 const NO_HEADER_ROUTES = ['ChatDetail', 'NewChat'];
 
 export default function Layout({ children }) {

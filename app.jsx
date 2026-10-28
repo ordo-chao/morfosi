@@ -21,6 +21,8 @@ import Materials from './src/pages/students/materials/index.jsx';
 import Grades from './src/pages/students/grades/index.jsx';
 import Tasks from './src/pages/students/tasks/index.jsx';
 import TaskDetail from './src/pages/students/tasks/task-detail/index.jsx';
+import Profile from './src/pages/students/profile/index.jsx';
+import ProfileEdit from './src/pages/students/profile/edit/index.jsx';
 
 const Stack = createStackNavigator();
 
@@ -52,6 +54,8 @@ function Navigator() {
           <Stack.Screen name="Student-Grades"        component={Grades}        options={{ headerShown: false }} />
           <Stack.Screen name="Student-Tasks"         component={Tasks}         options={{ headerShown: false }} />
           <Stack.Screen name="Student-Tasks-Detail"   component={TaskDetail}   options={{ headerShown: false }} />
+          <Stack.Screen name="Student-Profile"       component={Profile}       options={{ headerShown: false }} />
+          <Stack.Screen name="Student-Profile-Edit"  component={ProfileEdit}  options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
