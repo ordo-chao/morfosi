@@ -23,6 +23,7 @@ import DownloadData from './src/pages/download-data/index.jsx';
 import StudentDashboard from './src/pages/students/dashboard/index.jsx';
 import StudentClasses from './src/pages/students/classes/index.jsx'; 
 import StudentMaterials from './src/pages/students/materials/index.jsx';
+import StudentMaterialsDetail from './src/pages/students/materials/detail/index.jsx';
 import StudentGrades from './src/pages/students/grades/index.jsx';
 import StudentTasks from './src/pages/students/tasks/index.jsx';
 import StudentTaskDetail from './src/pages/students/tasks/task-detail/index.jsx';
@@ -63,6 +64,7 @@ function Navigator() {
           <Stack.Screen name="Student-Dashboard"     component={StudentDashboard}     options={{ headerShown: false }} />
           <Stack.Screen name="Student-Classes"       component={StudentClasses}       options={{ headerShown: false }} />
           <Stack.Screen name="Student-Materials"     component={StudentMaterials}     options={{ headerShown: false }} />
+          <Stack.Screen name="Student-Materials-Detail" component={StudentMaterialsDetail} options={{ headerShown: false }} />
           <Stack.Screen name="Student-Grades"        component={StudentGrades}        options={{ headerShown: false }} />
           <Stack.Screen name="Student-Tasks"         component={StudentTasks}         options={{ headerShown: false }} />
           <Stack.Screen name="Student-Tasks-Detail"  component={StudentTaskDetail}    options={{ headerShown: false }} />

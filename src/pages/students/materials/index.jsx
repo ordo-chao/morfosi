@@ -204,7 +204,7 @@ export default function Materials({ route, navigation }) {
               <MaterialRow
                 key={item.id}
                 item={item}
-                onOpen={(m) => navigation?.navigate('MaterialDetail', { material: m })}
+                onOpen={(m) => navigation?.navigate('Student-Materials-Detail', { material: m })}
               />
             ))}
           </View>
