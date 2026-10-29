@@ -4,14 +4,16 @@ import { useNavigationState } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Header from './components/header/index.jsx';
-import Navigation from './Components/Navigation/index.jsx';
+import Navigation from './components/navigation/index.jsx';
 import { useTheme } from './theme/themeContext.jsx';
 
 const NO_NAV_ROUTES = ['Student-Materials' , 'Student-Grades' , 
                        'Student-Tasks-Detail' , 'Student-Profile-Edit',
                         'Student-Notifications' , 'Language' , 'Theme',
                         'Help & Support' , 'Privacy Policy' , 'About' , 
-                        'Download my data'
+                        'Student-Materials-Detail' , 'Student-Attendance',
+                        'Download my data' , 'Student-Classes-Detail',
+                        'Student-Full-Report'
                       ];
 const NO_HEADER_ROUTES = ['ChatDetail', 'NewChat'];
 

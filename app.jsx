@@ -19,16 +19,21 @@ import Help from './src/pages/help/index.jsx';
 import Privacy from './src/pages/privacy/index.jsx';
 import About from './src/pages/about/index.jsx';
 import DownloadData from './src/pages/download-data/index.jsx';
+
 // Student
 import StudentDashboard from './src/pages/students/dashboard/index.jsx';
 import StudentClasses from './src/pages/students/classes/index.jsx'; 
+import StudentClassDetail from './src/pages/students/classes/class-detail/index.jsx';
 import StudentMaterials from './src/pages/students/materials/index.jsx';
+import StudentMaterialsDetail from './src/pages/students/materials/detail/index.jsx';
 import StudentGrades from './src/pages/students/grades/index.jsx';
+import StudentAttendance from './src/pages/students/attendance/index.jsx';
 import StudentTasks from './src/pages/students/tasks/index.jsx';
 import StudentTaskDetail from './src/pages/students/tasks/task-detail/index.jsx';
 import StudentProfile from './src/pages/students/profile/index.jsx';
 import StudentProfileEdit from './src/pages/students/profile/edit/index.jsx';
 import StudentNotifications from './src/pages/students/notifications/index.jsx';
+import StudentFullReport  from './src/pages/students/full-report/index.jsx';
 
 const Stack = createStackNavigator();
 
@@ -62,13 +67,17 @@ function Navigator() {
           {/* Student */}
           <Stack.Screen name="Student-Dashboard"     component={StudentDashboard}     options={{ headerShown: false }} />
           <Stack.Screen name="Student-Classes"       component={StudentClasses}       options={{ headerShown: false }} />
+          <Stack.Screen name="Student-Classes-Detail" component={StudentClassDetail} options={{ headerShown: false }} />
           <Stack.Screen name="Student-Materials"     component={StudentMaterials}     options={{ headerShown: false }} />
+          <Stack.Screen name="Student-Materials-Detail" component={StudentMaterialsDetail} options={{ headerShown: false }} />
           <Stack.Screen name="Student-Grades"        component={StudentGrades}        options={{ headerShown: false }} />
+          <Stack.Screen name="Student-Attendance"    component={StudentAttendance}    options={{ headerShown: false }} />
           <Stack.Screen name="Student-Tasks"         component={StudentTasks}         options={{ headerShown: false }} />
           <Stack.Screen name="Student-Tasks-Detail"  component={StudentTaskDetail}    options={{ headerShown: false }} />
           <Stack.Screen name="Student-Profile"       component={StudentProfile}       options={{ headerShown: false }} />
           <Stack.Screen name="Student-Profile-Edit"  component={StudentProfileEdit}   options={{ headerShown: false }} />
           <Stack.Screen name="Student-Notifications" component={StudentNotifications} options={{ headerShown: false }} />
+          <Stack.Screen name="Student-Full-Report"   component={StudentFullReport}    options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
