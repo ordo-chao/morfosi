@@ -296,7 +296,7 @@ export default function Profile({ navigation }) {
 
             <TouchableOpacity
               style={styles.linkButton}
-              onPress={() => navigation?.navigate('Student-Grades')}
+              onPress={() => navigation?.navigate('Student-Full-Report')}
             >
               <Text style={styles.linkButtonText}>VIEW FULL REPORT →</Text>
             </TouchableOpacity>

@@ -19,6 +19,7 @@ import Help from './src/pages/help/index.jsx';
 import Privacy from './src/pages/privacy/index.jsx';
 import About from './src/pages/about/index.jsx';
 import DownloadData from './src/pages/download-data/index.jsx';
+
 // Student
 import StudentDashboard from './src/pages/students/dashboard/index.jsx';
 import StudentClasses from './src/pages/students/classes/index.jsx'; 
@@ -32,6 +33,7 @@ import StudentTaskDetail from './src/pages/students/tasks/task-detail/index.jsx'
 import StudentProfile from './src/pages/students/profile/index.jsx';
 import StudentProfileEdit from './src/pages/students/profile/edit/index.jsx';
 import StudentNotifications from './src/pages/students/notifications/index.jsx';
+import StudentFullReport  from './src/pages/students/full-report/index.jsx';
 
 const Stack = createStackNavigator();
 
@@ -75,6 +77,7 @@ function Navigator() {
           <Stack.Screen name="Student-Profile"       component={StudentProfile}       options={{ headerShown: false }} />
           <Stack.Screen name="Student-Profile-Edit"  component={StudentProfileEdit}   options={{ headerShown: false }} />
           <Stack.Screen name="Student-Notifications" component={StudentNotifications} options={{ headerShown: false }} />
+          <Stack.Screen name="Student-Full-Report"   component={StudentFullReport}    options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
