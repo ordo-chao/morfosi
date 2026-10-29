@@ -25,6 +25,7 @@ import StudentClasses from './src/pages/students/classes/index.jsx';
 import StudentMaterials from './src/pages/students/materials/index.jsx';
 import StudentMaterialsDetail from './src/pages/students/materials/detail/index.jsx';
 import StudentGrades from './src/pages/students/grades/index.jsx';
+import StudentAttendance from './src/pages/students/attendance/index.jsx';
 import StudentTasks from './src/pages/students/tasks/index.jsx';
 import StudentTaskDetail from './src/pages/students/tasks/task-detail/index.jsx';
 import StudentProfile from './src/pages/students/profile/index.jsx';
@@ -66,6 +67,7 @@ function Navigator() {
           <Stack.Screen name="Student-Materials"     component={StudentMaterials}     options={{ headerShown: false }} />
           <Stack.Screen name="Student-Materials-Detail" component={StudentMaterialsDetail} options={{ headerShown: false }} />
           <Stack.Screen name="Student-Grades"        component={StudentGrades}        options={{ headerShown: false }} />
+          <Stack.Screen name="Student-Attendance"    component={StudentAttendance}    options={{ headerShown: false }} />
           <Stack.Screen name="Student-Tasks"         component={StudentTasks}         options={{ headerShown: false }} />
           <Stack.Screen name="Student-Tasks-Detail"  component={StudentTaskDetail}    options={{ headerShown: false }} />
           <Stack.Screen name="Student-Profile"       component={StudentProfile}       options={{ headerShown: false }} />

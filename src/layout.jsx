@@ -10,7 +10,8 @@ import { useTheme } from './theme/themeContext.jsx';
 const NO_NAV_ROUTES = ['Student-Materials' , 'Student-Grades' , 
                        'Student-Tasks-Detail' , 'Student-Profile-Edit',
                         'Student-Notifications' , 'Language' , 'Theme',
-                        'Help & Support' , 'Privacy Policy' , 'About' , 'Student-Materials-Detail' , 
+                        'Help & Support' , 'Privacy Policy' , 'About' , 
+                        'Student-Materials-Detail' , 'Student-Attendance',
                         'Download my data'
                       ];
 const NO_HEADER_ROUTES = ['ChatDetail', 'NewChat'];

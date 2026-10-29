@@ -295,4 +295,7 @@ export const makeStyles = (c) => StyleSheet.create({
     fontWeight: 'bold',
     color: c.buttonFg,
   },
+  statTouchable: {
+  flex: 1,
+},
 });

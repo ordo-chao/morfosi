@@ -18,33 +18,42 @@ const PROFILE = {
   status: 'Active',
   term: 'Term 2',
   year: '2025/2026',
-  avatar: null, // null → placeholder initials; URI when set
+  avatar: null,
   stats: {
     attendance: '96%',
     average: 'B+',
     subjects: 12,
     rank: 2,
   },
+  // Each detail now has an optional `onPressKey` that maps to a route.
   details: [
-    { icon: 'mail-outline',            label: 'amina.wanjiku@school.ac.ke' },
-    { icon: 'call-outline',            label: '+254 712 345 678' },
-    { icon: 'calendar-outline',        label: '12 March 2009' },
-    { icon: 'location-outline',        label: 'Nairobi, Kenya' },
-    { icon: 'school-outline',          label: 'Form 3 A · Mr. Otieno (Class Teacher)' },
-    { icon: 'bed-outline',             label: 'Dorm: Kilimanjaro · Room 14 · Bed 2' },
+    { icon: 'mail-outline',     label: 'amina.wanjiku@school.ac.ke' },
+    { icon: 'call-outline',     label: '+254 712 345 678' },
+    { icon: 'calendar-outline', label: '12 March 2009' },
+    { icon: 'location-outline', label: 'Nairobi, Kenya' },
+    {
+      icon: 'school-outline',
+      label: 'Form 3 A · Mr. Otieno (Class Teacher)',
+      route: 'Student-ClassDetail',
+    },
+    {
+      icon: 'bed-outline',
+      label: 'Dorm: Kilimanjaro · Room 14 · Bed 2',
+      route: 'Student-DormDetail',
+    },
   ],
   guardians: [
     { name: 'James Wanjiku', relation: 'Father', phone: '+254 722 111 222' },
     { name: 'Grace Wanjiku', relation: 'Mother', phone: '+254 733 444 555' },
   ],
   account: [
-    { key: 'password',      icon: 'lock-closed-outline',      label: 'Change password' },
-    { key: 'notifications', icon: 'notifications-outline',    label: 'Notifications' },
-    { key: 'language',      icon: 'globe-outline',            label: 'Language', value: 'English' },
-    { key: 'theme',         icon: 'contrast-outline',         label: 'Theme',    value: 'System'  },
-    { key: 'data',          icon: 'download-outline',         label: 'Download my data' },
-    { key: 'help',          icon: 'help-circle-outline',      label: 'Help & Support' },
-    { key: 'privacy',       icon: 'document-text-outline',    label: 'Privacy policy' },
+    { key: 'password',      icon: 'lock-closed-outline',       label: 'Change password' },
+    { key: 'notifications', icon: 'notifications-outline',     label: 'Notifications' },
+    { key: 'language',      icon: 'globe-outline',             label: 'Language', value: 'English' },
+    { key: 'theme',         icon: 'contrast-outline',          label: 'Theme',    value: 'System'  },
+    { key: 'data',          icon: 'download-outline',          label: 'Download my data' },
+    { key: 'help',          icon: 'help-circle-outline',       label: 'Help & Support' },
+    { key: 'privacy',       icon: 'document-text-outline',     label: 'Privacy policy' },
     { key: 'about',         icon: 'information-circle-outline', label: 'About',  value: 'v1.4.2' },
   ],
 };
@@ -80,9 +89,14 @@ function Avatar({ uri, name, colors }) {
   );
 }
 
-function StatTile({ value, label, accent, colors }) {
+/**
+ * StatTile now supports an onPress.
+ * When onPress is provided the tile is wrapped in a TouchableOpacity;
+ * otherwise it renders as a plain View (unchanged behaviour).
+ */
+function StatTile({ value, label, accent, onPress, colors }) {
   const styles = makeStyles(colors);
-  return (
+  const inner = (
     <View style={[styles.statTile, accent && styles.statTileAccent]}>
       <Text style={[styles.statValue, accent && styles.statValueAccent]}>
         {value}
@@ -90,15 +104,48 @@ function StatTile({ value, label, accent, colors }) {
       <Text style={styles.statLabel}>{label}</Text>
     </View>
   );
+
+  if (!onPress) return inner;
+  return (
+    <TouchableOpacity
+      style={{ flex: 1 }}
+      onPress={onPress}
+      activeOpacity={0.7}
+      accessibilityRole="button"
+      accessibilityLabel={`${label}: ${value}`}
+    >
+      {inner}
+    </TouchableOpacity>
+  );
 }
 
-function DetailRow({ icon, label, colors }) {
+/**
+ * DetailRow now supports an optional route + chevron.
+ * Rows without a route stay non-interactive, so emails and phone numbers
+ * don't accidentally become navigation targets.
+ */
+function DetailRow({ icon, label, onPress, colors }) {
   const styles = makeStyles(colors);
-  return (
+  const body = (
     <View style={styles.detailRow}>
       <Ionicons name={icon} size={14} color={colors.fgMuted} />
       <Text style={styles.detailText}>{label}</Text>
+      {onPress ? (
+        <Ionicons name="chevron-forward" size={14} color={colors.fgMuted} />
+      ) : null}
     </View>
+  );
+
+  if (!onPress) return body;
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      activeOpacity={0.7}
+      accessibilityRole="button"
+      accessibilityLabel={label}
+    >
+      {body}
+    </TouchableOpacity>
   );
 }
 
@@ -152,16 +199,23 @@ export default function Profile({ navigation }) {
   const [avatarUri, setAvatarUri] = useState(profile.avatar);
 
   const onChangePhoto = () => {
-    // Wire to ImagePicker when ready.
-    // For now, cycle through a placeholder to show the state works.
     Alert.alert('Change photo', 'Open image picker');
-    // setAvatarUri('https://example.com/avatar.jpg');
   };
 
   const onEdit = () => navigation?.navigate('Student-Profile-Edit');
 
   const onRequestCorrection = () => {
     navigation?.navigate('ProfileCorrection');
+  };
+
+  const onAttendance = () => {
+    navigation?.navigate('Student-Attendance');
+  };
+
+  const onDetailPress = (detail) => {
+    if (!detail?.route) return;
+    // Pass the raw label so each detail screen can render it if needed.
+    navigation?.navigate(detail.route, { detail });
   };
 
   const onAccountPress = (key) => {
@@ -227,10 +281,17 @@ export default function Profile({ navigation }) {
             <Text style={styles.sectionTitle}>ACADEMIC SNAPSHOT</Text>
 
             <View style={styles.statsRow}>
-              <StatTile value={profile.stats.attendance} label="ATT" accent colors={colors} />
-              <StatTile value={profile.stats.average}    label="AVG" colors={colors} />
-              <StatTile value={String(profile.stats.subjects)} label="SUBJ" colors={colors} />
-              <StatTile value={`#${profile.stats.rank}`} label="RANK" accent colors={colors} />
+              {/* ATT tile now navigates to attendance */}
+              <StatTile
+                value={profile.stats.attendance}
+                label="ATT"
+                accent
+                onPress={onAttendance}
+                colors={colors}
+              />
+              <StatTile value={profile.stats.average}           label="AVG"  colors={colors} />
+              <StatTile value={String(profile.stats.subjects)}  label="SUBJ" colors={colors} />
+              <StatTile value={`#${profile.stats.rank}`}        label="RANK" accent colors={colors} />
             </View>
 
             <TouchableOpacity
@@ -247,7 +308,13 @@ export default function Profile({ navigation }) {
 
             <View style={styles.detailsBlock}>
               {profile.details.map((d, i) => (
-                <DetailRow key={i} icon={d.icon} label={d.label} colors={colors} />
+                <DetailRow
+                  key={i}
+                  icon={d.icon}
+                  label={d.label}
+                  onPress={d.route ? () => onDetailPress(d) : undefined}
+                  colors={colors}
+                />
               ))}
             </View>
 
