@@ -12,7 +12,7 @@ const NO_NAV_ROUTES = ['Student-Materials' , 'Student-Grades' ,
                         'Student-Notifications' , 'Language' , 'Theme',
                         'Help & Support' , 'Privacy Policy' , 'About' , 
                         'Student-Materials-Detail' , 'Student-Attendance',
-                        'Download my data'
+                        'Download my data' , 'Student-Classes-Detail'
                       ];
 const NO_HEADER_ROUTES = ['ChatDetail', 'NewChat'];
 

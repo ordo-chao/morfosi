@@ -22,6 +22,7 @@ import DownloadData from './src/pages/download-data/index.jsx';
 // Student
 import StudentDashboard from './src/pages/students/dashboard/index.jsx';
 import StudentClasses from './src/pages/students/classes/index.jsx'; 
+import StudentClassDetail from './src/pages/students/classes/class-detail/index.jsx';
 import StudentMaterials from './src/pages/students/materials/index.jsx';
 import StudentMaterialsDetail from './src/pages/students/materials/detail/index.jsx';
 import StudentGrades from './src/pages/students/grades/index.jsx';
@@ -64,6 +65,7 @@ function Navigator() {
           {/* Student */}
           <Stack.Screen name="Student-Dashboard"     component={StudentDashboard}     options={{ headerShown: false }} />
           <Stack.Screen name="Student-Classes"       component={StudentClasses}       options={{ headerShown: false }} />
+          <Stack.Screen name="Student-Classes-Detail" component={StudentClassDetail} options={{ headerShown: false }} />
           <Stack.Screen name="Student-Materials"     component={StudentMaterials}     options={{ headerShown: false }} />
           <Stack.Screen name="Student-Materials-Detail" component={StudentMaterialsDetail} options={{ headerShown: false }} />
           <Stack.Screen name="Student-Grades"        component={StudentGrades}        options={{ headerShown: false }} />

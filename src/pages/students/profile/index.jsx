@@ -34,7 +34,7 @@ const PROFILE = {
     {
       icon: 'school-outline',
       label: 'Form 3 A · Mr. Otieno (Class Teacher)',
-      route: 'Student-ClassDetail',
+      route: 'Student-Classes-Detail',
     },
     {
       icon: 'bed-outline',
