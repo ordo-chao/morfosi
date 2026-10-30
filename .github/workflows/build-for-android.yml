@@ -22,19 +22,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      # ---------- Free disk so the NDK build has room ----------
-      - name: Free Disk Space
-        run: |
-          echo "Before:"
-          df -h /
-          sudo rm -rf /usr/share/dotnet /usr/local/lib/android/sdk/ndk \
-                      /opt/ghc /usr/local/share/boost /usr/share/swift \
-                      /opt/hostedtoolcache/CodeQL 2>/dev/null || true
-          sudo apt-get clean
-          docker image prune -af || true
-          echo "After:"
-          df -h /
-
       - name: Setup Node.js Runtime
         uses: actions/setup-node@v4
         with:
@@ -51,6 +38,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           cache-read-only: false
+          gradle-home-cache-cleanup: true
 
       - name: Install Project Dependencies
         run: npm ci --legacy-peer-deps
@@ -65,16 +53,13 @@ jobs:
       - name: Compile Production Release APK
         working-directory: android
         env:
-          JAVA_OPTS: "-Xmx1536m"
-          GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx1536m -Dorg.gradle.workers.max=1 -Dorg.gradle.parallel=false"
+          JAVA_OPTS: "-Xmx4g"
+          GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -Dorg.gradle.workers.max=4 -Dorg.gradle.parallel=true"
         run: |
           chmod +x ./gradlew
-          ./gradlew clean --no-daemon
           ./gradlew assembleRelease \
             -PreactNativeArchitectures=armeabi-v7a,arm64-v8a \
             --no-daemon \
-            --no-parallel \
-            --max-workers=1 \
             --stacktrace
 
       - name: Verify APK was produced
@@ -106,7 +91,7 @@ jobs:
             - **Branch:** `${{ github.ref_name }}`
             - **Commit SHA:** `${{ github.sha }}`
             - **Architectures:** `armeabi-v7a`, `arm64-v8a`
-            - **Build flags:** memory-capped, single-worker, R8+shrinkResources
+            - **Build flags:** 4 GB heap, 4 workers, parallel, R8+shrinkResources
 
             ---
             *Download `app-release.apk` below to test the newest changes.*
@@ -117,7 +102,6 @@ jobs:
           prerelease: ${{ github.ref_name == 'staging' }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      # ---------- Discord notification ----------
       - name: Send Discord Notification
         if: success()
         uses: Ilshidur/action-discord@master
