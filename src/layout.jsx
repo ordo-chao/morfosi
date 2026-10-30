@@ -1,6 +1,16 @@
+// Layout.jsx
 import React, { useState, useRef } from 'react';
-import { View, StatusBar, StyleSheet, Animated, Dimensions } from 'react-native';
-import { useNavigationState } from '@react-navigation/native';
+import {
+  View,
+  StatusBar,
+  StyleSheet,
+  Animated,
+  Dimensions,
+} from 'react-native';
+import {
+  useNavigation,
+  useNavigationState,
+} from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Header from './components/header/index.jsx';
@@ -20,10 +30,12 @@ const NO_HEADER_ROUTES = ['ChatDetail', 'NewChat'];
 const { width: SCREEN_W } = Dimensions.get('window');
 const DRAWER_W = Math.min(SCREEN_W * 0.78, 320);
 
-/* Easing that feels "iOS-like": fast start, soft settle */
-const EASE = { duration: 280 };
+/* Single source of truth for the drawer animation timing */
+const DRAWER_MS = 280;
+const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
 
-export default function Layout({ children, navigation }) {
+export default function Layout({ children }) {
+  const navigation = useNavigation();              // ← the actual fix
   const { colors, isDark } = useTheme();
   const insets = useSafeAreaInsets();
 
@@ -36,18 +48,18 @@ export default function Layout({ children, navigation }) {
     setMenuOpen(true);
     Animated.timing(progress, {
       toValue: 1,
-      easing: (t) => 1 - Math.pow(1 - t, 3), // ease-out-cubic
+      duration: DRAWER_MS,
+      easing: easeOutCubic,
       useNativeDriver: true,
-      ...EASE,
     }).start();
   };
 
   const closeDrawer = () => {
     Animated.timing(progress, {
       toValue: 0,
-      easing: (t) => 1 - Math.pow(1 - t, 3),
+      duration: DRAWER_MS,
+      easing: easeOutCubic,
       useNativeDriver: true,
-      ...EASE,
     }).start(({ finished }) => {
       if (finished) setMenuOpen(false);
     });
@@ -55,13 +67,11 @@ export default function Layout({ children, navigation }) {
 
   const toggleDrawer = (nextOpen) => (nextOpen ? openDrawer() : closeDrawer());
 
-  /* Main column: shifts RIGHT so the left drawer has room. No width animation. */
   const mainTranslateX = progress.interpolate({
     inputRange: [0, 1],
     outputRange: [0, DRAWER_W],
   });
 
-  /* Drawer: slides in from off-screen left */
   const drawerTranslateX = progress.interpolate({
     inputRange: [0, 1],
     outputRange: [-DRAWER_W, 0],
@@ -84,12 +94,30 @@ export default function Layout({ children, navigation }) {
   const shouldHideNavigation = NO_NAV_ROUTES.includes(currentRouteName);
   const shouldHideHeader = NO_HEADER_ROUTES.includes(currentRouteName);
 
+  /* Close the drawer first, then push — but only if we're not already there. */
   const handleNavigate = (routeName) => {
+    const go = () => {
+      if (routeName !== currentRouteName) {
+        navigation.navigate(routeName);
+      }
+    };
+
+    if (menuOpen) {
+      closeDrawer();
+      // Fire just before slide-out ends so it feels continuous
+      setTimeout(go, DRAWER_MS - 40);
+    } else {
+      go();
+    }
+  };
+
+  const handleSignOut = () => {
     closeDrawer();
-    // wait for the slide-out so the push doesn't feel stacked
     setTimeout(() => {
-      navigation?.navigate(routeName);
-    }, 220);
+      // Replace with your real auth sign-out:
+      // await signOut();
+      // navigation.reset({ index: 0, routes: [{ name: 'Login' }] });
+    }, DRAWER_MS - 40);
   };
 
   return (
@@ -172,10 +200,7 @@ export default function Layout({ children, navigation }) {
             }}
             onNavigate={handleNavigate}
             onClose={closeDrawer}
-            onPressSignOut={() => {
-              closeDrawer();
-              // navigation?.reset({ index: 0, routes: [{ name: 'Login' }] });
-            }}
+            onPressSignOut={handleSignOut}
           />
         </Animated.View>
       )}
