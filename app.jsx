@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
+import { useDynamicIcon } from './src/hooks/use-dynamic-icon.js';
 import { LoginContext } from './loginContext.jsx';
 import ErrorBoundary from './errorBoundary.jsx';
 import { ThemeProvider, useTheme } from './src/theme/themeContext.jsx';
@@ -85,6 +85,7 @@ function Navigator() {
 }
 
 export default function AppWrapper() {
+  useDynamicIcon(); 
   const [userName, setUserName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
