@@ -8,6 +8,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function Header({
+  menuOpen = false,
   onMenuPress,
   onNotificationsPress,
   notificationCount = 1,
@@ -18,13 +19,10 @@ export default function Header({
   const { colors } = useTheme();
   const styles = makeStyles(colors);
 
-  const [menuOpen, setMenuOpen] = useState(false);
-
   const showBadge = notificationCount > 0;
   const badgeText = notificationCount > 99 ? '99+' : String(notificationCount);
 
   const handleMenuPress = () => {
-    setMenuOpen((prev) => !prev);
     onMenuPress?.(!menuOpen); // let the parent react to the new state
   };
 
