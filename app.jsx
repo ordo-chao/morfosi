@@ -34,6 +34,7 @@ import StudentProfile from './src/pages/students/profile/index.jsx';
 import StudentProfileEdit from './src/pages/students/profile/edit/index.jsx';
 import StudentNotifications from './src/pages/students/notifications/index.jsx';
 import StudentFullReport  from './src/pages/students/full-report/index.jsx';
+import StudentClubs from './src/pages/students/clubs/index.jsx';
 
 const Stack = createStackNavigator();
 
@@ -78,6 +79,7 @@ function Navigator() {
           <Stack.Screen name="Student-Profile-Edit"  component={StudentProfileEdit}   options={{ headerShown: false }} />
           <Stack.Screen name="Student-Notifications" component={StudentNotifications} options={{ headerShown: false }} />
           <Stack.Screen name="Student-Full-Report"   component={StudentFullReport}    options={{ headerShown: false }} />
+          <Stack.Screen name="Student-Clubs"         component={StudentClubs}          options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

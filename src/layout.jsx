@@ -23,26 +23,33 @@ const NO_NAV_ROUTES = [
   'Student-Profile-Edit', 'Student-Notifications', 'Language', 'Theme',
   'Help & Support', 'Privacy Policy', 'About', 'Student-Materials-Detail',
   'Student-Attendance', 'Download my data', 'Student-Classes-Detail',
-  'Student-Full-Report',
+  'Student-Full-Report', 'Student-Clubs'
 ];
 const NO_HEADER_ROUTES = ['ChatDetail', 'NewChat'];
+
+/* Menu tab key → registered screen name */
+const MENU_TAB_ROUTES = {
+  academic:   'Student-Dashboard',
+  clubs:      'Student-Clubs',
+  revision:   'Student-Revision',
+  activities: 'Student-Activities',
+};
 
 const { width: SCREEN_W } = Dimensions.get('window');
 const DRAWER_W = Math.min(SCREEN_W * 0.78, 320);
 
-/* Single source of truth for the drawer animation timing */
 const DRAWER_MS = 280;
 const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
 
 export default function Layout({ children }) {
-  const navigation = useNavigation();              // ← the actual fix
+  const navigation = useNavigation();
   const { colors, isDark } = useTheme();
   const insets = useSafeAreaInsets();
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeMenuTab, setActiveMenuTab] = useState('academic');
 
-  const progress = useRef(new Animated.Value(0)).current; // 0 closed → 1 open
+  const progress = useRef(new Animated.Value(0)).current;
 
   const openDrawer = () => {
     setMenuOpen(true);
@@ -94,7 +101,6 @@ export default function Layout({ children }) {
   const shouldHideNavigation = NO_NAV_ROUTES.includes(currentRouteName);
   const shouldHideHeader = NO_HEADER_ROUTES.includes(currentRouteName);
 
-  /* Close the drawer first, then push — but only if we're not already there. */
   const handleNavigate = (routeName) => {
     const go = () => {
       if (routeName !== currentRouteName) {
@@ -104,7 +110,6 @@ export default function Layout({ children }) {
 
     if (menuOpen) {
       closeDrawer();
-      // Fire just before slide-out ends so it feels continuous
       setTimeout(go, DRAWER_MS - 40);
     } else {
       go();
@@ -128,7 +133,6 @@ export default function Layout({ children }) {
         translucent={false}
       />
 
-      {/* ===== MAIN COLUMN (slides right) ===== */}
       <Animated.View
         style={[styles.mainColumn, { transform: [{ translateX: mainTranslateX }] }]}
       >
@@ -157,7 +161,6 @@ export default function Layout({ children }) {
           <View style={{ height: insets.bottom, backgroundColor: colors.bg }} />
         )}
 
-        {/* Scrim over the shifted column */}
         <Animated.View
           pointerEvents={menuOpen ? 'auto' : 'none'}
           style={[
@@ -169,7 +172,6 @@ export default function Layout({ children }) {
         />
       </Animated.View>
 
-      {/* ===== DRAWER (left) ===== */}
       {menuOpen && (
         <Animated.View
           style={[
@@ -196,7 +198,12 @@ export default function Layout({ children }) {
             }}
             onSelectTab={(tabKey) => {
               setActiveMenuTab(tabKey);
-              closeDrawer();
+              const route = MENU_TAB_ROUTES[tabKey];
+              if (route) {
+                handleNavigate(route);
+              } else {
+                closeDrawer();
+              }
             }}
             onNavigate={handleNavigate}
             onClose={closeDrawer}
