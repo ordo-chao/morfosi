@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useTheme } from '../../../../../theme/themeContext.jsx';
-import { makeStyles } from '../../css.js';
+import { makeStyles } from './css.js';
 
 const TABS = [
   { key: 'my',     label: 'MY CLUBS' },

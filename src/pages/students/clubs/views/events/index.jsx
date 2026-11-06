@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { useTheme } from '../../../../../theme/themeContext.jsx';
-import { makeStyles } from '../../css.js';
+import { makeStyles } from './css.js';
 import EventRow from '../../components/event-row/index.jsx';
 
 export default function EventsView({ events, onOpen }) {

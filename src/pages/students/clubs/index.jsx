@@ -34,22 +34,28 @@ const CLUBS = [
     joinStatus: 'approval', requestedAt: '2 days ago',
   },
   {
-    id: 'c4', emoji: '🎤', name: 'Music Club', category: 'arts',
+  id: 'c4', emoji: '🎤', name: 'Maths Club', category: 'academic',
+  patron: 'Ms. Achieng', meet: 'Wed · 3:30 PM · Lab 3',
+  members: 12, memberStatus: 'none', role: null,   // ← changed from 'pending'
+  joinStatus: 'approval',
+},
+  {
+    id: 'c5', emoji: '🎤', name: 'Music Club', category: 'arts',
     patron: 'Mr. Mwangi', meet: 'Fri · 4:00 PM · Music Room',
     members: 24, memberStatus: 'none', joinStatus: 'open',
   },
   {
-    id: 'c5', emoji: '⚽', name: 'Football Club', category: 'sports',
+    id: 'c6', emoji: '⚽', name: 'Football Club', category: 'sports',
     patron: 'Coach Wekesa', meet: 'Tue/Thu · 4:00 PM · Field',
     members: 30, memberStatus: 'member', role: 'Member', joinStatus: 'open',
   },
   {
-    id: 'c6', emoji: '🎬', name: 'Drama Club', category: 'arts',
+    id: 'c7', emoji: '🎬', name: 'Drama Club', category: 'arts',
     patron: 'Mrs. Wairimu', meet: 'Mon · 4:00 PM · Hall',
     members: 40, capacity: 40, memberStatus: 'none', joinStatus: 'full',
   },
   {
-    id: 'c7', emoji: '🌱', name: 'Environmental Club', category: 'service',
+    id: 'c8', emoji: '🌱', name: 'Environmental Club', category: 'service',
     patron: 'Mr. Odhiambo', meet: 'Sat · 9:00 AM · Gate 2',
     members: 18, memberStatus: 'none', joinStatus: 'open',
   },

@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useTheme } from '../../../../../theme/themeContext.jsx';
-import { makeStyles } from '../../css.js';
+import { makeStyles } from './css.js';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function ClubCard({ club, onOpen, onJoin, onCancel }) {

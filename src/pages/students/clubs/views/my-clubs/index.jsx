@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useTheme } from '../../../../../theme/themeContext.jsx';
-import { makeStyles } from '../../css.js';
+import { makeStyles } from './css.js';
 import ClubCard from '../../components/club-card/index.jsx';
 
 export default function MyClubsView({ clubs, onOpen, onCancel, onBrowse }) {
