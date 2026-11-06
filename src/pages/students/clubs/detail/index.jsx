@@ -48,6 +48,16 @@ const BASE_CLUB = {
     { name: 'Amina Wanjiku', role: 'Secretary', form: 'Form 3A', isYou: true },
     { name: 'Grace Njeri',   role: 'Treasurer', form: 'Form 3A' },
   ],
+  memberList: [
+    { id: 'm1', name: 'James Otieno',   role: 'Chair',     form: 'Form 4B', phone: '+254 722 111 222', email: 'james.o@school.ac.ke' },
+    { id: 'm2', name: 'Amina Wanjiku',  role: 'Secretary', form: 'Form 3A', phone: '+254 712 345 678', email: 'amina.w@school.ac.ke', isYou: true },
+    { id: 'm3', name: 'Grace Njeri',    role: 'Treasurer', form: 'Form 3A', phone: '+254 733 444 555', email: 'grace.n@school.ac.ke' },
+    { id: 'm4', name: 'Brian Kimani',   role: 'Member',    form: 'Form 3B', phone: '+254 744 555 666', email: 'brian.k@school.ac.ke' },
+    { id: 'm5', name: 'Faith Mutua',    role: 'Member',    form: 'Form 4A', phone: '+254 755 666 777', email: 'faith.m@school.ac.ke' },
+    { id: 'm6', name: 'Daniel Mwangi',  role: 'Member',    form: 'Form 2A', phone: '+254 766 777 888', email: 'daniel.m@school.ac.ke' },
+    { id: 'm7', name: 'Cynthia Akinyi', role: 'Member',    form: 'Form 3A', phone: '+254 777 888 999', email: 'cynthia.a@school.ac.ke' },
+    { id: 'm8', name: 'George Wekesa',  role: 'Member',    form: 'Form 2B', phone: '+254 788 999 000', email: 'george.w@school.ac.ke' },
+  ],
   announcements: [
     { id: 'a1', text: 'Inter-school team announced',  time: '2d ago' },
     { id: 'a2', text: 'Debate motions for this week', time: '5d ago' },
@@ -231,6 +241,14 @@ export default function ClubDetail({ route, navigation }) {
     Alert.alert('Announcement', announcement.text);
   };
 
+  const handleViewMembers = () => {
+    navigation?.navigate('Member List', {
+      title: `${club.name} Members`,
+      members: club.memberList ?? [],
+      isAdmin: false,
+    });
+  };
+
   return (
     <Layout>
       <View style={styles.page}>
@@ -264,7 +282,6 @@ export default function ClubDetail({ route, navigation }) {
               {club.members} members
             </Text>
 
-            {/* Member / pending pill */}
             {isMember || isPending ? (
               <StatusPill
                 status={memberStatus}
@@ -362,47 +379,51 @@ export default function ClubDetail({ route, navigation }) {
             </>
           )}
 
-          {/* ===== MEMBERS (member only) ===== */}
-          {isMember && (
-            <>
-              <Text style={styles.sectionTitle}>MEMBERS ({club.members})</Text>
-              <TouchableOpacity
-                style={styles.linkButton}
-                onPress={() =>
-                  navigation?.navigate('Student-ClubMembers', { clubId: club.id })
-                }
-                activeOpacity={0.7}
-              >
-                <Text style={styles.linkButtonText}>VIEW ALL MEMBERS →</Text>
-              </TouchableOpacity>
-            </>
-          )}
 
-          {/* ===== ANNOUNCEMENTS (member only) ===== */}
-          {isMember && club.announcements.length > 0 && (
-            <>
-              <Text style={styles.sectionTitle}>RECENT ANNOUNCEMENTS</Text>
-              <View style={styles.announcementsBlock}>
-                {club.announcements.map((a) => (
-                  <AnnouncementRow
-                    key={a.id}
-                    announcement={a}
-                    onPress={() => handleOpenAnnouncement(a)}
-                    colors={colors}
-                  />
-                ))}
-              </View>
-              <TouchableOpacity
-                style={styles.linkButton}
-                onPress={() =>
-                  navigation?.navigate('Student-ClubAnnouncements', { clubId: club.id })
-                }
-                activeOpacity={0.7}
-              >
-                <Text style={styles.linkButtonText}>SEE ALL ANNOUNCEMENTS →</Text>
-              </TouchableOpacity>
-            </>
-          )}
+{/* ===== MEMBERS (member only) ===== */}
+{isMember && (
+  <>
+    <Text style={styles.sectionTitle}>MEMBERS ({club.members})</Text>
+
+    {/* Preview: first 3 members */}
+    <View style={styles.membersBlock}>
+      {(club.memberList ?? []).slice(0, 3).map((m) => (
+        <TouchableOpacity
+          key={m.id}
+          style={styles.memberRow}
+          onPress={handleViewMembers}
+          activeOpacity={0.7}
+        >
+          <View style={styles.memberAvatar}>
+            <Text style={styles.memberAvatarText}>
+              {m.name.split(' ').filter(Boolean).slice(0, 2).map((w) => w[0].toUpperCase()).join('')}
+            </Text>
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.memberName} numberOfLines={1}>
+              {m.name}
+              {m.isYou ? <Text style={styles.youTag}> (You)</Text> : null}
+            </Text>
+            <Text style={styles.memberMeta} numberOfLines={1}>
+              {[m.role, m.form].filter(Boolean).join(' · ')}
+            </Text>
+          </View>
+          <Ionicons name="chevron-forward" size={16} color={colors.fgMuted} />
+        </TouchableOpacity>
+      ))}
+    </View>
+
+    <TouchableOpacity
+      style={styles.linkButton}
+      onPress={handleViewMembers}
+      activeOpacity={0.7}
+    >
+      <Text style={styles.linkButtonText}>
+        VIEW ALL {club.members} MEMBERS →
+      </Text>
+    </TouchableOpacity>
+  </>
+)}
 
           {/* ===== ACTION AREA ===== */}
           <View style={styles.actions}>

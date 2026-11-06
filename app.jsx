@@ -19,6 +19,7 @@ import Help from './src/pages/help/index.jsx';
 import Privacy from './src/pages/privacy/index.jsx';
 import About from './src/pages/about/index.jsx';
 import DownloadData from './src/pages/download-data/index.jsx';
+import MemberList from './src/components/member-list/index.jsx';
 
 // Student
 import StudentDashboard from './src/pages/students/dashboard/index.jsx';
@@ -65,6 +66,7 @@ function Navigator() {
           <Stack.Screen name="Privacy Policy" component={Privacy}        options={{ headerShown: false }} />
           <Stack.Screen name="About"          component={About}          options={{ headerShown: false }} />
           <Stack.Screen name="Download my data" component={DownloadData} options={{ headerShown: false }} />
+          <Stack.Screen name="Member List"    component={MemberList}    options={{ headerShown: false }} />
 
           {/* Student */}
           <Stack.Screen name="Student-Dashboard"     component={StudentDashboard}     options={{ headerShown: false }} />

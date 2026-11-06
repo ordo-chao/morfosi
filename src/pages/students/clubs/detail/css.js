@@ -404,4 +404,47 @@ export const makeStyles = (c) => StyleSheet.create({
     fontWeight: '900',
     color: c.accent,
   },
+    /* ===== MEMBERS PREVIEW ===== */
+  membersBlock: {
+    borderWidth: 1,
+    borderColor: c.border,
+    backgroundColor: c.surface,
+    marginBottom: 4,
+  },
+  memberRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: c.border,
+  },
+  memberAvatar: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: c.border,
+    backgroundColor: c.bg,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  memberAvatarText: {
+    fontFamily: 'monospace',
+    fontSize: 11,
+    fontWeight: '900',
+    color: c.fg,
+  },
+  memberName: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: c.fg,
+  },
+  memberMeta: {
+    fontFamily: 'monospace',
+    fontSize: 10,
+    color: c.fgMuted,
+    marginTop: 2,
+  },
 });
