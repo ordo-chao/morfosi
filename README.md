@@ -374,7 +374,3 @@ src/
 - Add calendar export for events
 - Add PDF certificate generator with real signature images
 - Add teacher-facing app (same design system, different navigation tree)
-
----
-
-**Morfosi** — Greek for "form, shape, formation." Built for students who want their academic life in one place, with a design that respects their attention.
