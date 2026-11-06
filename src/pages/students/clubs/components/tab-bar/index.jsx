@@ -8,6 +8,7 @@ const TABS = [
   { key: 'my',     label: 'MY CLUBS' },
   { key: 'all',    label: 'ALL CLUBS' },
   { key: 'events', label: 'EVENTS' },
+  { key: 'activity', label: 'ACTIVITY' },
 ];
 
 export { TABS };

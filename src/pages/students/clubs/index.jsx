@@ -11,6 +11,7 @@ import TabBar, { TABS } from './components/tab-bar/index.jsx';
 import MyClubsView from './views/my-clubs/index.jsx';
 import AllClubsView from './views/all-clubs/index.jsx';
 import EventsView from './views/events/index.jsx';
+import ActivityView from './views/activity/index.jsx';
 
 /* -------------------- data -------------------- */
 
@@ -34,11 +35,11 @@ const CLUBS = [
     joinStatus: 'approval', requestedAt: '2 days ago',
   },
   {
-  id: 'c4', emoji: '🎤', name: 'Maths Club', category: 'academic',
-  patron: 'Ms. Achieng', meet: 'Wed · 3:30 PM · Lab 3',
-  members: 12, memberStatus: 'none', role: null,   // ← changed from 'pending'
-  joinStatus: 'approval',
-},
+    id: 'c4', emoji: '📐', name: 'Maths Club', category: 'academic',
+    patron: 'Ms. Achieng', meet: 'Wed · 3:30 PM · Lab 3',
+    members: 12, memberStatus: 'none', role: null,
+    joinStatus: 'approval',
+  },
   {
     id: 'c5', emoji: '🎤', name: 'Music Club', category: 'arts',
     patron: 'Mr. Mwangi', meet: 'Fri · 4:00 PM · Music Room',
@@ -73,7 +74,7 @@ const EVENTS = [
     venue: 'Library', status: 'upcoming',
   },
   {
-    id: 'e3', clubId: 'c5', club: 'Football Club', emoji: '⚽',
+    id: 'e3', clubId: 'c6', club: 'Football Club', emoji: '⚽',
     title: 'Friendly vs. Form 2A', date: 'Wed 30 Oct', time: '4:00 PM',
     venue: 'Main Field', status: 'upcoming',
   },
@@ -81,7 +82,7 @@ const EVENTS = [
 
 /* -------------------- screen -------------------- */
 
-const TAB_INDEX = { my: 0, all: 1, events: 2 };
+const TAB_INDEX = { my: 0, all: 1, events: 2, activity: 3 };
 
 export default function Clubs({ navigation }) {
   const { colors } = useTheme();
@@ -101,7 +102,9 @@ export default function Clubs({ navigation }) {
 
   /* Swipe → sync tab indicator */
   const handlePageSelected = (e) => {
-    setTab(TABS[e.nativeEvent.position].key);
+    const index = e.nativeEvent.position;
+    const key = TABS[index]?.key;
+    if (key) setTab(key);
   };
 
   /* Actions */
@@ -184,6 +187,10 @@ export default function Clubs({ navigation }) {
 
           <View key="events" style={{ flex: 1 }}>
             <EventsView events={EVENTS} onOpen={handleOpenEvent} />
+          </View>
+
+          <View key="activity" style={{ flex: 1 }}>
+            <ActivityView navigation={navigation} />
           </View>
         </PagerView>
       </View>
