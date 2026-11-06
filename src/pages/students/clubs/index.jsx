@@ -125,7 +125,7 @@ export default function Clubs({ navigation }) {
   };
 
   const handleOpen = (club) => {
-    navigation?.navigate('Student-ClubDetail', { clubId: club.id });
+    navigation?.navigate('Student-Clubs-Detail', { clubId: club.id });
   };
 
   const handleOpenEvent = (event) => {
