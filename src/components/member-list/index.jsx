@@ -6,7 +6,7 @@ import {
 import { makeStyles } from './css.js';
 import { useTheme } from '../../theme/themeContext.jsx';
 import Layout from '../../layout.jsx';
-
+import MemberDetailSheet from './detail/index.jsx';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 /* -------------------- defaults -------------------- */
@@ -105,6 +105,7 @@ export default function MemberList({ route, navigation }) {
   const isAdmin = Boolean(params.isAdmin);
 
   const [query, setQuery] = useState('');
+  const [selectedMember, setSelectedMember] = useState(null);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -135,11 +136,12 @@ export default function MemberList({ route, navigation }) {
   };
 
   const handleMemberPress = (member) => {
-    if (!isAdmin) return; // only admins can drill into member details
-    Alert.alert(
-      member.name,
-      [member.role, member.form, member.phone, member.email].filter(Boolean).join('\n')
-    );
+    setSelectedMember(member);
+  };
+
+  const handleMessage = (member) => {
+    setSelectedMember(null);
+    Alert.alert('Message', `Start a chat with ${member.name}?`);
   };
 
   return (
@@ -216,6 +218,15 @@ export default function MemberList({ route, navigation }) {
             </View>
           )}
         </ScrollView>
+
+        {/* ===== MEMBER DETAIL SHEET ===== */}
+        <MemberDetailSheet
+          visible={!!selectedMember}
+          member={selectedMember}
+          isAdmin={isAdmin}
+          onClose={() => setSelectedMember(null)}
+          onMessage={handleMessage}
+        />
       </View>
     </Layout>
   );

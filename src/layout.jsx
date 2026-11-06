@@ -23,7 +23,7 @@ const NO_NAV_ROUTES = [
   'Student-Profile-Edit', 'Student-Notifications', 'Language', 'Theme',
   'Help & Support', 'Privacy Policy', 'About', 'Student-Materials-Detail',
   'Student-Attendance', 'Download my data', 'Student-Classes-Detail',
-  'Student-Full-Report', 'Student-Clubs' , 'Student-Clubs-Detail' , 'Member List'
+  'Student-Full-Report', 'Student-Clubs' , 'Student-Clubs-Detail' , 'Member-List'
 ];
 const NO_HEADER_ROUTES = ['ChatDetail', 'NewChat'];
 

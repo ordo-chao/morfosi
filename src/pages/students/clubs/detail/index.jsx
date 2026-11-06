@@ -242,7 +242,7 @@ export default function ClubDetail({ route, navigation }) {
   };
 
   const handleViewMembers = () => {
-    navigation?.navigate('Member List', {
+    navigation?.navigate('Member-List', {
       title: `${club.name} Members`,
       members: club.memberList ?? [],
       isAdmin: false,
