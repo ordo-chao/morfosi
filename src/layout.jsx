@@ -1,5 +1,5 @@
 // Layout.jsx
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import {
   View,
   StatusBar,
@@ -23,28 +23,44 @@ const NO_NAV_ROUTES = [
   'Student-Profile-Edit', 'Student-Notifications', 'Language', 'Theme',
   'Help & Support', 'Privacy Policy', 'About', 'Student-Materials-Detail',
   'Student-Attendance', 'Download my data', 'Student-Classes-Detail',
-  'Student-Full-Report',
+  'Student-Full-Report', 'Student-Clubs', 'Student-Clubs-Detail', 'Member-List',
 ];
 const NO_HEADER_ROUTES = ['ChatDetail', 'NewChat'];
+
+const MENU_TAB_ROUTES = {
+  academic:   'Student-Dashboard',
+  clubs:      'Student-Clubs',
+  revision:   'Student-Revision',
+  activities: 'Student-Activities',
+};
+
+const ROUTE_TO_MENU_TAB = {
+  'Student-Dashboard':  'academic',
+  'Student-Clubs':      'clubs',
+  'Student-Revision':   'revision',
+  'Student-Activities': 'activities',
+};
 
 const { width: SCREEN_W } = Dimensions.get('window');
 const DRAWER_W = Math.min(SCREEN_W * 0.78, 320);
 
-/* Single source of truth for the drawer animation timing */
-const DRAWER_MS = 280;
+const DRAWER_MS = 260;
 const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+const easeInOutCubic = (t) =>
+  t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
 export default function Layout({ children }) {
-  const navigation = useNavigation();              // ← the actual fix
+  const navigation = useNavigation();
   const { colors, isDark } = useTheme();
   const insets = useSafeAreaInsets();
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeMenuTab, setActiveMenuTab] = useState('academic');
+  const isNavigatingRef = useRef(false);
 
-  const progress = useRef(new Animated.Value(0)).current; // 0 closed → 1 open
+  const progress = useRef(new Animated.Value(0)).current;
 
-  const openDrawer = () => {
+  const openDrawer = useCallback(() => {
+    if (isNavigatingRef.current) return;
     setMenuOpen(true);
     Animated.timing(progress, {
       toValue: 1,
@@ -52,18 +68,23 @@ export default function Layout({ children }) {
       easing: easeOutCubic,
       useNativeDriver: true,
     }).start();
-  };
+  }, [progress]);
 
-  const closeDrawer = () => {
-    Animated.timing(progress, {
-      toValue: 0,
-      duration: DRAWER_MS,
-      easing: easeOutCubic,
-      useNativeDriver: true,
-    }).start(({ finished }) => {
-      if (finished) setMenuOpen(false);
-    });
-  };
+  const closeDrawer = useCallback(
+    (onDone) => {
+      Animated.timing(progress, {
+        toValue: 0,
+        duration: DRAWER_MS,
+        easing: easeInOutCubic,
+        useNativeDriver: true,
+      }).start(({ finished }) => {
+        if (!finished) return;
+        setMenuOpen(false);
+        if (onDone) onDone();
+      });
+    },
+    [progress]
+  );
 
   const toggleDrawer = (nextOpen) => (nextOpen ? openDrawer() : closeDrawer());
 
@@ -79,7 +100,7 @@ export default function Layout({ children }) {
 
   const scrimOpacity = progress.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, 0.28],
+    outputRange: [0, 0.32],
   });
 
   const currentRouteName = useNavigationState((state) => {
@@ -94,31 +115,46 @@ export default function Layout({ children }) {
   const shouldHideNavigation = NO_NAV_ROUTES.includes(currentRouteName);
   const shouldHideHeader = NO_HEADER_ROUTES.includes(currentRouteName);
 
-  /* Close the drawer first, then push — but only if we're not already there. */
-  const handleNavigate = (routeName) => {
-    const go = () => {
-      if (routeName !== currentRouteName) {
+  const activeMenuTab = ROUTE_TO_MENU_TAB[currentRouteName] ?? null;
+
+  const handleNavigate = useCallback(
+    (routeName) => {
+      if (!routeName || routeName === currentRouteName) {
+        if (menuOpen) closeDrawer();
+        return;
+      }
+
+      if (menuOpen) {
+        if (isNavigatingRef.current) return;
+        isNavigatingRef.current = true;
+
+        closeDrawer(() => {
+          requestIdleCallback(
+            () => {
+              navigation.navigate(routeName);
+              isNavigatingRef.current = false;
+            },
+            { timeout: 500 }
+          );
+        });
+      } else {
         navigation.navigate(routeName);
       }
-    };
+    },
+    [menuOpen, currentRouteName, closeDrawer, navigation]
+  );
 
-    if (menuOpen) {
-      closeDrawer();
-      // Fire just before slide-out ends so it feels continuous
-      setTimeout(go, DRAWER_MS - 40);
-    } else {
-      go();
-    }
-  };
-
-  const handleSignOut = () => {
-    closeDrawer();
-    setTimeout(() => {
-      // Replace with your real auth sign-out:
-      // await signOut();
-      // navigation.reset({ index: 0, routes: [{ name: 'Login' }] });
-    }, DRAWER_MS - 40);
-  };
+  const handleSignOut = useCallback(() => {
+    closeDrawer(() => {
+      requestIdleCallback(
+        () => {
+          // await signOut();
+          // navigation.reset({ index: 0, routes: [{ name: 'Login' }] });
+        },
+        { timeout: 500 }
+      );
+    });
+  }, [closeDrawer]);
 
   return (
     <View style={[styles.root, { backgroundColor: colors.bg }]}>
@@ -128,7 +164,6 @@ export default function Layout({ children }) {
         translucent={false}
       />
 
-      {/* ===== MAIN COLUMN (slides right) ===== */}
       <Animated.View
         style={[styles.mainColumn, { transform: [{ translateX: mainTranslateX }] }]}
       >
@@ -157,7 +192,6 @@ export default function Layout({ children }) {
           <View style={{ height: insets.bottom, backgroundColor: colors.bg }} />
         )}
 
-        {/* Scrim over the shifted column */}
         <Animated.View
           pointerEvents={menuOpen ? 'auto' : 'none'}
           style={[
@@ -165,11 +199,10 @@ export default function Layout({ children }) {
             { backgroundColor: '#000', opacity: scrimOpacity },
           ]}
           onStartShouldSetResponder={() => true}
-          onResponderRelease={closeDrawer}
+          onResponderRelease={() => closeDrawer()}
         />
       </Animated.View>
 
-      {/* ===== DRAWER (left) ===== */}
       {menuOpen && (
         <Animated.View
           style={[
@@ -195,11 +228,15 @@ export default function Layout({ children }) {
               avatar: null,
             }}
             onSelectTab={(tabKey) => {
-              setActiveMenuTab(tabKey);
-              closeDrawer();
+              const route = MENU_TAB_ROUTES[tabKey];
+              if (route) {
+                handleNavigate(route);
+              } else {
+                closeDrawer();
+              }
             }}
             onNavigate={handleNavigate}
-            onClose={closeDrawer}
+            onClose={() => closeDrawer()}
             onPressSignOut={handleSignOut}
           />
         </Animated.View>
