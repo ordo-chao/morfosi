@@ -45,6 +45,7 @@ import StudentPastPaperReview from './src/pages/students/past-papers/review/inde
 import StudentAiTutor from './src/pages/students/ai-tutor/index.jsx';
 import StudentFlashcards from './src/pages/students/flashcards/index.jsx';
 import StudentFlashcardsReview from './src/pages/students/flashcards/review/index.jsx';
+import StudentProgress from './src/pages/students/progress/index.jsx';
 
 const Stack = createStackNavigator();
 
@@ -100,6 +101,7 @@ function Navigator() {
           <Stack.Screen name="Student-Ai-Tutor"     component={StudentAiTutor}        options={{ headerShown: false }} />
           <Stack.Screen name="Student-Flashcards"   component={StudentFlashcards}    options={{ headerShown: false }} />
           <Stack.Screen name="Student-Flashcards-Review" component={StudentFlashcardsReview} options={{ headerShown: false }} />
+          <Stack.Screen name="Student-Progress"     component={StudentProgress}      options={{ headerShown: false }} />
           {/* Teacher */}
         </Stack.Navigator>
       </NavigationContainer>
