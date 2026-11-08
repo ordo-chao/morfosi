@@ -23,9 +23,14 @@ const NO_NAV_ROUTES = [
   'Student-Profile-Edit', 'Student-Notifications', 'Language', 'Theme',
   'Help & Support', 'Privacy Policy', 'About', 'Student-Materials-Detail',
   'Student-Attendance', 'Download my data', 'Student-Classes-Detail',
-  'Student-Full-Report', 'Student-Clubs', 'Student-Clubs-Detail', 'Member-List',
+  'Student-Full-Report', 'Student-Clubs', 'Student-Clubs-Detail', 'Member-List', 
+  'Student-Ai-Tutor' , 'Student-Past-Papers' , 'Student-Past-Papers-Detail',
+  'Student-Past-Papers-Attempt' , 'Student-Past-Papers-Review' , 'Student-Revision-Progress',
+  'Student-Revision'
 ];
-const NO_HEADER_ROUTES = ['ChatDetail', 'NewChat'];
+const NO_HEADER_ROUTES = ['Student-Past-Papers', 'Student-Ai-Tutor' , 
+  'Student-Past-Papers-Detail' , 'Student-Past-Papers-Attempt' , 
+  'Student-Past-Papers-Review' , 'Student-Revision-Progress'];
 
 const MENU_TAB_ROUTES = {
   academic:   'Student-Dashboard',

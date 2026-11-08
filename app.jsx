@@ -37,6 +37,15 @@ import StudentNotifications from './src/pages/students/notifications/index.jsx';
 import StudentFullReport  from './src/pages/students/full-report/index.jsx';
 import StudentClubs from './src/pages/students/clubs/index.jsx';
 import StudentClubsDetail from './src/pages/students/clubs/detail/index.jsx';
+import StudentRevision from './src/pages/students/revision/index.jsx';
+import StudentPastPapers from './src/pages/students/past-papers/index.jsx';
+import StudentPastPapersDetail from './src/pages/students/past-papers/detail/index.jsx';
+import StudentPastPaperAttempt from './src/pages/students/past-papers/attempt/index.jsx';
+import StudentPastPaperReview from './src/pages/students/past-papers/review/index.jsx';
+import StudentAiTutor from './src/pages/students/ai-tutor/index.jsx';
+import StudentFlashcards from './src/pages/students/flashcards/index.jsx';
+import StudentFlashcardsReview from './src/pages/students/flashcards/review/index.jsx';
+import StudentProgress from './src/pages/students/progress/index.jsx';
 
 const Stack = createStackNavigator();
 
@@ -84,6 +93,16 @@ function Navigator() {
           <Stack.Screen name="Student-Full-Report"   component={StudentFullReport}    options={{ headerShown: false }} />
           <Stack.Screen name="Student-Clubs"         component={StudentClubs}          options={{ headerShown: false }} />
           <Stack.Screen name="Student-Clubs-Detail"  component={StudentClubsDetail}   options={{ headerShown: false }} />
+          <Stack.Screen name="Student-Revision"      component={StudentRevision}      options={{ headerShown: false }} />
+          <Stack.Screen name="Student-Past-Papers"   component={StudentPastPapers}    options={{ headerShown: false }} />
+          <Stack.Screen name="Student-Past-Papers-Detail" component={StudentPastPapersDetail} options={{ headerShown: false }} />
+          <Stack.Screen name="Student-Past-Papers-Attempt" component={StudentPastPaperAttempt} options={{ headerShown: false }} />
+          <Stack.Screen name="Student-Past-Papers-Review" component={StudentPastPaperReview} options={{ headerShown: false }} />
+          <Stack.Screen name="Student-Ai-Tutor"     component={StudentAiTutor}        options={{ headerShown: false }} />
+          <Stack.Screen name="Student-Flashcards"   component={StudentFlashcards}    options={{ headerShown: false }} />
+          <Stack.Screen name="Student-Flashcards-Review" component={StudentFlashcardsReview} options={{ headerShown: false }} />
+          <Stack.Screen name="Student-Revision-Progress"     component={StudentProgress}      options={{ headerShown: false }} />
+          {/* Teacher */}
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
