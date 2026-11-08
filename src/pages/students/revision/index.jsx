@@ -20,7 +20,7 @@ const GREETING = {
 
 const QUICK_START = [
   { key: 'papers',     emoji: '📄', label: 'Past Papers', route: 'Student-Past-Papers' },
-  { key: 'tutor',      emoji: '💬', label: 'AI Tutor',    route: 'Student-AiTutor'    },
+  { key: 'tutor',      emoji: '💬', label: 'AI Tutor',    route: 'Student-Ai-Tutor'    },
   { key: 'flashcards', emoji: '🃏', label: 'Flashcards',  route: 'Student-Flashcards' },
   { key: 'progress',   emoji: '📊', label: 'My Progress', route: 'Student-RevisionProgress' },
 ];

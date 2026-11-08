@@ -42,6 +42,7 @@ import StudentPastPapers from './src/pages/students/past-papers/index.jsx';
 import StudentPastPapersDetail from './src/pages/students/past-papers/detail/index.jsx';
 import StudentPastPaperAttempt from './src/pages/students/past-papers/attempt/index.jsx';
 import StudentPastPaperReview from './src/pages/students/past-papers/review/index.jsx';
+import StudentAiTutor from './src/pages/students/ai-tutor/index.jsx';
 
 const Stack = createStackNavigator();
 
@@ -94,6 +95,7 @@ function Navigator() {
           <Stack.Screen name="Student-Past-Papers-Detail" component={StudentPastPapersDetail} options={{ headerShown: false }} />
           <Stack.Screen name="Student-Past-Papers-Attempt" component={StudentPastPaperAttempt} options={{ headerShown: false }} />
           <Stack.Screen name="Student-Past-Papers-Review" component={StudentPastPaperReview} options={{ headerShown: false }} />
+          <Stack.Screen name="Student-Ai-Tutor"     component={StudentAiTutor}        options={{ headerShown: false }} />
           {/* Teacher */}
         </Stack.Navigator>
       </NavigationContainer>

@@ -256,7 +256,7 @@ export default function AttemptResults({ route, navigation }) {
   };
 
   const handleAskAi = (item) => {
-    navigation?.navigate('Student-AiTutor', {
+    navigation?.navigate('Student-Ai-Tutor', {
       seedPrompt: `Explain why the correct answer to Q${item.id} is "${item.correctAnswer}" and why "${item.yourAnswer}" is incorrect.`,
     });
   };
