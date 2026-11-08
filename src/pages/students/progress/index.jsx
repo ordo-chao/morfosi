@@ -5,7 +5,7 @@ import PagerView from 'react-native-pager-view';
 import { makeStyles } from './css.js';
 import { useTheme } from '../../../theme/themeContext.jsx';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
+import Layout from '../../../layout.jsx';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import ProgressView from './views/progress/index.jsx';
@@ -44,53 +44,55 @@ export default function MyProgress({ navigation }) {
   };
 
   return (
-    <View style={[styles.page, { paddingTop: insets.top }]}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation?.goBack()} hitSlop={8}>
-          <Ionicons name="chevron-back" size={22} color={colors.fg} />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>MY PROGRESS</Text>
-        <View style={{ width: 22 }} />
-      </View>
+    <Layout>
+      <View style={styles.page}>
+        {/* Header */}
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation?.goBack()} hitSlop={8}>
+            <Ionicons name="chevron-back" size={22} color={colors.fg} />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>MY PROGRESS</Text>
+          <View style={{ width: 22 }} />
+        </View>
 
-      {/* Tab bar */}
-      <View style={styles.tabBar}>
-        {TABS.map((t) => {
-          const active = tab === t.key;
-          return (
-            <TouchableOpacity
-              key={t.key}
-              style={[styles.tab, active && styles.tabActive]}
-              onPress={() => handleTabChange(t.key)}
-              activeOpacity={0.7}
-            >
-              <Text style={[styles.tabText, active && styles.tabTextActive]}>
-                {t.label}
-              </Text>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
+        {/* Tab bar */}
+        <View style={styles.tabBar}>
+          {TABS.map((t) => {
+            const active = tab === t.key;
+            return (
+              <TouchableOpacity
+                key={t.key}
+                style={[styles.tab, active && styles.tabActive]}
+                onPress={() => handleTabChange(t.key)}
+                activeOpacity={0.7}
+              >
+                <Text style={[styles.tabText, active && styles.tabTextActive]}>
+                  {t.label}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
 
-      {/* Pager */}
-      <PagerView
-        ref={pagerRef}
-        style={{ flex: 1 }}
-        initialPage={0}
-        onPageSelected={handlePageSelected}
-        overdrag
-      >
-        <View key="progress" style={{ flex: 1 }}>
-          <ProgressView navigation={navigation} />
-        </View>
-        <View key="plan" style={{ flex: 1 }}>
-          <StudyPlanView navigation={navigation} />
-        </View>
-        <View key="streaks" style={{ flex: 1 }}>
-          <StreaksView navigation={navigation} />
-        </View>
-      </PagerView>
-    </View>
+        {/* Pager */}
+        <PagerView
+          ref={pagerRef}
+          style={{ flex: 1 }}
+          initialPage={0}
+          onPageSelected={handlePageSelected}
+          overdrag
+        >
+          <View key="progress" style={{ flex: 1 }}>
+            <ProgressView navigation={navigation} />
+          </View>
+          <View key="plan" style={{ flex: 1 }}>
+            <StudyPlanView navigation={navigation} />
+          </View>
+          <View key="streaks" style={{ flex: 1 }}>
+            <StreaksView navigation={navigation} />
+          </View>
+        </PagerView>
+      </View>
+    </Layout>
   );
 }

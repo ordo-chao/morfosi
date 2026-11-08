@@ -15,9 +15,9 @@ const PLAN = {
   today: {
     label: 'Today · Tue 27 Oct',
     items: [
-      { id: 'p1', status: 'done',    duration: 30, type: 'Biology · Cell division' },
-      { id: 'p2', status: 'done',    duration: 20, type: 'Flashcards · Chemistry' },
-      { id: 'p3', status: 'current', duration: 45, type: 'Past paper · Math Q1–10' },
+      { id: 'p1', status: 'done',     duration: 30, type: 'Biology · Cell division' },
+      { id: 'p2', status: 'done',     duration: 20, type: 'Flashcards · Chemistry' },
+      { id: 'p3', status: 'current',  duration: 45, type: 'Past paper · Math Q1–10' },
       { id: 'p4', status: 'upcoming', duration: 30, type: 'AI Tutor · Quadratic equations' },
     ],
   },
@@ -132,7 +132,7 @@ export default function StudyPlanView({ navigation }) {
                     styles.weekBarFill,
                     {
                       height: `${Math.max(4, pct * 100)}%`,
-                      backgroundColor: pct === 0 ? c.surfaceHi : colors.accent,
+                      backgroundColor: pct === 0 ? colors.surfaceHi : colors.accent,
                     },
                   ]}
                 />

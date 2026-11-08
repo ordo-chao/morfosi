@@ -25,10 +25,11 @@ const NO_NAV_ROUTES = [
   'Student-Attendance', 'Download my data', 'Student-Classes-Detail',
   'Student-Full-Report', 'Student-Clubs', 'Student-Clubs-Detail', 'Member-List', 
   'Student-Ai-Tutor' , 'Student-Past-Papers' , 'Student-Past-Papers-Detail',
-  'Student-Past-Papers-Attempt' , 'Student-Past-Papers-Review'
+  'Student-Past-Papers-Attempt' , 'Student-Past-Papers-Review' , 'Student-Revision-Progress'
 ];
 const NO_HEADER_ROUTES = ['Student-Past-Papers', 'Student-Ai-Tutor' , 
-  'Student-Past-Papers-Detail' , 'Student-Past-Papers-Attempt' , 'Student-Past-Papers-Review'];
+  'Student-Past-Papers-Detail' , 'Student-Past-Papers-Attempt' , 
+  'Student-Past-Papers-Review' , 'Student-Revision-Progress'];
 
 const MENU_TAB_ROUTES = {
   academic:   'Student-Dashboard',

@@ -101,7 +101,7 @@ function Navigator() {
           <Stack.Screen name="Student-Ai-Tutor"     component={StudentAiTutor}        options={{ headerShown: false }} />
           <Stack.Screen name="Student-Flashcards"   component={StudentFlashcards}    options={{ headerShown: false }} />
           <Stack.Screen name="Student-Flashcards-Review" component={StudentFlashcardsReview} options={{ headerShown: false }} />
-          <Stack.Screen name="Student-Progress"     component={StudentProgress}      options={{ headerShown: false }} />
+          <Stack.Screen name="Student-Revision-Progress"     component={StudentProgress}      options={{ headerShown: false }} />
           {/* Teacher */}
         </Stack.Navigator>
       </NavigationContainer>
