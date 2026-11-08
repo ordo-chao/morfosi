@@ -170,14 +170,14 @@ export default function PastPaperDetail({ route, navigation }) {
   const inProgressAttempt = paper.attempts.find((a) => a.status === 'in-progress');
 
   const handleStart = () => {
-    navigation?.navigate('Student-PastPaperAttempt', {
+    navigation?.navigate('Student-Past-Papers-Attempt', {
       paperId: paper.id,
       mode,
     });
   };
 
   const handleResume = (attempt) => {
-    navigation?.navigate('Student-PastPaperAttempt', {
+    navigation?.navigate('Student-Past-Papers-Attempt', {
       paperId: paper.id,
       attemptId: attempt.id,
       questionIndex: attempt.progress?.current,
