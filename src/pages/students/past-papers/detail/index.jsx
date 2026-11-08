@@ -185,7 +185,7 @@ export default function PastPaperDetail({ route, navigation }) {
   };
 
   const handleReview = (attempt) => {
-    navigation?.navigate('Student-PastPaperReview', {
+    navigation?.navigate('Student-Past-Papers-Review', {
       paperId: paper.id,
       attemptId: attempt.id,
     });
