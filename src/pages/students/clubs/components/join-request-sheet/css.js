@@ -19,6 +19,7 @@ export const makeStyles = (c) => StyleSheet.create({
     paddingBottom: 24,
     gap: 12,
     maxHeight: '92%',
+    flexShrink: 0,
   },
   handle: {
     alignSelf: 'center',
@@ -27,6 +28,7 @@ export const makeStyles = (c) => StyleSheet.create({
     borderRadius: 2,
     backgroundColor: c.borderStrong,
     marginBottom: 6,
+    flexShrink: 0,
   },
 
   /* ===== HEADER ===== */
@@ -35,6 +37,7 @@ export const makeStyles = (c) => StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'space-between',
     gap: 12,
+    flexShrink: 0,
   },
   title: {
     flex: 1,
@@ -169,6 +172,7 @@ export const makeStyles = (c) => StyleSheet.create({
     paddingTop: 12,
     borderTopWidth: 1,
     borderTopColor: c.border,
+    flexShrink: 0,
   },
   dualRow: {
     flexDirection: 'row',
@@ -182,6 +186,7 @@ export const makeStyles = (c) => StyleSheet.create({
     backgroundColor: c.buttonBg,
     borderWidth: 1,
     borderColor: c.buttonBg,
+    minHeight: 48,
   },
   primaryBtnDisabled: {
     backgroundColor: c.surface,
@@ -205,6 +210,7 @@ export const makeStyles = (c) => StyleSheet.create({
     borderWidth: 1,
     borderColor: c.border,
     backgroundColor: c.surface,
+    minHeight: 48,
   },
   secondaryBtnText: {
     fontFamily: 'monospace',

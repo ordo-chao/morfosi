@@ -32,7 +32,6 @@ export default function JoinRequestSheet({
   const [reason, setReason] = useState('');
   const [agreed, setAgreed] = useState(false);
 
-  // Reset state every time the sheet opens with a new club
   useEffect(() => {
     if (visible) {
       setReason('');
@@ -41,8 +40,8 @@ export default function JoinRequestSheet({
   }, [visible, club?.id]);
 
   const canSubmit = useMemo(() => {
-    if (needsApproval) return agreed; // approval requires the checkbox
-    return true;                     // instant join is always allowed
+    if (needsApproval) return agreed;
+    return true;
   }, [needsApproval, agreed]);
 
   if (!club) return null;
@@ -66,7 +65,7 @@ export default function JoinRequestSheet({
     >
       <KeyboardAvoidingView
         style={styles.flex}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
         <Pressable style={styles.backdrop} onPress={onClose}>
           <Pressable style={styles.sheet} onPress={() => {}}>
@@ -89,8 +88,9 @@ export default function JoinRequestSheet({
               </TouchableOpacity>
             </View>
 
+            {/* Scrollable body */}
             <ScrollView
-              style={{ maxHeight: 460 }}
+              style={{ flexShrink: 1 }}
               contentContainerStyle={styles.body}
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="handled"
@@ -116,8 +116,9 @@ export default function JoinRequestSheet({
               {/* ===== APPROVAL FLOW ===== */}
               {needsApproval && (
                 <>
-                  {/* Reason */}
-                  <Text style={styles.label}>Why do you want to join? (optional)</Text>
+                  <Text style={styles.label}>
+                    Why do you want to join? (optional)
+                  </Text>
                   <TextInput
                     style={styles.input}
                     placeholder="Tell the patron why you'd like to join…"
@@ -132,7 +133,6 @@ export default function JoinRequestSheet({
                     {reason.length} / {MAX_REASON} characters
                   </Text>
 
-                  {/* Agreement checkbox */}
                   <TouchableOpacity
                     style={styles.checkRow}
                     onPress={() => setAgreed((v) => !v)}
@@ -140,7 +140,9 @@ export default function JoinRequestSheet({
                     accessibilityRole="checkbox"
                     accessibilityState={{ checked: agreed }}
                   >
-                    <View style={[styles.checkbox, agreed && styles.checkboxOn]}>
+                    <View
+                      style={[styles.checkbox, agreed && styles.checkboxOn]}
+                    >
                       {agreed ? (
                         <Ionicons
                           name="checkmark"
@@ -157,7 +159,6 @@ export default function JoinRequestSheet({
 
                   <View style={styles.divider} />
 
-                  {/* Patron */}
                   <Text style={styles.label}>Your request will go to:</Text>
                   <View style={styles.patronRow}>
                     <Text style={styles.patronIcon}>👩‍🏫</Text>
@@ -172,24 +173,29 @@ export default function JoinRequestSheet({
               )}
             </ScrollView>
 
-            {/* Actions */}
+            {/* Actions — always pinned at bottom, both flows use a row wrapper */}
             <View style={styles.actions}>
               {needsApproval ? (
-                <TouchableOpacity
-                  style={[styles.primaryBtn, !canSubmit && styles.primaryBtnDisabled]}
-                  onPress={handleSubmit}
-                  disabled={!canSubmit}
-                  activeOpacity={0.7}
-                >
-                  <Text
+                <View style={styles.dualRow}>
+                  <TouchableOpacity
                     style={[
-                      styles.primaryBtnText,
-                      !canSubmit && styles.primaryBtnTextDisabled,
+                      styles.primaryBtn,
+                      !canSubmit && styles.primaryBtnDisabled,
                     ]}
+                    onPress={handleSubmit}
+                    disabled={!canSubmit}
+                    activeOpacity={0.7}
                   >
-                    SEND REQUEST
-                  </Text>
-                </TouchableOpacity>
+                    <Text
+                      style={[
+                        styles.primaryBtnText,
+                        !canSubmit && styles.primaryBtnTextDisabled,
+                      ]}
+                    >
+                      SEND REQUEST
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               ) : (
                 <View style={styles.dualRow}>
                   <TouchableOpacity

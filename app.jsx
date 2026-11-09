@@ -20,6 +20,8 @@ import Privacy from './src/pages/privacy/index.jsx';
 import About from './src/pages/about/index.jsx';
 import DownloadData from './src/pages/download-data/index.jsx';
 import MemberList from './src/components/member-list/index.jsx';
+import TeamDetail from './src/pages/students/campus/views/sports/team-detail/index.jsx';
+import Fixtures from './src/pages/students/campus/views/sports/fixtures/index.jsx';
 
 // Student
 import StudentDashboard from './src/pages/students/dashboard/index.jsx';
@@ -46,6 +48,7 @@ import StudentAiTutor from './src/pages/students/ai-tutor/index.jsx';
 import StudentFlashcards from './src/pages/students/flashcards/index.jsx';
 import StudentFlashcardsReview from './src/pages/students/flashcards/review/index.jsx';
 import StudentProgress from './src/pages/students/progress/index.jsx';
+import StudentCampus from './src/pages/students/campus/index.jsx';
 
 const Stack = createStackNavigator();
 
@@ -77,6 +80,10 @@ function Navigator() {
           <Stack.Screen name="Download my data" component={DownloadData} options={{ headerShown: false }} />
           <Stack.Screen name="Member-List"    component={MemberList}    options={{ headerShown: false }} />
 
+          {/* Campus */}
+          <Stack.Screen name="Team-Detail"    component={TeamDetail}           options={{ headerShown: false }} />
+          <Stack.Screen name="Fixtures"       component={Fixtures}             options={{ headerShown: false }} />
+
           {/* Student */}
           <Stack.Screen name="Student-Dashboard"     component={StudentDashboard}     options={{ headerShown: false }} />
           <Stack.Screen name="Student-Classes"       component={StudentClasses}       options={{ headerShown: false }} />
@@ -102,6 +109,7 @@ function Navigator() {
           <Stack.Screen name="Student-Flashcards"   component={StudentFlashcards}    options={{ headerShown: false }} />
           <Stack.Screen name="Student-Flashcards-Review" component={StudentFlashcardsReview} options={{ headerShown: false }} />
           <Stack.Screen name="Student-Revision-Progress"     component={StudentProgress}      options={{ headerShown: false }} />
+          <Stack.Screen name="Student-Campus"        component={StudentCampus}        options={{ headerShown: false }} />
           {/* Teacher */}
         </Stack.Navigator>
       </NavigationContainer>

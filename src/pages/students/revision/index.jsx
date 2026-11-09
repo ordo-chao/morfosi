@@ -192,11 +192,7 @@ export default function Revision({ navigation }) {
       <View style={styles.page}>
         {/* Header */}
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation?.goBack()} hitSlop={8}>
-            <Ionicons name="chevron-back" size={22} color={colors.fg} />
-          </TouchableOpacity>
           <Text style={styles.headerTitle}>REVISION</Text>
-          <View style={{ width: 22 }} />
         </View>
 
         <ScrollView
