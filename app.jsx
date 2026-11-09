@@ -20,6 +20,8 @@ import Privacy from './src/pages/privacy/index.jsx';
 import About from './src/pages/about/index.jsx';
 import DownloadData from './src/pages/download-data/index.jsx';
 import MemberList from './src/components/member-list/index.jsx';
+import TeamDetail from './src/pages/students/campus/views/sports/team-detail/index.jsx';
+import Fixtures from './src/pages/students/campus/views/sports/fixtures/index.jsx';
 
 // Student
 import StudentDashboard from './src/pages/students/dashboard/index.jsx';
@@ -77,6 +79,10 @@ function Navigator() {
           <Stack.Screen name="About"          component={About}          options={{ headerShown: false }} />
           <Stack.Screen name="Download my data" component={DownloadData} options={{ headerShown: false }} />
           <Stack.Screen name="Member-List"    component={MemberList}    options={{ headerShown: false }} />
+
+          {/* Campus */}
+          <Stack.Screen name="Team-Detail"    component={TeamDetail}           options={{ headerShown: false }} />
+          <Stack.Screen name="Fixtures"       component={Fixtures}             options={{ headerShown: false }} />
 
           {/* Student */}
           <Stack.Screen name="Student-Dashboard"     component={StudentDashboard}     options={{ headerShown: false }} />

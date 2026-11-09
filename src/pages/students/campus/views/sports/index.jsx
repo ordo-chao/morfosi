@@ -56,7 +56,7 @@ const SPORTS = [
 
 /* -------------------- components -------------------- */
 
-function TeamCard({ team, onOpen, colors }) {
+function TeamCard({ team, onOpen, onFixtures, colors }) {
   const styles = makeStyles(colors);
   return (
     <View style={styles.teamCard}>
@@ -87,6 +87,7 @@ function TeamCard({ team, onOpen, colors }) {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.teamActionBtn}
+          onPress={() => onFixtures(team)}
           activeOpacity={0.7}
         >
           <Text style={styles.teamActionText}>FIXTURES</Text>
@@ -131,7 +132,18 @@ export default function SportsView({ navigation }) {
   const styles = makeStyles(colors);
 
   const handleOpenTeam = (team) => {
-    navigation?.navigate('Student-TeamDetail', { team });
+    navigation?.navigate('Team-Detail', { team });
+  };
+
+  const handleFixtures = (team) => {
+    navigation?.navigate('Fixtures', {
+      teamId: team.id,
+      teamName: team.name,
+    });
+  };
+
+  const handleAllFixtures = () => {
+    navigation?.navigate('Fixtures');
   };
 
   return (
@@ -146,7 +158,13 @@ export default function SportsView({ navigation }) {
       {/* ===== MY TEAMS ===== */}
       <Text style={styles.sectionTitle}>MY TEAMS</Text>
       {TEAMS.map((t) => (
-        <TeamCard key={t.id} team={t} onOpen={handleOpenTeam} colors={colors} />
+        <TeamCard
+          key={t.id}
+          team={t}
+          onOpen={handleOpenTeam}
+          onFixtures={handleFixtures}
+          colors={colors}
+        />
       ))}
 
       {/* ===== UPCOMING MATCHES ===== */}
@@ -166,7 +184,11 @@ export default function SportsView({ navigation }) {
         ))}
       </View>
 
-      <TouchableOpacity style={styles.linkBtn} activeOpacity={0.7}>
+      <TouchableOpacity
+        style={styles.linkBtn}
+        onPress={handleAllFixtures}
+        activeOpacity={0.7}
+      >
         <Text style={styles.linkBtnText}>SEE ALL FIXTURES →</Text>
       </TouchableOpacity>
 
