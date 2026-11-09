@@ -1,0 +1,216 @@
+// campus/views/sports/css.js
+import { StyleSheet } from 'react-native';
+
+export const makeStyles = (c) => StyleSheet.create({
+  scrollContent: {
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    paddingBottom: 40,
+    gap: 12,
+  },
+  sectionTitle: {
+    fontFamily: 'monospace',
+    fontSize: 10,
+    letterSpacing: 2,
+    fontWeight: '900',
+    color: c.accent,
+    marginTop: 8,
+    marginBottom: 8,
+  },
+
+  /* Team card */
+  teamCard: {
+    borderWidth: 1,
+    borderColor: c.border,
+    backgroundColor: c.surface,
+    padding: 14,
+    gap: 12,
+    marginBottom: 8,
+  },
+  teamHeader: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 12,
+  },
+  teamEmojiWrap: {
+    width: 44,
+    height: 44,
+    borderWidth: 1,
+    borderColor: c.border,
+    backgroundColor: c.bg,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  teamEmoji: { fontSize: 20 },
+  teamName: {
+    fontSize: 14,
+    fontWeight: '900',
+    color: c.fg,
+    letterSpacing: -0.2,
+  },
+  teamCoach: {
+    fontFamily: 'monospace',
+    fontSize: 10,
+    color: c.fgMuted,
+    marginTop: 2,
+  },
+  teamSchedule: {
+    fontFamily: 'monospace',
+    fontSize: 10,
+    color: c.fgMuted,
+    marginTop: 2,
+  },
+  nextBlock: {
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderWidth: 1,
+    borderColor: c.accent,
+    backgroundColor: c.bg,
+    gap: 4,
+  },
+  nextLabel: {
+    fontFamily: 'monospace',
+    fontSize: 9,
+    letterSpacing: 1,
+    fontWeight: '900',
+    color: c.accent,
+  },
+  nextTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: c.fg,
+  },
+  nextMeta: {
+    fontFamily: 'monospace',
+    fontSize: 10,
+    color: c.fgMuted,
+  },
+  teamActions: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  teamActionBtn: {
+    flex: 1,
+    paddingVertical: 10,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: c.border,
+    backgroundColor: c.bg,
+  },
+  teamActionText: {
+    fontFamily: 'monospace',
+    fontSize: 10,
+    letterSpacing: 1.2,
+    fontWeight: '900',
+    color: c.fg,
+  },
+
+  /* Matches */
+  matchesBlock: {
+    borderWidth: 1,
+    borderColor: c.border,
+    backgroundColor: c.surface,
+  },
+  matchRow: {
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: c.border,
+    gap: 8,
+  },
+  matchDay: {
+    fontFamily: 'monospace',
+    fontSize: 10,
+    letterSpacing: 1,
+    fontWeight: '900',
+    color: c.accent,
+  },
+  matchDivider: {
+    height: 1,
+    backgroundColor: c.border,
+    marginVertical: 4,
+  },
+  matchBody: { gap: 4 },
+  matchTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: c.fg,
+  },
+  matchMeta: {
+    fontFamily: 'monospace',
+    fontSize: 10,
+    color: c.fgMuted,
+  },
+
+  linkBtn: {
+    alignSelf: 'flex-start',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderWidth: 1,
+    borderColor: c.border,
+    backgroundColor: c.bg,
+    marginBottom: 4,
+  },
+  linkBtnText: {
+    fontFamily: 'monospace',
+    fontSize: 10,
+    letterSpacing: 1.2,
+    fontWeight: '900',
+    color: c.fg,
+  },
+
+  /* Sports grid */
+  sportsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  sportTile: {
+    width: '48.5%',
+    minHeight: 110,
+    borderWidth: 1,
+    borderColor: c.border,
+    backgroundColor: c.surface,
+    paddingVertical: 14,
+    paddingHorizontal: 12,
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    gap: 8,
+  },
+  sportEmoji: { fontSize: 26 },
+  sportName: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: c.fg,
+  },
+  sportJoinedPill: {
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderWidth: 1,
+    borderColor: '#4caf7d',
+    backgroundColor: c.bg,
+    alignSelf: 'flex-start',
+  },
+  sportJoinedText: {
+    fontFamily: 'monospace',
+    fontSize: 9,
+    letterSpacing: 0.8,
+    fontWeight: '900',
+    color: '#4caf7d',
+  },
+  sportJoinBtn: {
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    backgroundColor: c.buttonBg,
+    borderWidth: 1,
+    borderColor: c.buttonBg,
+    alignSelf: 'flex-start',
+  },
+  sportJoinBtnText: {
+    fontFamily: 'monospace',
+    fontSize: 9,
+    letterSpacing: 1,
+    fontWeight: '900',
+    color: c.buttonFg,
+  },
+});

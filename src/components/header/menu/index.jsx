@@ -17,7 +17,7 @@ const MENU_TABS = [
   { key: 'academic',   label: 'Academic',          sub: 'Current Term',            icon: 'school-outline',      lib: 'ion' },
   { key: 'clubs',      label: 'Clubs',             sub: 'Societies & Activities',  icon: 'people-outline',      lib: 'ion' },
   { key: 'revision',   label: 'Revision',          sub: 'Past Papers & Notes',     icon: 'book-open-outline',   lib: 'material' },
-  { key: 'activities', label: 'School Activities', sub: 'Sports & Events',         icon: 'trophy-outline',      lib: 'ion' },
+  { key: 'activities', label: 'Campus Life', sub: 'Dorms, Sports & Events',         icon: 'trophy-outline',      lib: 'ion' },
 ];
 
 const NAV_LINKS = [

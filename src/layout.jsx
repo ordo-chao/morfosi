@@ -26,7 +26,7 @@ const NO_NAV_ROUTES = [
   'Student-Full-Report', 'Student-Clubs', 'Student-Clubs-Detail', 'Member-List', 
   'Student-Ai-Tutor' , 'Student-Past-Papers' , 'Student-Past-Papers-Detail',
   'Student-Past-Papers-Attempt' , 'Student-Past-Papers-Review' , 'Student-Revision-Progress',
-  'Student-Revision'
+  'Student-Revision' , 'Student-Campus'
 ];
 const NO_HEADER_ROUTES = ['Student-Past-Papers', 'Student-Ai-Tutor' , 
   'Student-Past-Papers-Detail' , 'Student-Past-Papers-Attempt' , 
@@ -36,14 +36,14 @@ const MENU_TAB_ROUTES = {
   academic:   'Student-Dashboard',
   clubs:      'Student-Clubs',
   revision:   'Student-Revision',
-  activities: 'Student-Activities',
+  activities: 'Student-Campus',
 };
 
 const ROUTE_TO_MENU_TAB = {
   'Student-Dashboard':  'academic',
   'Student-Clubs':      'clubs',
   'Student-Revision':   'revision',
-  'Student-Activities': 'activities',
+  'Student-Campus': 'activities',
 };
 
 const { width: SCREEN_W } = Dimensions.get('window');
