@@ -44,7 +44,6 @@ export default function Campus({ route, navigation }) {
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>CAMPUS LIFE</Text>
-        <View style={{ width: 22 }} />
       </View>
 
       {/* Tab bar */}
