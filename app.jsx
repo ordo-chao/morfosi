@@ -52,6 +52,9 @@ import StudentCampus from './src/pages/students/campus/index.jsx';
 
 // Teacher 
 import TeacherDashboard from './src/pages/teachers/dashboard/index.jsx';
+import TeacherTasks from './src/pages/teachers/tasks/index.jsx';
+import TeacherTaskDetail from './src/pages/teachers/tasks/task-detail/index.jsx';
+import TeacherTaskForm from './src/pages/teachers/tasks/task-form/index.jsx';
 
 const Stack = createStackNavigator();
 
@@ -113,8 +116,13 @@ function Navigator() {
           <Stack.Screen name="Student-Flashcards-Review" component={StudentFlashcardsReview} options={{ headerShown: false }} />
           <Stack.Screen name="Student-Revision-Progress"     component={StudentProgress}      options={{ headerShown: false }} />
           <Stack.Screen name="Student-Campus"        component={StudentCampus}        options={{ headerShown: false }} />
+
           {/* Teacher */}
           <Stack.Screen name="Teacher-Dashboard"     component={TeacherDashboard}     options={{ headerShown: false }} />
+          <Stack.Screen name="Teacher-Tasks"       component={TeacherTasks}       options={{ headerShown: false }} />
+          <Stack.Screen name="Teacher-Tasks-Detail" component={TeacherTaskDetail} options={{ headerShown: false }} />
+          <Stack.Screen name="Teacher-Tasks-Create" component={TeacherTaskForm} options={{ headerShown: false }} />
+          <Stack.Screen name="Teacher-Tasks-Edit" component={TeacherTaskForm} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

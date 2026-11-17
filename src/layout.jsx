@@ -32,7 +32,8 @@ const STUDENT_NO_NAV_ROUTES = [
   'Student-Full-Report', 'Student-Clubs', 'Student-Clubs-Detail', 'Member-List',
   'Student-Ai-Tutor', 'Student-Past-Papers', 'Student-Past-Papers-Detail',
   'Student-Past-Papers-Attempt', 'Student-Past-Papers-Review', 'Student-Revision-Progress',
-  'Student-Revision', 'Student-Campus', 'Team-Detail', 'Fixtures',
+  'Student-Revision', 'Student-Campus', 'Team-Detail', 'Fixtures', 'Teacher-Tasks-Edit' , 
+  'Teacher-Tasks-Create' ,'Teacher-Tasks-Detail'
 ];
 
 const STUDENT_NO_HEADER_ROUTES = [
