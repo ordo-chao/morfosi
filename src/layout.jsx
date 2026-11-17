@@ -17,35 +17,143 @@ import Header from './components/header/index.jsx';
 import Navigation from './components/navigation/index.jsx';
 import MenuDropdown from './components/header/menu/index.jsx';
 import { useTheme } from './theme/themeContext.jsx';
+import { LoginContext } from '../loginContext.jsx';
 
-const NO_NAV_ROUTES = [
+/* =========================================================
+ * ROLE-BASED ROUTE TABLES
+ * ======================================================= */
+
+/* ---------- STUDENT ---------- */
+const STUDENT_NO_NAV_ROUTES = [
   'Student-Materials', 'Student-Grades', 'Student-Tasks-Detail',
   'Student-Profile-Edit', 'Student-Notifications', 'Language', 'Theme',
   'Help & Support', 'Privacy Policy', 'About', 'Student-Materials-Detail',
   'Student-Attendance', 'Download my data', 'Student-Classes-Detail',
-  'Student-Full-Report', 'Student-Clubs', 'Student-Clubs-Detail', 'Member-List', 
-  'Student-Ai-Tutor' , 'Student-Past-Papers' , 'Student-Past-Papers-Detail',
-  'Student-Past-Papers-Attempt' , 'Student-Past-Papers-Review' , 'Student-Revision-Progress',
-  'Student-Revision' , 'Student-Campus' , 'Team-Detail' , 'Fixtures'
+  'Student-Full-Report', 'Student-Clubs', 'Student-Clubs-Detail', 'Member-List',
+  'Student-Ai-Tutor', 'Student-Past-Papers', 'Student-Past-Papers-Detail',
+  'Student-Past-Papers-Attempt', 'Student-Past-Papers-Review', 'Student-Revision-Progress',
+  'Student-Revision', 'Student-Campus', 'Team-Detail', 'Fixtures', 'Teacher-Tasks-Edit' , 
+  'Teacher-Tasks-Create' ,'Teacher-Task-Detail'
 ];
-const NO_HEADER_ROUTES = ['Student-Past-Papers', 'Student-Ai-Tutor' , 
-  'Student-Past-Papers-Detail' , 'Student-Past-Papers-Attempt' , 
-  'Student-Past-Papers-Review' , 'Student-Revision-Progress' , 'Team-Detail' , 'Fixtures'];
 
-const MENU_TAB_ROUTES = {
+const STUDENT_NO_HEADER_ROUTES = [
+  'Student-Past-Papers', 'Student-Ai-Tutor',
+  'Student-Past-Papers-Detail', 'Student-Past-Papers-Attempt',
+  'Student-Past-Papers-Review', 'Student-Revision-Progress', 'Team-Detail', 'Fixtures',
+];
+
+const STUDENT_MENU_TAB_ROUTES = {
   academic:   'Student-Dashboard',
   clubs:      'Student-Clubs',
   revision:   'Student-Revision',
   activities: 'Student-Campus',
 };
 
-const ROUTE_TO_MENU_TAB = {
-  'Student-Dashboard':  'academic',
-  'Student-Clubs':      'clubs',
-  'Student-Revision':   'revision',
-  'Student-Campus': 'activities',
+const STUDENT_ROUTE_TO_MENU_TAB = {
+  'Student-Dashboard': 'academic',
+  'Student-Clubs':     'clubs',
+  'Student-Revision':  'revision',
+  'Student-Campus':    'activities',
 };
 
+/* ---------- TEACHER ---------- */
+const TEACHER_NO_NAV_ROUTES = [
+  'Teacher-Profile-Edit', 'Teacher-Notifications', 'Language', 'Theme',
+  'Help & Support', 'Privacy Policy', 'About', 'Download my data',
+  'Teacher-Class-Detail', 'Teacher-Class-Roster', 'Teacher-Student-Detail',
+  'Teacher-Materials', 'Teacher-Materials-Create', 'Teacher-Materials-Edit',
+  'Teacher-Task-Detail', 'Teacher-Task-Detail', 'Teacher-Submission-Grade',
+  'Teacher-Tasks-Create', 'Teacher-Grades', 'Teacher-Grades-Entry',
+  'Teacher-Grades-Report', 'Teacher-Attendance', 'Teacher-Attendance-Mark',
+  'Teacher-Attendance-History', 'Teacher-Announcements',
+  'Teacher-Announcements-Create',
+  'Teacher-Campus', 'Team-Detail', 'Fixtures', 'Member-List',
+];
+
+const TEACHER_NO_HEADER_ROUTES = [
+  'Teacher-Attendance-Mark', 'Teacher-Submission-Grade',
+  'Teacher-Tasks-Create', 'Teacher-Materials-Create', 'Teacher-Materials-Edit',
+  'Teacher-Grades-Entry', 'Team-Detail', 'Fixtures',
+];
+
+const TEACHER_MENU_TAB_ROUTES = {
+  academic:   'Teacher-Dashboard',
+  students:   'Teacher-Classes',
+  resources:  'Teacher-Materials',
+  activities: 'Teacher-Campus',
+};
+
+const TEACHER_ROUTE_TO_MENU_TAB = {
+  'Teacher-Dashboard': 'academic',
+  'Teacher-Classes':   'students',
+  'Teacher-Materials': 'resources',
+  'Teacher-Campus':    'activities',
+};
+
+/* ---------- STAFF ---------- */
+const STAFF_NO_NAV_ROUTES = [
+  'Staff-Profile-Edit', 'Staff-Notifications', 'Language', 'Theme',
+  'Help & Support', 'Privacy Policy', 'About', 'Download my data',
+  'Staff-Reports', 'Member-List',
+];
+
+const STAFF_NO_HEADER_ROUTES = [
+  'Staff-Reports', 'Member-List',
+];
+
+const STAFF_MENU_TAB_ROUTES = {
+  academic:   'Staff-Dashboard',
+  people:     'Staff-Students',
+  operations: 'Staff-Reports',
+  activities: 'Staff-Campus',
+};
+
+const STAFF_ROUTE_TO_MENU_TAB = {
+  'Staff-Dashboard': 'academic',
+  'Staff-Students':  'people',
+  'Staff-Reports':   'operations',
+  'Staff-Campus':    'activities',
+};
+
+/* ---------- Role maps ---------- */
+const LAYOUT_BY_ROLE = {
+  student: {
+    noNav: STUDENT_NO_NAV_ROUTES,
+    noHeader: STUDENT_NO_HEADER_ROUTES,
+    menuTabRoutes: STUDENT_MENU_TAB_ROUTES,
+    routeToMenuTab: STUDENT_ROUTE_TO_MENU_TAB,
+  },
+  teacher: {
+    noNav: TEACHER_NO_NAV_ROUTES,
+    noHeader: TEACHER_NO_HEADER_ROUTES,
+    menuTabRoutes: TEACHER_MENU_TAB_ROUTES,
+    routeToMenuTab: TEACHER_ROUTE_TO_MENU_TAB,
+  },
+  staff: {
+    noNav: STAFF_NO_NAV_ROUTES,
+    noHeader: STAFF_NO_HEADER_ROUTES,
+    menuTabRoutes: STAFF_MENU_TAB_ROUTES,
+    routeToMenuTab: STAFF_ROUTE_TO_MENU_TAB,
+  },
+};
+
+/* ---------------------------------------------------------
+ * DEV OVERRIDE — must match the one in BottomNav / MenuDropdown.
+ * 'student' | 'teacher' | 'staff' | null
+ * ------------------------------------------------------- */
+const DEV_ROLE_OVERRIDE = 'teacher';
+
+function resolveLayout(role) {
+  return (
+    (DEV_ROLE_OVERRIDE && LAYOUT_BY_ROLE[DEV_ROLE_OVERRIDE]) ||
+    LAYOUT_BY_ROLE[role] ||
+    LAYOUT_BY_ROLE.student
+  );
+}
+
+/* =========================================================
+ * Animation / sizing
+ * ======================================================= */
 const { width: SCREEN_W } = Dimensions.get('window');
 const DRAWER_W = Math.min(SCREEN_W * 0.78, 320);
 
@@ -58,6 +166,15 @@ export default function Layout({ children }) {
   const navigation = useNavigation();
   const { colors, isDark } = useTheme();
   const insets = useSafeAreaInsets();
+
+  // Role-aware tables
+  const { role } = React.useContext(LoginContext);
+  const {
+    noNav: NO_NAV_ROUTES,
+    noHeader: NO_HEADER_ROUTES,
+    menuTabRoutes: MENU_TAB_ROUTES,
+    routeToMenuTab: ROUTE_TO_MENU_TAB,
+  } = resolveLayout(role);
 
   const [menuOpen, setMenuOpen] = useState(false);
   const isNavigatingRef = useRef(false);
@@ -227,7 +344,7 @@ export default function Layout({ children }) {
             activeTab={activeMenuTab}
             user={{
               name: 'Prince',
-              role: 'Student',
+              role: role === 'teacher' ? 'Teacher' : role === 'staff' ? 'Staff' : 'Student',
               term: 'Term 2',
               academicYear: '2025/2026',
               avatar: null,

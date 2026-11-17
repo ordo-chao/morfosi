@@ -77,12 +77,12 @@ export default function Login({ navigation }) {
 
             <TouchableOpacity
               style={styles.button}
-              onPress={() => navigation.navigate('Student-Dashboard')}
+              onPress={() => navigation.navigate('Teacher-Dashboard')}
             >
               <Text style={styles.buttonText}>SIGN IN →</Text>
             </TouchableOpacity>
 
-            <Text style={styles.registerText}>
+            {/* <Text style={styles.registerText}>
               Don't have an account?{' '}
               <Text
                 style={styles.registerLink}
@@ -90,7 +90,7 @@ export default function Login({ navigation }) {
               >
                 Sign up
               </Text>
-            </Text>
+            </Text> */}
 
             <View style={styles.dividerRow}>
               <View style={styles.dividerLine} />

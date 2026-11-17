@@ -8,19 +8,25 @@ import {
   ScrollView,
 } from 'react-native';
 import { useTheme } from '../../../theme/themeContext.jsx';
+import { LoginContext } from '../../../../loginContext.jsx';
 import { makeStyles } from './css.js';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const MENU_TABS = [
-  { key: 'academic',   label: 'Academic',          sub: 'Current Term',            icon: 'school-outline',      lib: 'ion' },
-  { key: 'clubs',      label: 'Clubs',             sub: 'Societies & Activities',  icon: 'people-outline',      lib: 'ion' },
-  { key: 'revision',   label: 'Revision',          sub: 'Past Papers & Notes',     icon: 'book-open-outline',   lib: 'material' },
-  { key: 'activities', label: 'Campus Life', sub: 'Dorms, Sports & Events',         icon: 'trophy-outline',      lib: 'ion' },
+/* =========================================================
+ * ROLE-BASED VIEW SWITCHER + NAV LINKS
+ * ======================================================= */
+
+/* ---------- STUDENT ---------- */
+export const STUDENT_MENU_TABS = [
+  { key: 'academic',   label: 'Academic',    sub: 'Current Term',           icon: 'school-outline',    lib: 'ion' },
+  { key: 'clubs',      label: 'Clubs',       sub: 'Societies & Activities', icon: 'people-outline',    lib: 'ion' },
+  { key: 'revision',   label: 'Revision',    sub: 'Past Papers & Notes',    icon: 'book-open-outline', lib: 'material' },
+  { key: 'activities', label: 'Campus Life', sub: 'Dorms, Sports & Events', icon: 'trophy-outline',    lib: 'ion' },
 ];
 
-const NAV_LINKS = [
+export const STUDENT_NAV_LINKS = [
   { key: 'Student-Notifications', label: 'Notifications',  icon: 'notifications-outline' },
   { key: 'Student-Profile-Edit',  label: 'Edit Profile',   icon: 'person-outline' },
   { key: 'Student-Full-Report',   label: 'Full Report',    icon: 'document-text-outline' },
@@ -31,6 +37,74 @@ const NAV_LINKS = [
   { key: 'About',                 label: 'About',          icon: 'information-circle-outline' },
 ];
 
+/* ---------- TEACHER ---------- */
+export const TEACHER_MENU_TABS = [
+  { key: 'academic',   label: 'Academic',    sub: 'Classes & Grading',       icon: 'school-outline',    lib: 'ion' },
+  { key: 'students',   label: 'Students',    sub: 'Rosters & Performance',   icon: 'people-outline',    lib: 'ion' },
+  { key: 'resources',  label: 'Resources',   sub: 'Materials & Question Bank', icon: 'book-open-outline', lib: 'material' },
+  { key: 'activities', label: 'Campus Life', sub: 'Teams, Clubs & Events',   icon: 'trophy-outline',    lib: 'ion' },
+];
+
+export const TEACHER_NAV_LINKS = [
+  { key: 'Teacher-Notifications',  label: 'Notifications',  icon: 'notifications-outline' },
+  { key: 'Teacher-Profile-Edit',   label: 'Edit Profile',   icon: 'person-outline' },
+  { key: 'Teacher-Announcements',  label: 'Announcements',  icon: 'megaphone-outline' },
+  { key: 'Language',               label: 'Language',       icon: 'language-outline' },
+  { key: 'Theme',                  label: 'Theme',          icon: 'color-palette-outline' },
+  { key: 'Help & Support',         label: 'Help & Support', icon: 'help-circle-outline' },
+  { key: 'Privacy Policy',         label: 'Privacy Policy', icon: 'shield-checkmark-outline' },
+  { key: 'About',                  label: 'About',          icon: 'information-circle-outline' },
+];
+
+/* ---------- STAFF ---------- */
+export const STAFF_MENU_TABS = [
+  { key: 'academic',   label: 'Academic',    sub: 'School-wide Overview',    icon: 'school-outline',    lib: 'ion' },
+  { key: 'people',     label: 'People',      sub: 'Students & Staff',        icon: 'people-outline',    lib: 'ion' },
+  { key: 'operations', label: 'Operations',  sub: 'Reports & Records',       icon: 'bar-chart-outline', lib: 'ion' },
+  { key: 'activities', label: 'Campus Life', sub: 'Dorms, Sports & Events',  icon: 'trophy-outline',    lib: 'ion' },
+];
+
+export const STAFF_NAV_LINKS = [
+  { key: 'Staff-Notifications', label: 'Notifications',  icon: 'notifications-outline' },
+  { key: 'Staff-Profile-Edit',  label: 'Edit Profile',   icon: 'person-outline' },
+  { key: 'Staff-Reports',       label: 'Reports',        icon: 'document-text-outline' },
+  { key: 'Language',            label: 'Language',       icon: 'language-outline' },
+  { key: 'Theme',               label: 'Theme',          icon: 'color-palette-outline' },
+  { key: 'Help & Support',      label: 'Help & Support', icon: 'help-circle-outline' },
+  { key: 'Privacy Policy',      label: 'Privacy Policy', icon: 'shield-checkmark-outline' },
+  { key: 'About',               label: 'About',          icon: 'information-circle-outline' },
+];
+
+/* Map role → { tabs, links } */
+const MENU_BY_ROLE = {
+  student: { tabs: STUDENT_MENU_TABS, links: STUDENT_NAV_LINKS },
+  teacher: { tabs: TEACHER_MENU_TABS, links: TEACHER_NAV_LINKS },
+  staff:   { tabs: STAFF_MENU_TABS,   links: STAFF_NAV_LINKS   },
+};
+
+/* ---------------------------------------------------------
+ * DEV OVERRIDE
+ * 'student' | 'teacher' | 'staff' | null
+ * When non-null it wins over the logged-in role.
+ * ------------------------------------------------------- */
+const DEV_ROLE_OVERRIDE = 'teacher'; // ← set to null for real role
+
+/* =========================================================
+ * Helpers
+ * ======================================================= */
+
+function resolveMenu(role, explicitTabs, explicitLinks) {
+  const source =
+    (DEV_ROLE_OVERRIDE && MENU_BY_ROLE[DEV_ROLE_OVERRIDE]) ||
+    MENU_BY_ROLE[role] ||
+    MENU_BY_ROLE.student;
+
+  return {
+    tabs: explicitTabs ?? source.tabs,
+    links: explicitLinks ?? source.links,
+  };
+}
+
 const DEFAULT_USER = {
   name: 'Prince',
   role: 'Student',
@@ -38,6 +112,10 @@ const DEFAULT_USER = {
   academicYear: '2025/2026',
   avatar: null,
 };
+
+/* =========================================================
+ * Components
+ * ======================================================= */
 
 function InitialAvatar({ name, colors, size = 56 }) {
   const styles = makeStyles(colors);
@@ -57,9 +135,18 @@ export default function MenuDropdown({
   onNavigate,
   onPressSignOut,
   user = DEFAULT_USER,
+  tabs: tabsProp,
+  navLinks: navLinksProp,
 }) {
   const { colors } = useTheme();
   const styles = makeStyles(colors);
+  const { role } = React.useContext(LoginContext);
+
+  const { tabs: MENU_TABS, links: NAV_LINKS } = resolveMenu(
+    role,
+    tabsProp,
+    navLinksProp,
+  );
 
   if (!visible) return null;
 
