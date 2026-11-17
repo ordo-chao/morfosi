@@ -50,6 +50,9 @@ import StudentFlashcardsReview from './src/pages/students/flashcards/review/inde
 import StudentProgress from './src/pages/students/progress/index.jsx';
 import StudentCampus from './src/pages/students/campus/index.jsx';
 
+// Teacher 
+import TeacherDashboard from './src/pages/teachers/dashboard/index.jsx';
+
 const Stack = createStackNavigator();
 
 function Navigator() {
@@ -111,6 +114,7 @@ function Navigator() {
           <Stack.Screen name="Student-Revision-Progress"     component={StudentProgress}      options={{ headerShown: false }} />
           <Stack.Screen name="Student-Campus"        component={StudentCampus}        options={{ headerShown: false }} />
           {/* Teacher */}
+          <Stack.Screen name="Teacher-Dashboard"     component={TeacherDashboard}     options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
