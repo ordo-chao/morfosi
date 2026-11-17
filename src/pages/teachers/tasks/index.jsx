@@ -224,7 +224,7 @@ export default function TeacherTasks({ navigation }) {
                   if (task.status === 'draft') {
                     navigation?.navigate('Teacher-Tasks-Edit', { task });
                   } else {
-                    navigation?.navigate('Teacher-Tasks-Detail', { task });
+                    navigation?.navigate('Teacher-Task-Detail', { task });
                   }
                 }}
               />

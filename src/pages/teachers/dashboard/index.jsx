@@ -240,13 +240,13 @@ export default function TeacherDashboard({ navigation }) {
   const handleActionPress = (item) => {
     switch (item.cta) {
       case 'GRADE':
-        navigation?.navigate('Teacher-Task-Submissions', { taskId: item.id });
+        navigation?.navigate('Teacher-Task-Detail', { taskId: item.id });
         break;
       case 'MARK':
         navigation?.navigate('Teacher-Attendance-Mark', { classId: 'BIO-10B' });
         break;
       case 'PUBLISH':
-        navigation?.navigate('Teacher-Tasks-Detail', { taskId: item.id });
+        navigation?.navigate('Teacher-Task-Detail', { taskId: item.id });
         break;
       case 'REPLY':
         navigation?.navigate('Teacher-Messages', { threadId: item.id });

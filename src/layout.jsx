@@ -33,7 +33,7 @@ const STUDENT_NO_NAV_ROUTES = [
   'Student-Ai-Tutor', 'Student-Past-Papers', 'Student-Past-Papers-Detail',
   'Student-Past-Papers-Attempt', 'Student-Past-Papers-Review', 'Student-Revision-Progress',
   'Student-Revision', 'Student-Campus', 'Team-Detail', 'Fixtures', 'Teacher-Tasks-Edit' , 
-  'Teacher-Tasks-Create' ,'Teacher-Tasks-Detail'
+  'Teacher-Tasks-Create' ,'Teacher-Task-Detail'
 ];
 
 const STUDENT_NO_HEADER_ROUTES = [
@@ -62,7 +62,7 @@ const TEACHER_NO_NAV_ROUTES = [
   'Help & Support', 'Privacy Policy', 'About', 'Download my data',
   'Teacher-Class-Detail', 'Teacher-Class-Roster', 'Teacher-Student-Detail',
   'Teacher-Materials', 'Teacher-Materials-Create', 'Teacher-Materials-Edit',
-  'Teacher-Tasks-Detail', 'Teacher-Task-Submissions', 'Teacher-Submission-Grade',
+  'Teacher-Task-Detail', 'Teacher-Task-Detail', 'Teacher-Submission-Grade',
   'Teacher-Tasks-Create', 'Teacher-Grades', 'Teacher-Grades-Entry',
   'Teacher-Grades-Report', 'Teacher-Attendance', 'Teacher-Attendance-Mark',
   'Teacher-Attendance-History', 'Teacher-Announcements',

@@ -122,7 +122,7 @@ function Navigator() {
           {/* Teacher */}
           <Stack.Screen name="Teacher-Dashboard"     component={TeacherDashboard}     options={{ headerShown: false }} />
           <Stack.Screen name="Teacher-Tasks"       component={TeacherTasks}       options={{ headerShown: false }} />
-          <Stack.Screen name="Teacher-Tasks-Detail" component={TeacherTaskDetail} options={{ headerShown: false }} />
+          <Stack.Screen name="Teacher-Task-Detail" component={TeacherTaskDetail} options={{ headerShown: false }} />
           <Stack.Screen name="Teacher-Tasks-Create" component={TeacherTaskForm} options={{ headerShown: false }} />
           <Stack.Screen name="Teacher-Tasks-Edit" component={TeacherTaskForm} options={{ headerShown: false }} />
           <Stack.Screen name="Teacher-Classes"     component={TeacherClasses}     options={{ headerShown: false }} />
