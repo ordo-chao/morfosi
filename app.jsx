@@ -57,6 +57,8 @@ import TeacherTaskDetail from './src/pages/teachers/tasks/task-detail/index.jsx'
 import TeacherTaskForm from './src/pages/teachers/tasks/task-form/index.jsx';
 import TeacherClasses     from './src/pages/teachers/classes/index.jsx';
 import TeacherClassDetail from './src/pages/teachers/classes/class-detail/index.jsx';
+import TeacherProfile     from './src/pages/teachers/profile/index.jsx';
+import TeacherProfileEdit from './src/pages/teachers/profile/edit/index.jsx';
 
 const Stack = createStackNavigator();
 
@@ -127,6 +129,8 @@ function Navigator() {
           <Stack.Screen name="Teacher-Tasks-Edit" component={TeacherTaskForm} options={{ headerShown: false }} />
           <Stack.Screen name="Teacher-Classes"     component={TeacherClasses}     options={{ headerShown: false }} />
           <Stack.Screen name="Teacher-Class-Detail" component={TeacherClassDetail} options={{ headerShown: false }} />
+          <Stack.Screen name="Teacher-Profile" component={TeacherProfile} options={{ headerShown: false }} />
+          <Stack.Screen name="Teacher-Profile-Edit" component={TeacherProfileEdit} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
