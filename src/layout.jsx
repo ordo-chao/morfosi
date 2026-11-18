@@ -33,7 +33,7 @@ const STUDENT_NO_NAV_ROUTES = [
   'Student-Ai-Tutor', 'Student-Past-Papers', 'Student-Past-Papers-Detail',
   'Student-Past-Papers-Attempt', 'Student-Past-Papers-Review', 'Student-Revision-Progress',
   'Student-Revision', 'Student-Campus', 'Team-Detail', 'Fixtures', 'Teacher-Tasks-Edit' , 
-  'Teacher-Tasks-Create' ,'Teacher-Task-Detail'
+  'Teacher-Tasks-Create' ,'Teacher-Task-Detail' , 'Teacher-Notifications'
 ];
 
 const STUDENT_NO_HEADER_ROUTES = [
@@ -65,9 +65,10 @@ const TEACHER_NO_NAV_ROUTES = [
   'Teacher-Task-Detail', 'Teacher-Task-Detail', 'Teacher-Submission-Grade',
   'Teacher-Tasks-Create', 'Teacher-Grades', 'Teacher-Grades-Entry',
   'Teacher-Grades-Report', 'Teacher-Attendance', 'Teacher-Attendance-Mark',
-  'Teacher-Attendance-History', 'Teacher-Announcements',
-  'Teacher-Announcements-Create',
+  'Teacher-Attendance-History', 'Teacher-Announcements', 'Teacher-Club-Attendance',
+  'Teacher-Announcements-Create', 'Teacher-Clubs', 'Teacher-Club-Detail',
   'Teacher-Campus', 'Team-Detail', 'Fixtures', 'Member-List',
+  'Teacher-Club-Announcements' , 'Teacher-Club-Manage'
 ];
 
 const TEACHER_NO_HEADER_ROUTES = [
@@ -78,7 +79,7 @@ const TEACHER_NO_HEADER_ROUTES = [
 
 const TEACHER_MENU_TAB_ROUTES = {
   academic:   'Teacher-Dashboard',
-  students:   'Teacher-Classes',
+  students:   'Teacher-Clubs',
   resources:  'Teacher-Materials',
   activities: 'Teacher-Campus',
 };
