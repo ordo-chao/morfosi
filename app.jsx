@@ -59,6 +59,7 @@ import TeacherClasses     from './src/pages/teachers/classes/index.jsx';
 import TeacherClassDetail from './src/pages/teachers/classes/class-detail/index.jsx';
 import TeacherProfile     from './src/pages/teachers/profile/index.jsx';
 import TeacherProfileEdit from './src/pages/teachers/profile/edit/index.jsx';
+import TeacherNotifications from './src/pages/teachers/notifications/index.jsx';
 
 const Stack = createStackNavigator();
 
@@ -131,6 +132,7 @@ function Navigator() {
           <Stack.Screen name="Teacher-Class-Detail" component={TeacherClassDetail} options={{ headerShown: false }} />
           <Stack.Screen name="Teacher-Profile" component={TeacherProfile} options={{ headerShown: false }} />
           <Stack.Screen name="Teacher-Profile-Edit" component={TeacherProfileEdit} options={{ headerShown: false }} />
+          <Stack.Screen name="Teacher-Notifications" component={TeacherNotifications} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

@@ -33,7 +33,7 @@ const STUDENT_NO_NAV_ROUTES = [
   'Student-Ai-Tutor', 'Student-Past-Papers', 'Student-Past-Papers-Detail',
   'Student-Past-Papers-Attempt', 'Student-Past-Papers-Review', 'Student-Revision-Progress',
   'Student-Revision', 'Student-Campus', 'Team-Detail', 'Fixtures', 'Teacher-Tasks-Edit' , 
-  'Teacher-Tasks-Create' ,'Teacher-Task-Detail'
+  'Teacher-Tasks-Create' ,'Teacher-Task-Detail' , 'Teacher-Notifications'
 ];
 
 const STUDENT_NO_HEADER_ROUTES = [
