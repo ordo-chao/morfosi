@@ -60,6 +60,11 @@ import TeacherClassDetail from './src/pages/teachers/classes/class-detail/index.
 import TeacherProfile     from './src/pages/teachers/profile/index.jsx';
 import TeacherProfileEdit from './src/pages/teachers/profile/edit/index.jsx';
 import TeacherNotifications from './src/pages/teachers/notifications/index.jsx';
+import TeacherClubs from './src/pages/teachers/clubs/index.jsx';
+import TeacherClubsDetail from './src/pages/teachers/clubs/detail/index.jsx';
+import TeacherClubManage from './src/pages/teachers/clubs/manage/index.jsx';
+import TeacherClubAttendace from './src/pages/teachers/clubs/attendance/index.jsx';
+import TeacherClubAnnouncements from './src/pages/teachers/clubs/announcement/index.jsx';
 
 const Stack = createStackNavigator();
 
@@ -133,6 +138,11 @@ function Navigator() {
           <Stack.Screen name="Teacher-Profile" component={TeacherProfile} options={{ headerShown: false }} />
           <Stack.Screen name="Teacher-Profile-Edit" component={TeacherProfileEdit} options={{ headerShown: false }} />
           <Stack.Screen name="Teacher-Notifications" component={TeacherNotifications} options={{ headerShown: false }} />
+          <Stack.Screen name="Teacher-Clubs" component={TeacherClubs} options={{ headerShown: false }} />
+          <Stack.Screen name="Teacher-Club-Detail" component={TeacherClubsDetail} options={{ headerShown: false }} />
+          <Stack.Screen name="Teacher-Club-Manage" component={TeacherClubManage} options={{ headerShown: false }} />
+          <Stack.Screen name="Teacher-Club-Attendance" component={TeacherClubAttendace} options={{ headerShown: false }} />
+          <Stack.Screen name="Teacher-Club-Announcements" component={TeacherClubAnnouncements} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
