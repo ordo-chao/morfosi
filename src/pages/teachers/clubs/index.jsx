@@ -145,7 +145,7 @@ export default function TeacherClubs({ navigation }) {
   };
 
   const handleOpenEvent = (event) => {
-    navigation?.navigate('Teacher-ClubEvent', { eventId: event.id });
+    navigation?.navigate('Teacher-Club-Event', { eventId: event.id });
   };
 
   return (
@@ -192,7 +192,7 @@ export default function TeacherClubs({ navigation }) {
             <EventsView
               events={EVENTS}
               onOpen={handleOpenEvent}
-              onCreate={() => navigation?.navigate('Teacher-ClubEvent-Create')}
+              onCreate={() => navigation?.navigate('Teacher-Club-Event-Create')}
             />
           </View>
 

@@ -89,11 +89,11 @@ export default function TeacherClubAnnouncements({ route, navigation }) {
   };
 
   const goCreate = () => {
-    navigation?.navigate('Teacher-Club-Announcement-Create', { clubId: club.id });
+    navigation?.navigate('Teacher-Club-Announcements-Form', { clubId: club.id });
   };
 
   const openAnnouncement = (item) => {
-    navigation?.navigate('Teacher-Club-Announcement-Create', {
+    navigation?.navigate('Teacher-Club-Announcements-Form', {
       clubId: club.id,
       announcement: item,
     });

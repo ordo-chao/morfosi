@@ -57,38 +57,93 @@ const STUDENT_ROUTE_TO_MENU_TAB = {
 };
 
 /* ---------- TEACHER ---------- */
+/* ---------- TEACHER ---------- */
 const TEACHER_NO_NAV_ROUTES = [
   'Teacher-Profile-Edit', 'Teacher-Notifications', 'Language', 'Theme',
   'Help & Support', 'Privacy Policy', 'About', 'Download my data',
   'Teacher-Class-Detail', 'Teacher-Class-Roster', 'Teacher-Student-Detail',
   'Teacher-Materials', 'Teacher-Materials-Create', 'Teacher-Materials-Edit',
-  'Teacher-Task-Detail', 'Teacher-Task-Detail', 'Teacher-Submission-Grade',
-  'Teacher-Tasks-Create', 'Teacher-Grades', 'Teacher-Grades-Entry',
-  'Teacher-Grades-Report', 'Teacher-Attendance', 'Teacher-Attendance-Mark',
-  'Teacher-Attendance-History', 'Teacher-Announcements', 'Teacher-Club-Attendance',
-  'Teacher-Announcements-Create', 'Teacher-Clubs', 'Teacher-Club-Detail',
+  'Teacher-Tasks-Detail', 'Teacher-Task-Detail', 'Teacher-Submission-Grade',
+  'Teacher-Tasks-Create',
+  'Teacher-Grades', 'Teacher-Grades-Entry', 'Teacher-Grades-Report',
+  'Teacher-Attendance', 'Teacher-Attendance-Mark', 'Teacher-Attendance-History',
+  'Teacher-Announcements', 'Teacher-Announcements-Create',
+
+  // Clubs (every child screen too)
+  'Teacher-Clubs',
+  'Teacher-Club-Detail',
+  'Teacher-Club-Manage',
+  'Teacher-Club-Attendance',
+  'Teacher-Club-Announcements',
+  'Teacher-Club-Announcements-Form',
+  'Teacher-Club-Announcement-Create',
+  'Teacher-Club-Event',
+  'Teacher-ClubEvent',
+  'Teacher-ClubEvent-Create',
+
   'Teacher-Campus', 'Team-Detail', 'Fixtures', 'Member-List',
-  'Teacher-Club-Announcements' , 'Teacher-Club-Manage'
 ];
 
 const TEACHER_NO_HEADER_ROUTES = [
   'Teacher-Attendance-Mark', 'Teacher-Submission-Grade',
   'Teacher-Tasks-Create', 'Teacher-Materials-Create', 'Teacher-Materials-Edit',
   'Teacher-Grades-Entry', 'Team-Detail', 'Fixtures',
+  'Teacher-Club-Manage',
+  'Teacher-Club-Announcement-Create',
+  'Teacher-ClubEvent-Create',
 ];
 
 const TEACHER_MENU_TAB_ROUTES = {
   academic:   'Teacher-Dashboard',
-  students:   'Teacher-Clubs',
+  clubs:      'Teacher-Clubs',
   resources:  'Teacher-Materials',
   activities: 'Teacher-Campus',
 };
 
 const TEACHER_ROUTE_TO_MENU_TAB = {
-  'Teacher-Dashboard': 'academic',
-  'Teacher-Classes':   'students',
-  'Teacher-Materials': 'resources',
+  // academic
+  'Teacher-Dashboard':       'academic',
+  'Teacher-Classes':         'academic',
+  'Teacher-Class-Detail':    'academic',
+  'Teacher-Class-Roster':    'academic',
+  'Teacher-Student-Detail':  'academic',
+  'Teacher-Tasks':           'academic',
+  'Teacher-Tasks-Detail':    'academic',
+  'Teacher-Task-Detail':     'academic',
+  'Teacher-Tasks-Create':    'academic',
+  'Teacher-Tasks-Edit':      'academic',
+  'Teacher-Submission-Grade':'academic',
+  'Teacher-Grades':          'academic',
+  'Teacher-Grades-Entry':    'academic',
+  'Teacher-Grades-Report':   'academic',
+  'Teacher-Attendance':      'academic',
+  'Teacher-Attendance-Mark': 'academic',
+  'Teacher-Attendance-History':'academic',
+  'Teacher-Announcements':   'academic',
+  'Teacher-Announcements-Create':'academic',
+
+  // clubs (every child screen — this is the actual fix)
+  'Teacher-Clubs':                    'clubs',
+  'Teacher-Club-Detail':              'clubs',
+  'Teacher-Club-Manage':              'clubs',
+  'Teacher-Club-Attendance':          'clubs',
+  'Teacher-Club-Announcements':       'clubs',
+  'Teacher-Club-Announcements-Form':  'clubs',
+  'Teacher-Club-Announcement-Create': 'clubs',
+  'Teacher-Club-Event':               'clubs',
+  'Teacher-ClubEvent':                'clubs',
+  'Teacher-ClubEvent-Create':         'clubs',
+
+  // resources
+  'Teacher-Materials':        'resources',
+  'Teacher-Materials-Create': 'resources',
+  'Teacher-Materials-Edit':   'resources',
+
+  // activities (Campus)
   'Teacher-Campus':    'activities',
+  'Team-Detail':       'activities',
+  'Fixtures':          'activities',
+  'Member-List':       'activities',
 };
 
 /* ---------- STAFF ---------- */

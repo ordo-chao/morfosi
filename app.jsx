@@ -65,6 +65,8 @@ import TeacherClubsDetail from './src/pages/teachers/clubs/detail/index.jsx';
 import TeacherClubManage from './src/pages/teachers/clubs/manage/index.jsx';
 import TeacherClubAttendace from './src/pages/teachers/clubs/attendance/index.jsx';
 import TeacherClubAnnouncements from './src/pages/teachers/clubs/announcement/index.jsx';
+import TeacherClubAnnoucementsForm from './src/pages/teachers/clubs/announcement/form/index.jsx';
+import TeacherClubEvent from './src/pages/teachers/clubs/event/index.jsx';
 
 const Stack = createStackNavigator();
 
@@ -143,6 +145,8 @@ function Navigator() {
           <Stack.Screen name="Teacher-Club-Manage" component={TeacherClubManage} options={{ headerShown: false }} />
           <Stack.Screen name="Teacher-Club-Attendance" component={TeacherClubAttendace} options={{ headerShown: false }} />
           <Stack.Screen name="Teacher-Club-Announcements" component={TeacherClubAnnouncements} options={{ headerShown: false }} />
+          <Stack.Screen name="Teacher-Club-Announcements-Form" component={TeacherClubAnnoucementsForm} options={{ headerShown: false }} />
+          <Stack.Screen name="Teacher-Club-Event" component={TeacherClubEvent} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
