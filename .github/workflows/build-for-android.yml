@@ -7,17 +7,12 @@ on:
       - staging
     tags:
       - 'v*'
-  pull_request:
-    types: [closed]
-    branches:
-      - main
-      - staging
   workflow_dispatch:
 
 jobs:
   # =========================================================
   # JOB 1 — Build & Publish APK
-  # Runs on: push (main/staging/tags), PR merge, manual dispatch
+  # Runs on: push (main/staging/tags, including merged PRs), manual dispatch
   # =========================================================
   create-release:
     name: Compile and Release Android App
@@ -168,41 +163,13 @@ jobs:
           prerelease: ${{ github.ref_name == 'staging' }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      # =========================================================
-      # Only ONE of these two Discord steps fires per run.
-      # Both are enabled — no `if` gates that would skip them.
-      # =========================================================
-
-      # Runs ONLY when the current event was a PR merge
-      - name: Send Discord Notification (PR merge — full PR body)
-        if: github.event_name == 'pull_request'
+      - name: Send Discord Notification (Release Ready)
         uses: Ilshidur/action-discord@master
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         with:
           args: |
-            **@here stay alert because there is a deployment to ${{ github.event.pull_request.base.ref }}** 🚀
-            **Repo**: [${{ github.repository }}](${{ github.server_url }}/${{ github.repository }})
-            **PR**: [#${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }})
-            **Author**: `${{ github.event.pull_request.user.login }}`
-            **Commit**: `${{ github.sha }}`
-
-            **Title**: ${{ github.event.pull_request.title }}
-
-            **Description**:
-            ${{ github.event.pull_request.body }}
-
-            [View Commit](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})
-
-      # Runs for direct pushes / tags / manual dispatch
-      - name: Send Discord Notification (push / tag / manual)
-        if: github.event_name != 'pull_request'
-        uses: Ilshidur/action-discord@master
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        with:
-          args: |
-            **@here New Android release is ready** 🚀
+            **@here New Android release is ready** 
             **App**: `${{ github.repository }}`
             **Release**: `${{ steps.version_tag.outputs.TAG }}`
             **Branch**: `${{ github.ref_name }}`
@@ -215,7 +182,6 @@ jobs:
 
             **Download APK**: ${{ steps.create_release.outputs.html_url }}
 
-            [View workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
 
       - name: Notify Discord on failure
         if: failure()
@@ -228,69 +194,3 @@ jobs:
             **App**: `${{ github.repository }}`
             **Branch**: `${{ github.ref_name }}`
             **Commit**: `${{ github.sha }}`
-
-            🔗 [Check logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
-
-  # =========================================================
-  # JOB 2 — PR merge Discord notifier (NO skip)
-  # Runs on EVERY trigger — even push. Internally guards inside the step.
-  # =========================================================
-  notify-pr-merge:
-    name: Notify Discord on PR merge
-    runs-on: ubuntu-latest
-    steps:
-      - name: Parse PR details
-        id: pr
-        shell: bash
-        env:
-          PR_TITLE: ${{ github.event.pull_request.title }}
-          PR_BODY: ${{ github.event.pull_request.body }}
-          MERGE_SHA: ${{ github.event.pull_request.merge_commit_sha }}
-          AUTHOR: ${{ github.event.pull_request.user.login }}
-          NUMBER: ${{ github.event.pull_request.number }}
-          URL: ${{ github.event.pull_request.html_url }}
-          BASE: ${{ github.event.pull_request.base.ref }}
-          MERGED: ${{ github.event.pull_request.merged }}
-          EVENT: ${{ github.event_name }}
-        run: |
-          # If not a merged PR, capture "skip" state as outputs and exit 0
-          if [ "$EVENT" != "pull_request" ] || [ "$MERGED" != "true" ]; then
-            echo "active=false" >> "$GITHUB_OUTPUT"
-            echo "Not a merged PR — no Discord message from this job."
-            exit 0
-          fi
-
-          [ -z "$PR_TITLE" ] && PR_TITLE="(no title)"
-          [ -z "$PR_BODY" ]  && PR_BODY="(no description)"
-          [ -z "$AUTHOR" ]   && AUTHOR="(unknown)"
-
-          echo "active=true" >> "$GITHUB_OUTPUT"
-          {
-            echo "title<<EOF"; echo "$PR_TITLE"; echo "EOF"
-            echo "body<<EOF";  echo "$PR_BODY";  echo "EOF"
-            echo "sha<<EOF";   echo "$MERGE_SHA";echo "EOF"
-            echo "author<<EOF";echo "$AUTHOR";   echo "EOF"
-            echo "number<<EOF";echo "$NUMBER";   echo "EOF"
-            echo "url<<EOF";   echo "$URL";      echo "EOF"
-            echo "base<<EOF";  echo "$BASE";     echo "EOF"
-          } >> "$GITHUB_OUTPUT"
-
-      - name: Send Discord PR-merge notification
-        if: steps.pr.outputs.active == 'true'
-        uses: Ilshidur/action-discord@master
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        with:
-          args: |
-            **@here PR merged into ${{ steps.pr.outputs.base }}** 
-            **Repo**: [${{ github.repository }}](${{ github.server_url }}/${{ github.repository }})
-            **PR**: [#${{ steps.pr.outputs.number }}](${{ steps.pr.outputs.url }})
-            **Author**: `${{ steps.pr.outputs.author }}`
-            **Commit**: `${{ steps.pr.outputs.sha }}`
-
-            **Title**: ${{ steps.pr.outputs.title }}
-
-            **Description**:
-            ${{ steps.pr.outputs.body }}
-
-            [View Commit](${{ github.server_url }}/${{ github.repository }}/commit/${{ steps.pr.outputs.sha }})
