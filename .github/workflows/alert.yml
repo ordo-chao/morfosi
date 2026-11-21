@@ -9,19 +9,56 @@ jobs:
   notify-discord:
     runs-on: ubuntu-latest
     steps:
+      # =========================================================
+      # NEW: split commit message into title + description
+      # =========================================================
+      - name: Parse commit message
+        id: commit
+        shell: bash
+        env:
+          FULL: ${{ github.event.head_commit.message }}
+          AUTHOR: ${{ github.event.head_commit.author.name }}
+        run: |
+          if [ -z "$FULL" ]; then
+            FULL="(no commit message)"
+          fi
+          if [ -z "$AUTHOR" ]; then
+            AUTHOR="${{ github.actor }}"
+          fi
+
+          TITLE=$(printf '%s\n' "$FULL" | head -n1)
+          BODY=$(printf '%s\n' "$FULL" | awk 'BEGIN{b=0} /^$/{b=1; next} b{print}')
+
+          [ -z "$TITLE" ] && TITLE="(no title)"
+          [ -z "$BODY" ]  && BODY="(no description)"
+
+          {
+            echo "title<<EOF"
+            echo "$TITLE"
+            echo "EOF"
+            echo "body<<EOF"
+            echo "$BODY"
+            echo "EOF"
+            echo "author<<EOF"
+            echo "$AUTHOR"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Send Discord Notification
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        run: |
-          curl -fsS -X POST "$DISCORD_WEBHOOK" \
-            -H "Content-Type: application/json" \
-            -d "$(jq -n \
-              --arg repo "${{ github.repository }}" \
-              --arg actor "${{ github.actor }}" \
-              --arg branch "${{ github.ref_name }}" \
-              --arg sha "${{ github.sha }}" \
-              --arg msg "${{ github.event.head_commit.message }}" \
-              --arg author "${{ github.event.head_commit.author.name }}" \
-              --arg tree "${{ github.server_url }}/${{ github.repository }}/tree/${{ github.ref_name }}" \
-              --arg commit "${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}" \
-              '{content: ("**@here stay alert because there is a deployment to main**\n**New push to `" + $repo + "`**\n**Pusher**: `" + $actor + "`\n**Branch**: `" + $branch + "`\n**Commit**: `" + $sha + "`\n**Message**: `" + $msg + "`\n**Repo**: [" + $repo + "](" + $tree + ")\n**Author**: `" + $author + "`\n\n[View Commit](" + $commit + ")")}')"
+        with:
+          args: |
+            **@here stay alert because there is a deployment to main**
+            **New push to ${{ github.repository }}**
+            **Pusher**: `${{ github.actor }}`
+            **Branch**: `${{ github.ref_name }}`
+            **Commit**: `${{ github.sha }}`
+            **Author**: `${{ steps.commit.outputs.author }}`
+            **Title**: ${{ steps.commit.outputs.title }}
+
+            **Description**:
+            ${{ steps.commit.outputs.body }}
+
+            **Repo**: [${{ github.repository }}](${{ github.server_url }}/${{ github.repository }}/tree/${{ github.ref_name }})
+            [View Commit](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})

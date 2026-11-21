@@ -274,7 +274,7 @@ export default function TeacherClubManage({ route, navigation }) {
   };
 
   const postAnnouncement = () => {
-    navigation?.navigate('Teacher-Club-Announcement-Create', { clubId: initial.id });
+    navigation?.navigate('Teacher-Club-Announcements-Form', { clubId: initial.id });
   };
 
   const archiveClub = () => {

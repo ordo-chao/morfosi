@@ -40,7 +40,7 @@ export const STUDENT_NAV_LINKS = [
 /* ---------- TEACHER ---------- */
 export const TEACHER_MENU_TABS = [
   { key: 'academic',   label: 'Academic',    sub: 'Classes & Grading',       icon: 'school-outline',    lib: 'ion' },
-  { key: 'students',   label: 'Clubs',    sub: 'Societies & Activities',   icon: 'people-outline',    lib: 'ion' },
+  { key: 'clubs',   label: 'Clubs',    sub: 'Societies & Activities',   icon: 'people-outline',    lib: 'ion' },
   { key: 'resources',  label: 'Resources',   sub: 'Materials & Question Bank', icon: 'book-open-outline', lib: 'material' },
   { key: 'activities', label: 'Campus Life', sub: 'Teams, Clubs & Events',   icon: 'trophy-outline',    lib: 'ion' },
 ];

@@ -297,7 +297,7 @@ export default function TeacherClubDetail({ route, navigation }) {
   };
 
   const handleManageEvent = (event) => {
-    navigation?.navigate('Teacher-ClubEvent', { eventId: event.id, owned: true });
+    navigation?.navigate('Teacher-Club-Event', { eventId: event.id, owned: true });
   };
 
   const handleReassign = (leader) => {
@@ -442,7 +442,7 @@ export default function TeacherClubDetail({ route, navigation }) {
                 <Text style={styles.sectionTitle}>UPCOMING EVENTS</Text>
                 {isPatron && (
                   <TouchableOpacity
-                    onPress={() => navigation?.navigate('Teacher-ClubEvent-Create', { clubId: club.id })}
+                    onPress={() => navigation?.navigate('Teacher-Club-Event-Create', { clubId: club.id })}
                   >
                     <Text style={styles.sectionAction}>+ CREATE</Text>
                   </TouchableOpacity>
@@ -497,7 +497,7 @@ export default function TeacherClubDetail({ route, navigation }) {
             <Text style={styles.sectionTitle}>ANNOUNCEMENTS</Text>
             {isPatron && (
               <TouchableOpacity
-                onPress={() => navigation?.navigate('Teacher-Club-Announcement-Create', { clubId: club.id })}
+                onPress={() => navigation?.navigate('Teacher-Club-Announcements-Form', { clubId: club.id })}
               >
                 <Text style={styles.sectionAction}>+ POST</Text>
               </TouchableOpacity>

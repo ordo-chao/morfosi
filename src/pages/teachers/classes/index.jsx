@@ -307,7 +307,7 @@ function ClassBlockDetail({ visible, cls, period, onClose, navigation }) {
   const goToMaterials = () => {
     if (!cls) return;
     onClose();
-    navigation?.navigate('Teacher-Materials-Create', { classId: cls.id });
+    navigation?.navigate('Teacher-Materials-Form', { classId: cls.id });
   };
 
   return (
