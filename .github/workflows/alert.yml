@@ -9,9 +9,6 @@ jobs:
   notify-discord:
     runs-on: ubuntu-latest
     steps:
-      # =========================================================
-      # NEW: split commit message into title + description
-      # =========================================================
       - name: Parse commit message
         id: commit
         shell: bash
@@ -25,13 +22,10 @@ jobs:
           if [ -z "$AUTHOR" ]; then
             AUTHOR="${{ github.actor }}"
           fi
-
           TITLE=$(printf '%s\n' "$FULL" | head -n1)
           BODY=$(printf '%s\n' "$FULL" | awk 'BEGIN{b=0} /^$/{b=1; next} b{print}')
-
           [ -z "$TITLE" ] && TITLE="(no title)"
           [ -z "$BODY" ]  && BODY="(no description)"
-
           {
             echo "title<<EOF"
             echo "$TITLE"
@@ -45,6 +39,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Send Discord Notification
+        uses: Ilshidur/action-discord@master    # ← this line was missing
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         with:
