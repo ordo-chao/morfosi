@@ -313,7 +313,7 @@ export default function TeacherDashboard({ navigation }) {
           <QuickAction
             icon="cloud-upload-outline"
             label="Upload"
-            onPress={() => navigation?.navigate('Teacher-Materials-Create')}
+            onPress={() => navigation?.navigate('Teacher-Materials-Form')}
           />
         </View>
 

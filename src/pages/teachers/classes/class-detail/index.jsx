@@ -177,7 +177,7 @@ export default function TeacherClassDetail({ route, navigation }) {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.quickBtn}
-              onPress={() => navigation?.navigate('Teacher-Materials-Create', { classId })}
+              onPress={() => navigation?.navigate('Teacher-Materials-Form', { classId })}
             >
               <Ionicons name="cloud-upload-outline" size={18} color={colors.accent} />
               <Text style={styles.quickBtnText}>UPLOAD</Text>

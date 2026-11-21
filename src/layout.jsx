@@ -62,12 +62,12 @@ const TEACHER_NO_NAV_ROUTES = [
   'Teacher-Profile-Edit', 'Teacher-Notifications', 'Language', 'Theme',
   'Help & Support', 'Privacy Policy', 'About', 'Download my data',
   'Teacher-Class-Detail', 'Teacher-Class-Roster', 'Teacher-Student-Detail',
-  'Teacher-Materials', 'Teacher-Materials-Create', 'Teacher-Materials-Edit',
+  'Teacher-Resources', 'Teacher-Materials-Form', 'Teacher-Materials-Edit',
   'Teacher-Tasks-Detail', 'Teacher-Task-Detail', 'Teacher-Submission-Grade',
   'Teacher-Tasks-Create',
   'Teacher-Grades', 'Teacher-Grades-Entry', 'Teacher-Grades-Report',
   'Teacher-Attendance', 'Teacher-Attendance-Mark', 'Teacher-Attendance-History',
-  'Teacher-Announcements', 'Teacher-Announcements-Create',
+  'Teacher-Announcements', 'Teacher-Announcements-Create', 'Teacher-Material-Detail',
 
   // Clubs (every child screen too)
   'Teacher-Clubs',
@@ -86,7 +86,7 @@ const TEACHER_NO_NAV_ROUTES = [
 
 const TEACHER_NO_HEADER_ROUTES = [
   'Teacher-Attendance-Mark', 'Teacher-Submission-Grade',
-  'Teacher-Tasks-Create', 'Teacher-Materials-Create', 'Teacher-Materials-Edit',
+  'Teacher-Tasks-Create', 'Teacher-Materials-Form', 'Teacher-Materials-Edit',
   'Teacher-Grades-Entry', 'Team-Detail', 'Fixtures',
   'Teacher-Club-Manage',
   'Teacher-Club-Announcement-Create',
@@ -96,7 +96,7 @@ const TEACHER_NO_HEADER_ROUTES = [
 const TEACHER_MENU_TAB_ROUTES = {
   academic:   'Teacher-Dashboard',
   clubs:      'Teacher-Clubs',
-  resources:  'Teacher-Materials',
+  resources:  'Teacher-Resources',
   activities: 'Teacher-Campus',
 };
 
@@ -135,9 +135,10 @@ const TEACHER_ROUTE_TO_MENU_TAB = {
   'Teacher-ClubEvent-Create':         'clubs',
 
   // resources
-  'Teacher-Materials':        'resources',
-  'Teacher-Materials-Create': 'resources',
-  'Teacher-Materials-Edit':   'resources',
+  'Teacher-Resources':        'resources',
+  'Teacher-Materials-Form': 'resources',
+  'Teacher-Material-Detail':   'resources',
+  'Teacher-Question-Form':   'resources',
 
   // activities (Campus)
   'Teacher-Campus':    'activities',

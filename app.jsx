@@ -67,6 +67,10 @@ import TeacherClubAttendace from './src/pages/teachers/clubs/attendance/index.js
 import TeacherClubAnnouncements from './src/pages/teachers/clubs/announcement/index.jsx';
 import TeacherClubAnnoucementsForm from './src/pages/teachers/clubs/announcement/form/index.jsx';
 import TeacherClubEvent from './src/pages/teachers/clubs/event/index.jsx';
+import TeacherResources from './src/pages/teachers/resources/index.jsx'
+import TeacherMaterialsCreate       from './src/pages/teachers/resources/materials/form/index.jsx';
+import TeacherMaterialDetail        from './src/pages/teachers/resources/materials/detail/index.jsx';
+import TeacherQuestionCreate        from './src/pages/teachers/resources/question-bank/form/index.jsx'
 
 const Stack = createStackNavigator();
 
@@ -147,6 +151,10 @@ function Navigator() {
           <Stack.Screen name="Teacher-Club-Announcements" component={TeacherClubAnnouncements} options={{ headerShown: false }} />
           <Stack.Screen name="Teacher-Club-Announcements-Form" component={TeacherClubAnnoucementsForm} options={{ headerShown: false }} />
           <Stack.Screen name="Teacher-Club-Event" component={TeacherClubEvent} options={{ headerShown: false }} />
+          <Stack.Screen name="Teacher-Resources"          component={TeacherResources}        options={{ headerShown: false }} />
+          <Stack.Screen name="Teacher-Materials-Form"   component={TeacherMaterialsCreate}  options={{ headerShown: false }} />
+          <Stack.Screen name="Teacher-Material-Detail"    component={TeacherMaterialDetail}   options={{ headerShown: false }} />
+          <Stack.Screen name="Teacher-Question-Form"    component={TeacherQuestionCreate}   options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
