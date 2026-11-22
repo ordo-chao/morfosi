@@ -53,7 +53,7 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       # =========================================================
-      # FIREBASE & ENVIRONMENT CONFIGURATION
+      # FIREBASE, SIGNING & ENVIRONMENT CONFIGURATION
       # =========================================================
       - name: Write google-services.json
         env:
@@ -79,6 +79,28 @@ jobs:
 
           printf '%s' "$FIREBASE_SERVICE_ACCOUNT_B64" | base64 -d > "$RUNNER_TEMP/firebase-sa.json"
           echo "GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/firebase-sa.json" >> "$GITHUB_ENV"
+
+      - name: Configure Android Release Signing Keystore
+        env:
+          MYAPP_UPLOAD_KEYSTORE_B64: ${{ secrets.MYAPP_UPLOAD_KEYSTORE_B64 }}
+          MYAPP_UPLOAD_KEY_ALIAS: ${{ secrets.MYAPP_UPLOAD_KEY_ALIAS }}
+          MYAPP_UPLOAD_STORE_PASSWORD: ${{ secrets.MYAPP_UPLOAD_STORE_PASSWORD }}
+          MYAPP_UPLOAD_KEY_PASSWORD: ${{ secrets.MYAPP_UPLOAD_KEY_PASSWORD }}
+        run: |
+          if [ -n "$MYAPP_UPLOAD_KEYSTORE_B64" ]; then
+            KEYSTORE_PATH="$RUNNER_TEMP/upload-keystore.keystore"
+            printf '%s' "$MYAPP_UPLOAD_KEYSTORE_B64" | base64 -d > "$KEYSTORE_PATH"
+            chmod 600 "$KEYSTORE_PATH"
+
+            echo "UPLOAD_KEYSTORE_PATH=$KEYSTORE_PATH" >> "$GITHUB_ENV"
+            echo "ORG_GRADLE_PROJECT_MYAPP_UPLOAD_STORE_FILE=$KEYSTORE_PATH" >> "$GITHUB_ENV"
+            echo "ORG_GRADLE_PROJECT_MYAPP_UPLOAD_KEY_ALIAS=$MYAPP_UPLOAD_KEY_ALIAS" >> "$GITHUB_ENV"
+            echo "ORG_GRADLE_PROJECT_MYAPP_UPLOAD_STORE_PASSWORD=$MYAPP_UPLOAD_STORE_PASSWORD" >> "$GITHUB_ENV"
+            echo "ORG_GRADLE_PROJECT_MYAPP_UPLOAD_KEY_PASSWORD=$MYAPP_UPLOAD_KEY_PASSWORD" >> "$GITHUB_ENV"
+            echo "Configured release signing keystore from secrets."
+          else
+            echo "MYAPP_UPLOAD_KEYSTORE_B64 not set; release build will fall back to debug signing config."
+          fi
 
       - name: Create .env file
         env:
@@ -137,9 +159,11 @@ jobs:
             --no-daemon \
             --stacktrace
 
-      - name: Remove google-services.json from runner
+      - name: Clean up temporary credentials from runner
         if: always()
-        run: rm -f android/app/google-services.json
+        run: |
+          rm -f android/app/google-services.json
+          rm -f "$RUNNER_TEMP/upload-keystore.keystore"
 
       - name: Verify and Rename Single APK
         id: apk_name
