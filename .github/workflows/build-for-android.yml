@@ -11,7 +11,7 @@ on:
 
 jobs:
   # =========================================================
-  # JOB 1 — Build & Publish APK
+  # JOB 1 — Build Once, Distribute to Firebase & GitHub Release
   # =========================================================
   create-release:
     name: Compile and Release Android App
@@ -37,6 +37,12 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
+      - name: Setup Ruby & Fastlane
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+
       - name: Setup Gradle Cache
         uses: gradle/actions/setup-gradle@v4
         with:
@@ -47,8 +53,33 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       # =========================================================
-      # ENVIRONMENT CONFIGURATION
+      # FIREBASE & ENVIRONMENT CONFIGURATION
       # =========================================================
+      - name: Write google-services.json
+        env:
+          GOOGLE_SERVICES_JSON_B64: ${{ secrets.GOOGLE_SERVICES_JSON_B64 }}
+        run: |
+          if [ -z "$GOOGLE_SERVICES_JSON_B64" ]; then
+            echo "::error::GOOGLE_SERVICES_JSON_B64 secret is missing."
+            exit 1
+          fi
+
+          mkdir -p android/app
+          printf '%s' "$GOOGLE_SERVICES_JSON_B64" | base64 -d > android/app/google-services.json
+          echo "Wrote android/app/google-services.json"
+
+      - name: Write Firebase service account credentials
+        env:
+          FIREBASE_SERVICE_ACCOUNT_B64: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_B64 }}
+        run: |
+          if [ -z "$FIREBASE_SERVICE_ACCOUNT_B64" ]; then
+            echo "::error::FIREBASE_SERVICE_ACCOUNT_B64 secret is missing."
+            exit 1
+          fi
+
+          printf '%s' "$FIREBASE_SERVICE_ACCOUNT_B64" | base64 -d > "$RUNNER_TEMP/firebase-sa.json"
+          echo "GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/firebase-sa.json" >> "$GITHUB_ENV"
+
       - name: Create .env file
         env:
           API_URL: ${{ secrets.API_URL }}
@@ -91,9 +122,9 @@ jobs:
           echo "DATE=$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
 
       # =========================================================
-      # ANDROID BUILD
+      # SINGLE APK BUILD & RENAME
       # =========================================================
-      - name: Compile Production Release APK
+      - name: Compile Production Release APK (Once)
         working-directory: android
         env:
           JAVA_OPTS: "-Xmx4g"
@@ -106,19 +137,16 @@ jobs:
             --no-daemon \
             --stacktrace
 
-      - name: Verify APK was produced
-        run: |
-          ls -lh android/app/build/outputs/apk/release/
+      - name: Remove google-services.json from runner
+        if: always()
+        run: rm -f android/app/google-services.json
 
-          test -f android/app/build/outputs/apk/release/app-release.apk \
-            || { echo "APK not found!"; exit 1; }
-
-      # =========================================================
-      # APK NAMING
-      # =========================================================
-      - name: Rename APK with Title and Tag
+      - name: Verify and Rename Single APK
         id: apk_name
         run: |
+          SRC="android/app/build/outputs/apk/release/app-release.apk"
+          test -f "$SRC" || { echo "APK not found at $SRC!"; exit 1; }
+
           TITLE="${{ vars.APP_TITLE }}"
           TITLE="${TITLE:-MyApp}"
 
@@ -126,8 +154,6 @@ jobs:
           TAG_SAFE="${TAG//\//-}"
 
           NEW_NAME="${TITLE}-${TAG_SAFE}.apk"
-
-          SRC="android/app/build/outputs/apk/release/app-release.apk"
           DEST="android/app/build/outputs/apk/release/${NEW_NAME}"
 
           mv "$SRC" "$DEST"
@@ -135,8 +161,8 @@ jobs:
           echo "APK_PATH=${DEST}" >> "$GITHUB_OUTPUT"
           echo "APK_NAME=${NEW_NAME}" >> "$GITHUB_OUTPUT"
 
-          echo "Renamed APK to: ${NEW_NAME}"
-          ls -lh android/app/build/outputs/apk/release/
+          echo "Single APK ready: ${DEST}"
+          ls -lh "$DEST"
 
       # =========================================================
       # COMMIT INFORMATION
@@ -208,7 +234,27 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       # =========================================================
-      # GITHUB RELEASE
+      # 1. SEND SINGLE APK TO FIREBASE APP DISTRIBUTION
+      # =========================================================
+      - name: Distribute APK via Fastlane to Firebase
+        env:
+          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+          APK_PATH: ${{ steps.apk_name.outputs.APK_PATH }}
+          RELEASE_NOTES: "Release ${{ steps.version_tag.outputs.TAG }} (${{ github.ref_name }}) - ${{ steps.commit.outputs.title }}"
+          FIREBASE_TESTER_GROUPS: ${{ vars.FIREBASE_TESTER_GROUPS || 'morfosi-testers' }}
+        run: |
+          if [ -f Gemfile ]; then
+            bundle exec fastlane android distribute
+          else
+            fastlane android distribute
+          fi
+
+      - name: Remove Firebase service account key
+        if: always()
+        run: rm -f "$RUNNER_TEMP/firebase-sa.json"
+
+      # =========================================================
+      # 2. UPLOAD SAME APK TO GITHUB RELEASE
       # =========================================================
       - name: Create GitHub Release and Upload APK
         id: create_release
