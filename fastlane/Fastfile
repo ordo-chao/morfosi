@@ -1,0 +1,21 @@
+default_platform(:android)
+
+platform :android do
+  desc "Distribute prebuilt Morfosi APK through Firebase App Distribution"
+  lane :distribute do |options|
+    apk_path = options[:apk_path] || ENV["APK_PATH"]
+    release_notes = options[:release_notes] || ENV["RELEASE_NOTES"] || "Morfosi beta release"
+    groups = options[:groups] || ENV["FIREBASE_TESTER_GROUPS"] || "morfosi-testers"
+
+    UI.user_error!("APK_PATH is required and must point to the built APK") if apk_path.to_s.empty?
+    UI.user_error!("APK not found at #{apk_path}") unless File.exist?(apk_path)
+
+    firebase_app_distribution(
+      app: ENV["FIREBASE_APP_ID"],
+      android_artifact_type: "APK",
+      android_artifact_path: apk_path,
+      release_notes: release_notes,
+      groups: groups,
+    )
+  end
+end
