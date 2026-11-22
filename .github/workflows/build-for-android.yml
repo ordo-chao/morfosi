@@ -12,7 +12,6 @@ on:
 jobs:
   # =========================================================
   # JOB 1 — Build & Publish APK
-  # Runs on: push (main/staging/tags, including merged PRs), manual dispatch
   # =========================================================
   create-release:
     name: Compile and Release Android App
@@ -29,7 +28,7 @@ jobs:
       - name: Setup Node.js Runtime
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: Setup Java JDK Environment
@@ -47,13 +46,38 @@ jobs:
       - name: Install Project Dependencies
         run: npm ci --legacy-peer-deps
 
+      # =========================================================
+      # ENVIRONMENT CONFIGURATION
+      # =========================================================
       - name: Create .env file
+        env:
+          API_URL: ${{ secrets.API_URL }}
+          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+          POSTHOG_API_KEY: ${{ vars.POSTHOG_API_KEY }}
+          POSTHOG_HOST: ${{ vars.POSTHOG_HOST }}
         run: |
-          cat > .env <<'EOF'
-          API_URL=${{ secrets.API_URL }}
-          FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}
-          EOF
+          {
+            printf 'API_URL=%s\n' "$API_URL"
+            printf 'FIREBASE_API_KEY=%s\n' "$FIREBASE_API_KEY"
+            printf 'POSTHOG_API_KEY=%s\n' "$POSTHOG_API_KEY"
+            printf 'POSTHOG_HOST=%s\n' "$POSTHOG_HOST"
+          } > .env
 
+          echo ".env file generated successfully."
+
+          if [ -z "$POSTHOG_API_KEY" ]; then
+            echo "::error::POSTHOG_API_KEY is missing."
+            exit 1
+          fi
+
+          if [ -z "$POSTHOG_HOST" ]; then
+            echo "::error::POSTHOG_HOST is missing."
+            exit 1
+          fi
+
+      # =========================================================
+      # RELEASE VERSION
+      # =========================================================
       - name: Determine Release Tag
         id: version_tag
         run: |
@@ -62,9 +86,13 @@ jobs:
           else
             TAG_NAME=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.0.0")
           fi
+
           echo "TAG=$TAG_NAME" >> "$GITHUB_OUTPUT"
           echo "DATE=$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
 
+      # =========================================================
+      # ANDROID BUILD
+      # =========================================================
       - name: Compile Production Release APK
         working-directory: android
         env:
@@ -72,6 +100,7 @@ jobs:
           GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -Dorg.gradle.workers.max=4 -Dorg.gradle.parallel=true"
         run: |
           chmod +x ./gradlew
+
           ./gradlew assembleRelease \
             -PreactNativeArchitectures=armeabi-v7a,arm64-v8a \
             --no-daemon \
@@ -80,25 +109,38 @@ jobs:
       - name: Verify APK was produced
         run: |
           ls -lh android/app/build/outputs/apk/release/
+
           test -f android/app/build/outputs/apk/release/app-release.apk \
             || { echo "APK not found!"; exit 1; }
 
+      # =========================================================
+      # APK NAMING
+      # =========================================================
       - name: Rename APK with Title and Tag
         id: apk_name
         run: |
           TITLE="${{ vars.APP_TITLE }}"
           TITLE="${TITLE:-MyApp}"
+
           TAG="${{ steps.version_tag.outputs.TAG }}"
           TAG_SAFE="${TAG//\//-}"
+
           NEW_NAME="${TITLE}-${TAG_SAFE}.apk"
+
           SRC="android/app/build/outputs/apk/release/app-release.apk"
           DEST="android/app/build/outputs/apk/release/${NEW_NAME}"
+
           mv "$SRC" "$DEST"
+
           echo "APK_PATH=${DEST}" >> "$GITHUB_OUTPUT"
           echo "APK_NAME=${NEW_NAME}" >> "$GITHUB_OUTPUT"
+
           echo "Renamed APK to: ${NEW_NAME}"
           ls -lh android/app/build/outputs/apk/release/
 
+      # =========================================================
+      # COMMIT INFORMATION
+      # =========================================================
       - name: Resolve commit title and description
         id: commit
         shell: bash
@@ -113,34 +155,49 @@ jobs:
             FULL=$(git log -1 --pretty=%B)
             AUTHOR=$(git log -1 --pretty=%an)
           fi
+
           TITLE=$(printf '%s\n' "$FULL" | head -n1)
           BODY=$(printf '%s\n' "$FULL" | awk 'BEGIN{b=0} /^$/{b=1; next} b{print}')
 
           if printf '%s' "$TITLE" | grep -q '^Merge pull request'; then
             PR_JSON=$(gh api "repos/$REPO/commits/$SHA/pulls" 2>/dev/null || echo "[]")
             PR_COUNT=$(echo "$PR_JSON" | jq 'length')
+
             if [ "$PR_COUNT" -gt 0 ]; then
               PR_TITLE=$(echo "$PR_JSON" | jq -r '.[0].title')
-              PR_BODY=$(echo "$PR_JSON"  | jq -r '.[0].body // ""')
-              PR_NUM=$(echo "$PR_JSON"   | jq -r '.[0].number')
-              PR_URL=$(echo "$PR_JSON"   | jq -r '.[0].html_url')
+              PR_BODY=$(echo "$PR_JSON" | jq -r '.[0].body // ""')
+              PR_NUM=$(echo "$PR_JSON" | jq -r '.[0].number')
+              PR_URL=$(echo "$PR_JSON" | jq -r '.[0].html_url')
+
               [ -n "$PR_TITLE" ] && TITLE="$PR_TITLE"
-              [ -n "$PR_BODY" ]  && BODY="$PR_BODY"
+              [ -n "$PR_BODY" ] && BODY="$PR_BODY"
+
               echo "pr_number=$PR_NUM" >> "$GITHUB_OUTPUT"
-              echo "pr_url=$PR_URL"     >> "$GITHUB_OUTPUT"
+              echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
             fi
           fi
 
           [ -z "$TITLE" ] && TITLE="(no title)"
-          [ -z "$BODY" ]  && BODY="(no description)"
+          [ -z "$BODY" ] && BODY="(no description)"
           [ -z "$AUTHOR" ] && AUTHOR="(unknown)"
 
           {
-            echo "title<<EOF"; echo "$TITLE"; echo "EOF"
-            echo "body<<EOF";  echo "$BODY";  echo "EOF"
-            echo "author<<EOF";echo "$AUTHOR";echo "EOF"
+            echo "title<<EOF"
+            echo "$TITLE"
+            echo "EOF"
+
+            echo "body<<EOF"
+            echo "$BODY"
+            echo "EOF"
+
+            echo "author<<EOF"
+            echo "$AUTHOR"
+            echo "EOF"
           } >> "$GITHUB_OUTPUT"
 
+      # =========================================================
+      # GITHUB RELEASE
+      # =========================================================
       - name: Create GitHub Release and Upload APK
         id: create_release
         uses: ncipollo/release-action@v1
@@ -149,13 +206,16 @@ jobs:
           name: Release ${{ steps.version_tag.outputs.TAG }}
           body: |
             ### Automated Project Build
+
             - **Compiled on:** ${{ steps.version_tag.outputs.DATE }}
             - **Branch:** `${{ github.ref_name }}`
             - **Commit SHA:** `${{ github.sha }}`
             - **Architectures:** `armeabi-v7a`, `arm64-v8a`
             - **Build flags:** 4 GB heap, 4 workers, parallel, R8+shrinkResources
+
             ---
             *Download `${{ steps.apk_name.outputs.APK_NAME }}` below to test the newest changes.*
+
           artifacts: ${{ steps.apk_name.outputs.APK_PATH }}
           allowUpdates: true
           generateReleaseNotes: true
@@ -163,13 +223,16 @@ jobs:
           prerelease: ${{ github.ref_name == 'staging' }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      # =========================================================
+      # DISCORD RELEASE NOTIFICATION
+      # =========================================================
       - name: Send Discord Notification (Release Ready)
         uses: Ilshidur/action-discord@master
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         with:
           args: |
-            **@here New Android release is ready** 
+            **@here New Android release is ready**
             **App**: `${{ github.repository }}`
             **Release**: `${{ steps.version_tag.outputs.TAG }}`
             **Branch**: `${{ github.ref_name }}`
@@ -182,7 +245,9 @@ jobs:
 
             **Download APK**: ${{ steps.create_release.outputs.html_url }}
 
-
+      # =========================================================
+      # DISCORD FAILURE NOTIFICATION
+      # =========================================================
       - name: Notify Discord on failure
         if: failure()
         uses: Ilshidur/action-discord@master
