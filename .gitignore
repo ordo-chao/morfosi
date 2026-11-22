@@ -77,3 +77,4 @@ yarn-error.log
 .env.*
 !.env.example
 android/app/*.json
+android/gradle.properties
