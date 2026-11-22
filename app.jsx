@@ -7,6 +7,8 @@ import { useDynamicIcon } from './src/hooks/use-dynamic-icon.js';
 import { LoginContext } from './loginContext.jsx';
 import ErrorBoundary from './errorBoundary.jsx';
 import { ThemeProvider, useTheme } from './src/theme/themeContext.jsx';
+import { posthog } from './src/config/posthog.js';
+import { PostHogProvider } from 'posthog-react-native'
 
 import Login from './src/pages/login/index.jsx';
 import SignUp from './src/pages/signup/index.jsx';
@@ -81,6 +83,14 @@ function Navigator() {
     <SafeAreaView style={[styles.root, { backgroundColor: colors.bg }]}>
       <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} />
       <NavigationContainer theme={isDark ? DarkTheme : DefaultTheme}>
+        <PostHogProvider
+        client={posthog}
+        autocapture={{
+          captureLifecycleEvents: true,
+          captureScreens: false,
+          captureTouches: true,
+        }}
+      >
         <Stack.Navigator
           initialRouteName="Login"
           screenOptions={{
@@ -156,6 +166,7 @@ function Navigator() {
           <Stack.Screen name="Teacher-Material-Detail"    component={TeacherMaterialDetail}   options={{ headerShown: false }} />
           <Stack.Screen name="Teacher-Question-Form"    component={TeacherQuestionCreate}   options={{ headerShown: false }} />
         </Stack.Navigator>
+        </PostHogProvider>
       </NavigationContainer>
     </SafeAreaView>
   );

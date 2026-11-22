@@ -1,19 +1,31 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { makeStyles } from './css.js';
-
+import { usePostHog } from 'posthog-react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import Config from 'react-native-config';
 import { useTheme } from '../../theme/themeContext.jsx';
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
-
+  const posthog = usePostHog()
   const { colors } = useTheme();
   const styles = makeStyles(colors);
+
+  const handlePress = () => {
+        posthog.capture('button_pressed', {
+            button_name: 'signin'
+        })
+        console.log('[PostHog Config]', {
+  hasApiKey: Boolean(Config.POSTHOG_API_KEY),
+  host: Config.POSTHOG_HOST,
+});
+
+        navigation.navigate('Teacher-Dashboard')
+    }
 
   return (
     <View style={styles.container}>
@@ -77,7 +89,7 @@ export default function Login({ navigation }) {
 
             <TouchableOpacity
               style={styles.button}
-              onPress={() => navigation.navigate('Teacher-Dashboard')}
+              onPress={() => handlePress()}
             >
               <Text style={styles.buttonText}>SIGN IN →</Text>
             </TouchableOpacity>
