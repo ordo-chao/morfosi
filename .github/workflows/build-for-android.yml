@@ -181,6 +181,14 @@ jobs:
           [ -z "$BODY" ] && BODY="(no description)"
           [ -z "$AUTHOR" ] && AUTHOR="(unknown)"
 
+          # Keep description bounded so total Discord message stays well under 2000 chars
+          MAX_LEN=1000
+          if [ "${#BODY}" -gt "$MAX_LEN" ]; then
+            DISCORD_BODY="${BODY:0:$MAX_LEN}… *(truncated, see GitHub release/PR)*"
+          else
+            DISCORD_BODY="$BODY"
+          fi
+
           {
             echo "title<<EOF"
             echo "$TITLE"
@@ -188,6 +196,10 @@ jobs:
 
             echo "body<<EOF"
             echo "$BODY"
+            echo "EOF"
+
+            echo "discord_body<<EOF"
+            echo "$DISCORD_BODY"
             echo "EOF"
 
             echo "author<<EOF"
@@ -241,7 +253,7 @@ jobs:
             **Title**: ${{ steps.commit.outputs.title }}
 
             **Description**:
-            ${{ steps.commit.outputs.body }}
+            ${{ steps.commit.outputs.discord_body }}
 
             **Download APK**: ${{ steps.create_release.outputs.html_url }}
 
