@@ -3,19 +3,34 @@ default_platform(:android)
 platform :android do
   desc "Distribute prebuilt Morfosi APK through Firebase App Distribution"
   lane :distribute do |options|
-    apk_path = options[:apk_path] || ENV["APK_PATH"]
     release_notes = options[:release_notes] || ENV["RELEASE_NOTES"] || "Morfosi beta release"
     groups = options[:groups] || ENV["FIREBASE_TESTER_GROUPS"] || "morfosi-testers"
 
-    UI.user_error!("APK_PATH is required and must point to the built APK") if apk_path.to_s.empty?
-    UI.user_error!("APK not found at #{apk_path}") unless File.exist?(apk_path)
+    apk_path = options[:apk_path] || ENV["APK_PATH"]
+
+    if apk_path.to_s.empty?
+      app_title = (options[:app_title] || ENV["APP_TITLE"]).to_s.strip
+      app_title = "Morfosi" if app_title.empty?
+
+      raw_tag = (options[:tag] || ENV["RELEASE_TAG"] || ENV["TAG_NAME"]).to_s.strip
+      UI.user_error!("Provide APK_PATH or RELEASE_TAG/TAG_NAME so the APK path can be calculated") if raw_tag.empty?
+
+      tag_safe = raw_tag.tr("/", "-")
+      apk_name = "#{app_title}-#{tag_safe}.apk"
+
+      base_dir = File.exist?(File.expand_path("android/app/build/outputs/apk/release", Dir.pwd)) ? "android/app/build/outputs/apk/release" : "app/build/outputs/apk/release"
+      apk_path = File.join(base_dir, apk_name)
+    end
+
+    resolved_path = File.expand_path(apk_path, Dir.pwd)
+    UI.user_error!("APK not found at #{resolved_path}") unless File.exist?(resolved_path)
 
     firebase_app_distribution(
       app: ENV["FIREBASE_APP_ID"],
       android_artifact_type: "APK",
-      android_artifact_path: apk_path,
+      android_artifact_path: resolved_path,
       release_notes: release_notes,
-      groups: groups,
+      groups: groups
     )
   end
 end
