@@ -6,6 +6,10 @@ platform :android do
     release_notes = options[:release_notes] || ENV["RELEASE_NOTES"] || "Morfosi beta release"
     groups = options[:groups] || ENV["FIREBASE_TESTER_GROUPS"] || "morfosi-testers"
 
+    # Fastlane sets Dir.pwd to the fastlane/ folder; resolve relative paths from the repo root
+    repo_root = ENV["GITHUB_WORKSPACE"]
+    repo_root = File.expand_path("..", __dir__) if repo_root.nil? || repo_root.empty?
+
     apk_path = options[:apk_path] || ENV["APK_PATH"]
 
     if apk_path.to_s.empty?
@@ -18,11 +22,11 @@ platform :android do
       tag_safe = raw_tag.tr("/", "-")
       apk_name = "#{app_title}-#{tag_safe}.apk"
 
-      base_dir = File.exist?(File.expand_path("android/app/build/outputs/apk/release", Dir.pwd)) ? "android/app/build/outputs/apk/release" : "app/build/outputs/apk/release"
+      base_dir = File.exist?(File.join(repo_root, "android/app/build/outputs/apk/release")) ? "android/app/build/outputs/apk/release" : "app/build/outputs/apk/release"
       apk_path = File.join(base_dir, apk_name)
     end
 
-    resolved_path = File.expand_path(apk_path, Dir.pwd)
+    resolved_path = File.expand_path(apk_path, repo_root)
     UI.user_error!("APK not found at #{resolved_path}") unless File.exist?(resolved_path)
 
     firebase_app_distribution(
