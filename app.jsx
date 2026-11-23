@@ -73,7 +73,14 @@ import TeacherResources from './src/pages/teachers/resources/index.jsx'
 import TeacherMaterialsCreate       from './src/pages/teachers/resources/materials/form/index.jsx';
 import TeacherMaterialDetail        from './src/pages/teachers/resources/materials/detail/index.jsx';
 import TeacherQuestionCreate        from './src/pages/teachers/resources/question-bank/form/index.jsx'
-
+import TeacherResponsibilites from './src/pages/teachers/responsibilities/index.jsx'
+import TeacherAttendance from './src/pages/teachers/attendance/mark/index.jsx'
+import TeacherGrades from './src/pages/teachers/grades/report/index.jsx'
+import TeacherDepartmentTeachers  from './src/pages/teachers/department/teachers/index.jsx'
+import TeacherDepartmentSchemes  from './src/pages/teachers/department/schemes/index.jsx'
+import TeacherDepartmentPerformance  from './src/pages/teachers/department/performance/index.jsx'
+import TeacherDormRollCall from './src/pages/teachers/dorm/roll-call/index.jsx'
+import TeacherDormInspection from './src/pages/teachers/dorm/inspection/index.jsx'
 const Stack = createStackNavigator();
 
 function Navigator() {
@@ -165,6 +172,15 @@ function Navigator() {
           <Stack.Screen name="Teacher-Materials-Form"   component={TeacherMaterialsCreate}  options={{ headerShown: false }} />
           <Stack.Screen name="Teacher-Material-Detail"    component={TeacherMaterialDetail}   options={{ headerShown: false }} />
           <Stack.Screen name="Teacher-Question-Form"    component={TeacherQuestionCreate}   options={{ headerShown: false }} />
+          <Stack.Screen name="Teacher-Responsibilities"    component={TeacherResponsibilites}   options={{ headerShown: false }} />
+
+          <Stack.Screen name="Teacher-Attendance-Mark"    component={TeacherAttendance}   options={{ headerShown: false }} />
+          <Stack.Screen name="Teacher-Grades-Report"    component={TeacherGrades}   options={{ headerShown: false }} />
+          <Stack.Screen name="Teacher-Department-Teachers"    component={TeacherDepartmentTeachers}   options={{ headerShown: false }} />
+          <Stack.Screen name="Teacher-Department-Schemes"    component={TeacherDepartmentSchemes}   options={{ headerShown: false }} />
+                    <Stack.Screen name="Teacher-Department-Performance"    component={TeacherDepartmentPerformance}   options={{ headerShown: false }} />
+          <Stack.Screen name="Teacher-Dorm-RollCall"    component={TeacherDormRollCall}   options={{ headerShown: false }} />
+          <Stack.Screen name="Teacher-Dorm-Inspection"    component={TeacherDormInspection}   options={{ headerShown: false }} />
         </Stack.Navigator>
         </PostHogProvider>
       </NavigationContainer>
