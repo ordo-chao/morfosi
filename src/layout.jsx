@@ -68,6 +68,9 @@ const TEACHER_NO_NAV_ROUTES = [
   'Teacher-Grades', 'Teacher-Grades-Entry', 'Teacher-Grades-Report',
   'Teacher-Attendance', 'Teacher-Attendance-Mark', 'Teacher-Attendance-History',
   'Teacher-Announcements', 'Teacher-Announcements-Create', 'Teacher-Material-Detail',
+   'Teacher-Responsibilities', 'Teacher-Attendance-Mark', 'Teacher-Class-Detail',
+   'Teacher-Grades-Report', 'Teacher-Department-Teachers', 'Teacher-Department-Schemes',
+   'Teacher-Department-Performance', 'Teacher-Dorm-RollCall', 'Teacher-Dorm-Inspection',
 
   // Clubs (every child screen too)
   'Teacher-Clubs',
@@ -97,7 +100,7 @@ const TEACHER_MENU_TAB_ROUTES = {
   academic:   'Teacher-Dashboard',
   clubs:      'Teacher-Clubs',
   resources:  'Teacher-Resources',
-  activities: 'Teacher-Campus',
+  responsibilities: 'Teacher-Responsibilities',
 };
 
 const TEACHER_ROUTE_TO_MENU_TAB = {
@@ -140,11 +143,11 @@ const TEACHER_ROUTE_TO_MENU_TAB = {
   'Teacher-Material-Detail':   'resources',
   'Teacher-Question-Form':   'resources',
 
-  // activities (Campus)
-  'Teacher-Campus':    'activities',
-  'Team-Detail':       'activities',
-  'Fixtures':          'activities',
-  'Member-List':       'activities',
+  // responsibilities (Campus)
+  'Teacher-Responsibilities':    'responsibilities',
+  'Team-Detail':       'responsibilities',
+  'Fixtures':          'responsibilities',
+  'Member-List':       'responsibilities',
 };
 
 /* ---------- STAFF ---------- */
