@@ -106,7 +106,7 @@ jobs:
         env:
           API_URL: ${{ secrets.API_URL }}
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
-          POSTHOG_API_KEY: ${{ vars.POSTHOG_API_KEY }}
+          POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
           POSTHOG_HOST: ${{ vars.POSTHOG_HOST }}
           KEYCHAIN_KEY: ${{ secrets.KEYCHAIN_KEY }}
         run: |
