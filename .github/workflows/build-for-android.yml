@@ -108,16 +108,8 @@ jobs:
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
           POSTHOG_API_KEY: ${{ vars.POSTHOG_API_KEY }}
           POSTHOG_HOST: ${{ vars.POSTHOG_HOST }}
+          KEYCHAIN_KEY: ${{ secrets.KEYCHAIN_KEY }}
         run: |
-          {
-            printf 'API_URL=%s\n' "$API_URL"
-            printf 'FIREBASE_API_KEY=%s\n' "$FIREBASE_API_KEY"
-            printf 'POSTHOG_API_KEY=%s\n' "$POSTHOG_API_KEY"
-            printf 'POSTHOG_HOST=%s\n' "$POSTHOG_HOST"
-          } > .env
-
-          echo ".env file generated successfully."
-
           if [ -z "$POSTHOG_API_KEY" ]; then
             echo "::error::POSTHOG_API_KEY is missing."
             exit 1
@@ -127,6 +119,24 @@ jobs:
             echo "::error::POSTHOG_HOST is missing."
             exit 1
           fi
+
+          if [ -z "$KEYCHAIN_KEY" ]; then
+            echo "::error::KEYCHAIN_KEY is missing."
+            exit 1
+          fi
+
+          echo "::add-mask::$POSTHOG_API_KEY"
+          echo "::add-mask::$KEYCHAIN_KEY"
+
+          {
+            printf 'API_URL=%s\n' "$API_URL"
+            printf 'FIREBASE_API_KEY=%s\n' "$FIREBASE_API_KEY"
+            printf 'POSTHOG_API_KEY=%s\n' "$POSTHOG_API_KEY"
+            printf 'POSTHOG_HOST=%s\n' "$POSTHOG_HOST"
+            printf 'KEYCHAIN_KEY=%s\n' "$KEYCHAIN_KEY"
+          } > .env
+
+          echo ".env file generated successfully."
 
       # =========================================================
       # RELEASE VERSION
@@ -159,9 +169,10 @@ jobs:
             --no-daemon \
             --stacktrace
 
-      - name: Clean up temporary credentials from runner
+      - name: Clean up temporary credentials and .env from runner
         if: always()
         run: |
+          rm -f .env
           rm -f android/app/google-services.json
           rm -f "$RUNNER_TEMP/upload-keystore.keystore"
 
@@ -231,7 +242,6 @@ jobs:
           [ -z "$BODY" ] && BODY="(no description)"
           [ -z "$AUTHOR" ] && AUTHOR="(unknown)"
 
-          # Keep description bounded so total Discord message stays well under 2000 chars
           MAX_LEN=1000
           if [ "${#BODY}" -gt "$MAX_LEN" ]; then
             DISCORD_BODY="${BODY:0:$MAX_LEN}… *(truncated, see GitHub release/PR)*"
