@@ -626,3 +626,108 @@ Documentation:
 - [WatermelonDB Query documentation](https://watermelondb.dev/docs/Query?utm_source=chatgpt.com)
 
 **Before running the screen:** One thing worth checking is that your actual `schemas/index.js` exports `schema` as its default export and your `database/index.js` exists with the adapter configuration above.
+
+## How to use MMKV in a React Native screen
+import React from 'react';
+import { View, Button, Text } from 'react-native';
+
+import { MMKV } from '../storage';
+
+const StorageScreen = () => {
+  const savePreferences = () => {
+    MMKV.setString('username', 'Prince');
+    MMKV.setBoolean('darkMode', true);
+    MMKV.setNumber('fontSize', 16);
+  };
+
+  const getPreferences = () => {
+    const username = MMKV.getString('username');
+    const darkMode = MMKV.getBoolean('darkMode');
+    const fontSize = MMKV.getNumber('fontSize');
+
+    console.log({
+      username,
+      darkMode,
+      fontSize,
+    });
+  };
+
+  const removePreferences = () => {
+    MMKV.remove('username');
+  };
+
+};
+
+export default StorageScreen;
+
+## How to use Keychain in a React Native screen
+import React from 'react';
+import { View, Button, Alert } from 'react-native';
+
+import { Keychain } from '../storage';
+
+const AuthenticationScreen = () => {
+  const login = async () => {
+    try {
+      const saved = await Keychain.saveCredentials(
+        'prince@example.com',
+        'sample-access-token',
+      );
+
+      if (saved) {
+        Alert.alert('Success', 'Credentials saved securely.');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Could not save credentials.');
+    }
+  };
+
+  const getSession = async () => {
+    try {
+      const credentials = await Keychain.getCredentials();
+
+      if (credentials) {
+        console.log('Username:', credentials.username);
+        console.log('Session exists:', Boolean(credentials.password));
+      } else {
+        Alert.alert('Session', 'No credentials found.');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Could not retrieve credentials.');
+    }
+  };
+
+  const updateSession = async () => {
+    try {
+      await Keychain.updateCredentials(
+        'prince@example.com',
+        'new-access-token',
+      );
+
+      Alert.alert('Success', 'Credentials updated.');
+    } catch (error) {
+      Alert.alert('Error', 'Could not update credentials.');
+    }
+  };
+
+  const logout = async () => {
+    try {
+      await Keychain.resetCredentials();
+
+      Alert.alert('Success', 'Credentials removed.');
+    } catch (error) {
+      Alert.alert('Error', 'Could not clear credentials.');
+    }
+  };
+
+  const checkSession = async () => {
+    const exists = await Keychain.hasCredentials();
+
+    Alert.alert(
+      'Session Status',
+      exists ? 'Credentials exist.' : 'No credentials found.',
+    );
+  };
+};
+
+export default AuthenticationScreen;
