@@ -40,24 +40,24 @@ useEffect(() => {
   //   }
   // };
 
-    const login = async () => {
-    try {
-      const saved = await Keychain.saveCredentials(
-        'prince@example.com',
-        'sample-access-token',
-      );
+  //   const login = async () => {
+  //   try {
+  //     const saved = await Keychain.saveCredentials(
+  //       'prince@example.com',
+  //       'sample-access-token',
+  //     );
 
-      if (saved) {
-        Alert.alert('Success', 'Credentials saved securely.');
-      }
-    } catch (error) {
-      Alert.alert('Error', 'Could not save credentials.');
-    }
-  };
+  //     if (saved) {
+  //       Alert.alert('Success', 'Credentials saved securely.');
+  //     }
+  //   } catch (error) {
+  //     Alert.alert('Error', 'Could not save credentials.');
+  //   }
+  // };
 
 
 
-  login();
+  // login();
 }, []);
 
 
