@@ -310,7 +310,7 @@ All screens use `makeStyles(colors)` from the theme context — one source of tr
 
 ```
 src/
-├── pages/
+├── screens/
 │   ├── login/
 │   ├── signup/
 │   ├── forgot-password/   (send-email, enter-otp, change-password)

@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, ScrollView } from 'react-native';
+import React, { useState , useEffect } from 'react';
+import { View, Text, TouchableOpacity, TextInput, ScrollView ,Alert } from 'react-native';
 import { makeStyles } from './css.js';
 import { usePostHog } from 'posthog-react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Config from 'react-native-config';
 import { useTheme } from '../../theme/themeContext.jsx';
+
+
+// import { Q } from 'nitromelondb';
+import { Keychain } from '../../storage';
+// import { database } from '../../database';
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
@@ -14,6 +19,50 @@ export default function Login({ navigation }) {
   const posthog = usePostHog()
   const { colors } = useTheme();
   const styles = makeStyles(colors);
+
+useEffect(() => {
+  // const testDb = async () => {
+  //   try {
+  //     await database.write(async () => {
+  //       await database.get('users').create((user) => {
+  //         user.name = 'John Doe';
+  //         user.email = 'john@example.com';
+  //         user.avatar = null;
+  //         user.createdAt = Date.now();
+  //         user.updatedAt = Date.now();
+  //       });
+  //     });
+
+  //     const users = await database.get('users').query().fetch();
+  //     console.log(users)
+  //   } catch (error) {
+  //     console.error('Failed to create user:', error);
+  //   }
+  // };
+
+  //   const login = async () => {
+  //   try {
+  //     const saved = await Keychain.saveCredentials(
+  //       'prince@example.com',
+  //       'sample-access-token',
+  //     );
+
+  //     if (saved) {
+  //       Alert.alert('Success', 'Credentials saved securely.');
+  //     }
+  //   } catch (error) {
+  //     Alert.alert('Error', 'Could not save credentials.');
+  //   }
+  // };
+
+
+
+  // login();
+}, []);
+
+
+
+
 
   const handlePress = () => {
         posthog.capture('button_pressed', {
